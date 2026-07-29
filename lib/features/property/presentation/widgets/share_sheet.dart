@@ -22,17 +22,20 @@ class _ShareSheet extends StatelessWidget {
   const _ShareSheet({required this.property});
 
   Future<void> _share(BuildContext context, String network) async {
-    await Clipboard.setData(ClipboardData(
-      text: 'Check out ${property.name} on Houseslice — '
-          'houseslice.app/p/${property.id}',
-    ));
+    await Clipboard.setData(
+      ClipboardData(
+        text:
+            'Check out ${property.name} on Houseslice — '
+            'houseslice.app/p/${property.id}',
+      ),
+    );
     if (!context.mounted) return;
     Navigator.of(context).pop();
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
-      ..showSnackBar(SnackBar(
-        content: Text('Link copied — ready to paste in $network'),
-      ));
+      ..showSnackBar(
+        SnackBar(content: Text('Link copied — ready to paste in $network')),
+      );
   }
 
   @override
@@ -62,10 +65,9 @@ class _ShareSheet extends StatelessWidget {
             const SizedBox(height: 20),
             Text(
               'Share to',
-              style: Theme.of(context)
-                  .textTheme
-                  .titleLarge
-                  ?.copyWith(fontWeight: FontWeight.w800),
+              style: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w800),
             ),
             const SizedBox(height: 24),
             GridView.count(
@@ -88,13 +90,13 @@ class _ShareSheet extends StatelessWidget {
                             color: color,
                             shape: BoxShape.circle,
                           ),
-                          child:
-                              Icon(icon, color: Colors.white, size: 26),
+                          child: Icon(icon, color: Colors.white, size: 26),
                         ),
                         const SizedBox(height: 8),
-                        Text(name,
-                            style:
-                                Theme.of(context).textTheme.bodyMedium),
+                        Text(
+                          name,
+                          style: Theme.of(context).textTheme.bodyMedium,
+                        ),
                       ],
                     ),
                   ),

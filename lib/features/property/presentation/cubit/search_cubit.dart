@@ -26,13 +26,12 @@ class SearchState extends Equatable {
     String? query,
     List<Property>? results,
     List<Property>? recent,
-  }) =>
-      SearchState(
-        status: status ?? this.status,
-        query: query ?? this.query,
-        results: results ?? this.results,
-        recent: recent ?? this.recent,
-      );
+  }) => SearchState(
+    status: status ?? this.status,
+    query: query ?? this.query,
+    results: results ?? this.results,
+    recent: recent ?? this.recent,
+  );
 
   @override
   List<Object?> get props => [status, query, results, recent];
@@ -55,11 +54,14 @@ class SearchCubit extends Cubit<SearchState> {
     if (state.query != q) return;
     result.fold(
       (failure) => emit(state.copyWith(status: SearchStatus.failure)),
-      (properties) => emit(state.copyWith(
-        status:
-            properties.isEmpty ? SearchStatus.empty : SearchStatus.results,
-        results: properties,
-      )),
+      (properties) => emit(
+        state.copyWith(
+          status: properties.isEmpty
+              ? SearchStatus.empty
+              : SearchStatus.results,
+          results: properties,
+        ),
+      ),
     );
   }
 

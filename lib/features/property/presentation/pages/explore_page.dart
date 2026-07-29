@@ -34,10 +34,16 @@ class ExplorePage extends StatelessWidget {
                   children: [
                     const Icon(Icons.search, color: AppColors.primary),
                     const SizedBox(width: 10),
-                    Text(
-                      'Search area, city or property',
-                      style: textTheme.bodyLarge
-                          ?.copyWith(color: AppColors.grey),
+                    // Expanded + ellipsis: the placeholder must not overflow
+                    // the row on narrow screens.
+                    Expanded(
+                      child: Text(
+                        'Search area, city or property',
+                        overflow: TextOverflow.ellipsis,
+                        style: textTheme.bodyLarge?.copyWith(
+                          color: AppColors.grey,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -50,14 +56,12 @@ class ExplorePage extends StatelessWidget {
                 if (state.status == PropertyStatus.loading ||
                     state.status == PropertyStatus.initial) {
                   return const Center(
-                    child:
-                        CircularProgressIndicator(color: AppColors.primary),
+                    child: CircularProgressIndicator(color: AppColors.primary),
                   );
                 }
                 return GridView.builder(
                   padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
-                  gridDelegate:
-                      const SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 16,
                     crossAxisSpacing: 16,
@@ -67,10 +71,9 @@ class ExplorePage extends StatelessWidget {
                   itemBuilder: (context, index) {
                     final property = state.properties[index];
                     return InkWell(
-                      onTap: () => Navigator.of(context).pushNamed(
-                        AppRoutes.details,
-                        arguments: property,
-                      ),
+                      onTap: () => Navigator.of(
+                        context,
+                      ).pushNamed(AppRoutes.details, arguments: property),
                       borderRadius: BorderRadius.circular(16),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -88,10 +91,10 @@ class ExplorePage extends StatelessWidget {
                                   top: 8,
                                   right: 8,
                                   child: InkWell(
-                                    onTap: () => context
-                                        .read<PropertyBloc>()
-                                        .add(PropertyFavoriteToggled(
-                                            property.id)),
+                                    onTap: () =>
+                                        context.read<PropertyBloc>().add(
+                                          PropertyFavoriteToggled(property.id),
+                                        ),
                                     customBorder: const CircleBorder(),
                                     child: Container(
                                       padding: const EdgeInsets.all(6),
@@ -117,14 +120,14 @@ class ExplorePage extends StatelessWidget {
                             property.name,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: textTheme.titleSmall
-                                ?.copyWith(fontWeight: FontWeight.w700),
+                            style: textTheme.titleSmall?.copyWith(
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                           const SizedBox(height: 2),
                           Text.rich(
                             TextSpan(
-                              text: Formatters.price(
-                                  property.pricePerMonth),
+                              text: Formatters.price(property.pricePerMonth),
                               style: textTheme.bodyMedium?.copyWith(
                                 color: AppColors.primary,
                                 fontWeight: FontWeight.w800,

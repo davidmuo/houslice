@@ -22,12 +22,12 @@ class FavoritesPage extends StatelessWidget {
               icon: Icons.favorite_border,
               title: 'No favorites yet',
               subtitle: Text(
-                  'Tap the heart on any listing to save it for later'),
+                'Tap the heart on any listing to save it for later',
+              ),
             );
           }
           return ListView.separated(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
             itemCount: favorites.length,
             separatorBuilder: (context, index) => const Divider(),
             itemBuilder: (context, index) {
@@ -35,13 +35,12 @@ class FavoritesPage extends StatelessWidget {
               return PropertyCard(
                 property: property,
                 showCompatibility: false,
-                onTap: () => Navigator.of(context).pushNamed(
-                  AppRoutes.details,
-                  arguments: property,
+                onTap: () => Navigator.of(
+                  context,
+                ).pushNamed(AppRoutes.details, arguments: property),
+                onFavoriteToggle: () => context.read<PropertyBloc>().add(
+                  PropertyFavoriteToggled(property.id),
                 ),
-                onFavoriteToggle: () => context
-                    .read<PropertyBloc>()
-                    .add(PropertyFavoriteToggled(property.id)),
               );
             },
           );

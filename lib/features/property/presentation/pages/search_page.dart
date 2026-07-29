@@ -47,8 +47,10 @@ class _SearchPageState extends State<SearchPage> {
                 onSubmitted: context.read<SearchCubit>().search,
                 decoration: InputDecoration(
                   hintText: 'Search area, city or property',
-                  prefixIcon:
-                      const Icon(Icons.search, color: AppColors.primary),
+                  prefixIcon: const Icon(
+                    Icons.search,
+                    color: AppColors.primary,
+                  ),
                   suffixIcon: IconButton(
                     onPressed: () {
                       _controller.clear();
@@ -60,8 +62,11 @@ class _SearchPageState extends State<SearchPage> {
                         color: AppColors.primary,
                         borderRadius: BorderRadius.circular(6),
                       ),
-                      child: const Icon(Icons.close,
-                          size: 16, color: Colors.white),
+                      child: const Icon(
+                        Icons.close,
+                        size: 16,
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ),
@@ -74,14 +79,16 @@ class _SearchPageState extends State<SearchPage> {
                     case SearchStatus.loading:
                       return const Center(
                         child: CircularProgressIndicator(
-                            color: AppColors.primary),
+                          color: AppColors.primary,
+                        ),
                       );
                     case SearchStatus.empty:
                       return const EmptyState(
                         icon: Icons.location_off_outlined,
                         title: 'Search not found',
                         subtitle: Text(
-                            'Please enable your location services for\nmore optimal result'),
+                          'Please enable your location services for\nmore optimal result',
+                        ),
                       );
                     case SearchStatus.failure:
                       return const EmptyState(
@@ -95,8 +102,9 @@ class _SearchPageState extends State<SearchPage> {
                           padding: const EdgeInsets.all(24),
                           child: Text(
                             'Search verified student listings across Kigali',
-                            style: textTheme.bodyMedium
-                                ?.copyWith(color: AppColors.grey),
+                            style: textTheme.bodyMedium?.copyWith(
+                              color: AppColors.grey,
+                            ),
                           ),
                         );
                       }
@@ -109,7 +117,9 @@ class _SearchPageState extends State<SearchPage> {
                     case SearchStatus.results:
                       return ListView(
                         padding: const EdgeInsets.symmetric(
-                            horizontal: 20, vertical: 8),
+                          horizontal: 20,
+                          vertical: 8,
+                        ),
                         children: [
                           if (state.recent.isNotEmpty) ...[
                             _SectionHeader(title: 'Recent'),
@@ -152,10 +162,9 @@ class _SectionHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Text(
         title,
-        style: Theme.of(context)
-            .textTheme
-            .titleMedium
-            ?.copyWith(fontWeight: FontWeight.w800),
+        style: Theme.of(
+          context,
+        ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w800),
       ),
     );
   }

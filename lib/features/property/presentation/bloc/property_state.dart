@@ -27,12 +27,11 @@ class PropertyState extends Equatable {
     PropertyStatus? status,
     List<Property>? properties,
     String? message,
-  }) =>
-      PropertyState(
-        status: status ?? this.status,
-        properties: properties ?? this.properties,
-        message: message,
-      );
+  }) => PropertyState(
+    status: status ?? this.status,
+    properties: properties ?? this.properties,
+    message: message,
+  );
 
   @override
   List<Object?> get props => [status, properties, message];

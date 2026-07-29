@@ -15,7 +15,7 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
   final ToggleFavorite toggleFavorite;
 
   PropertyBloc({required this.getProperties, required this.toggleFavorite})
-      : super(const PropertyState()) {
+    : super(const PropertyState()) {
     on<PropertiesRequested>(_onPropertiesRequested);
     on<PropertyFavoriteToggled>(_onFavoriteToggled);
   }
@@ -27,14 +27,15 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
     emit(state.copyWith(status: PropertyStatus.loading));
     final result = await getProperties(const NoParams());
     result.fold(
-      (failure) => emit(state.copyWith(
-        status: PropertyStatus.failure,
-        message: failure.message,
-      )),
-      (properties) => emit(state.copyWith(
-        status: PropertyStatus.loaded,
-        properties: properties,
-      )),
+      (failure) => emit(
+        state.copyWith(
+          status: PropertyStatus.failure,
+          message: failure.message,
+        ),
+      ),
+      (properties) => emit(
+        state.copyWith(status: PropertyStatus.loaded, properties: properties),
+      ),
     );
   }
 
@@ -43,11 +44,9 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
     Emitter<PropertyState> emit,
   ) async {
     List<Property> flip(List<Property> list) => [
-          for (final p in list)
-            p.id == event.propertyId
-                ? p.copyWith(isFavorite: !p.isFavorite)
-                : p,
-        ];
+      for (final p in list)
+        p.id == event.propertyId ? p.copyWith(isFavorite: !p.isFavorite) : p,
+    ];
 
     // Optimistic update so the heart reacts instantly.
     emit(state.copyWith(properties: flip(state.properties)));
@@ -55,10 +54,12 @@ class PropertyBloc extends Bloc<PropertyEvent, PropertyState> {
     final result = await toggleFavorite(event.propertyId);
     if (result is Err<bool>) {
       // Revert on failure and surface the error.
-      emit(state.copyWith(
-        properties: flip(state.properties),
-        message: (result).failure.message,
-      ));
+      emit(
+        state.copyWith(
+          properties: flip(state.properties),
+          message: (result).failure.message,
+        ),
+      );
     }
   }
 }
