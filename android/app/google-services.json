@@ -1,0 +1,54 @@
+{
+  "project_info": {
+    "project_number": "485249765763",
+    "project_id": "houseslice-69a7f",
+    "storage_bucket": "houseslice-69a7f.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:485249765763:android:ca77c6823580f0602ae6b6",
+        "android_client_info": {
+          "package_name": "com.group22.houslice"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "485249765763-p7fqk7q3q37eakmhaonc8obn69hnr3j0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.group22.houslice",
+            "certificate_hash": "f6b23f9086c56d42f1a6aca16866e6e4f91b95ac"
+          }
+        },
+        {
+          "client_id": "485249765763-gk4roc7eogd7ia2f3u81t9ok9oqof6qn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB3Fg63cmdU9AHMMDiNla-XPY5LpaBhHT4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "485249765763-gk4roc7eogd7ia2f3u81t9ok9oqof6qn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "485249765763-iq61lsol67uinsel8h29i8jb0vdgetku.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.group22.houslice"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
