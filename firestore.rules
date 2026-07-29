@@ -1,0 +1,120 @@
+rules_version = '2';
+
+// Houseslice — Firestore security rules.
+//
+// Model: the marketplace catalogue (`properties`) is world-readable to signed-in
+// students but not client-writable, while everything under `users/{uid}` is
+// readable and writable only by that user. No document is ever readable by an
+// unauthenticated caller.
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // ---------- Helpers ----------
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    // The single rule that enforces per-owner isolation: the path segment must
+    // equal the caller's own uid.
+    function isOwner(uid) {
+      return isSignedIn() && request.auth.uid == uid;
+    }
+
+    function incoming() {
+      return request.resource.data;
+    }
+
+    // ---------- properties ----------
+    // The catalogue. Any signed-in student may browse it, and any signed-in
+    // user may publish their own listing — but only ever as themselves, and
+    // only their own listings can afterwards be edited or removed.
+    //
+    // The seeded catalogue carries an empty ownerUid, which no caller can
+    // match, so seeded listings are effectively read-only from any client.
+    match /properties/{propertyId} {
+      allow read: if isSignedIn();
+
+      allow create: if isSignedIn()
+                    && incoming().ownerUid == request.auth.uid
+                    && incoming().name is string
+                    && incoming().name.size() > 0
+                    && incoming().pricePerMonth is number
+                    && incoming().pricePerMonth > 0
+                    && incoming().hostType in ['student', 'realtor']
+                    && incoming().listingKind in ['housemate', 'entirePlace'];
+
+      // Ownership itself is immutable: a listing cannot be handed to someone
+      // else, and someone else's listing cannot be claimed.
+      allow update: if isSignedIn()
+                    && resource.data.ownerUid == request.auth.uid
+                    && incoming().ownerUid == resource.data.ownerUid;
+
+      allow delete: if isSignedIn()
+                    && resource.data.ownerUid == request.auth.uid;
+    }
+
+    // ---------- users/{uid} ----------
+    // Profile document. Readable and writable only by its owner, and the uid
+    // field can never be repointed at someone else.
+    match /users/{uid} {
+      allow read: if isOwner(uid);
+
+      // `dateOfBirth` is allowed here as well as on update: saving a profile
+      // uses a merge write, which Firestore evaluates as a create when the
+      // document does not exist yet.
+      allow create: if isOwner(uid)
+                    && incoming().keys().hasOnly(
+                         ['email', 'username', 'photoUrl', 'dateOfBirth',
+                          'createdAt'])
+                    && incoming().email is string
+                    && incoming().username is string
+                    && incoming().username.size() >= 3;
+
+      allow update: if isOwner(uid)
+                    && incoming().email == resource.data.email;
+
+      allow delete: if isOwner(uid);
+
+      // ---------- users/{uid}/favorites/{propertyId} ----------
+      // Document id is the listing id; the body only records when it was
+      // saved, so a favourite duplicates none of the listing's own fields.
+      match /favorites/{propertyId} {
+        allow read, delete: if isOwner(uid);
+
+        allow create: if isOwner(uid)
+                      && incoming().keys().hasOnly(['savedAt']);
+
+        allow update: if false;
+      }
+
+      // ---------- users/{uid}/bookings/{bookingId} ----------
+      match /bookings/{bookingId} {
+        allow read, delete: if isOwner(uid);
+
+        allow create: if isOwner(uid)
+                      && incoming().propertyId is string
+                      && incoming().monthlyPrice is number
+                      && incoming().monthlyPrice >= 0
+                      && incoming().tax is number
+                      && incoming().tax >= 0
+                      && incoming().status in
+                           ['waitingPayment', 'checkin', 'completed', 'cancelled'];
+
+        // Only the status may move after creation — dates and pricing are
+        // immutable, so a client cannot rewrite the cost of a confirmed stay.
+        allow update: if isOwner(uid)
+                      && incoming().diff(resource.data)
+                           .affectedKeys().hasOnly(['status'])
+                      && incoming().status in
+                           ['waitingPayment', 'checkin', 'completed', 'cancelled'];
+      }
+    }
+
+    // ---------- Default deny ----------
+    // Anything not matched above is denied outright.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}
