@@ -37,8 +37,33 @@ class AuthSignUpRequested extends AuthEvent {
   List<Object?> get props => [email, username, password];
 }
 
+/// Houseslice's second sign-in method.
+class AuthGoogleSignInRequested extends AuthEvent {
+  const AuthGoogleSignInRequested();
+}
+
 class AuthSignOutRequested extends AuthEvent {
   const AuthSignOutRequested();
+}
+
+class AuthProfileUpdateRequested extends AuthEvent {
+  final String username;
+  final String? photoUrl;
+  final String? dateOfBirth;
+
+  const AuthProfileUpdateRequested({
+    required this.username,
+    this.photoUrl,
+    this.dateOfBirth,
+  });
+
+  @override
+  List<Object?> get props => [username, photoUrl, dateOfBirth];
+}
+
+/// Re-sends the verification link from the profile banner.
+class AuthEmailVerificationRequested extends AuthEvent {
+  const AuthEmailVerificationRequested();
 }
 
 class AuthPasswordChangeRequested extends AuthEvent {

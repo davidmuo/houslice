@@ -17,7 +17,8 @@ class RegisterPage extends StatefulWidget {
   State<RegisterPage> createState() => _RegisterPageState();
 }
 
-/// Stateful only for controller/form lifecycle 
+/// Stateful only for controller/form lifecycle — all UI state changes go
+/// through cubits/blocs, never setState.
 class _RegisterPageState extends State<RegisterPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -38,16 +39,20 @@ class _RegisterPageState extends State<RegisterPage> {
     if (!agreed) {
       ScaffoldMessenger.of(context)
         ..hideCurrentSnackBar()
-        ..showSnackBar(const SnackBar(
-          content: Text('Please agree with the terms and privacy policy.'),
-        ));
+        ..showSnackBar(
+          const SnackBar(
+            content: Text('Please agree with the terms and privacy policy.'),
+          ),
+        );
       return;
     }
-    context.read<AuthBloc>().add(AuthSignUpRequested(
-          email: _emailController.text.trim(),
-          username: _usernameController.text.trim(),
-          password: _passwordController.text,
-        ));
+    context.read<AuthBloc>().add(
+      AuthSignUpRequested(
+        email: _emailController.text.trim(),
+        username: _usernameController.text.trim(),
+        password: _passwordController.text,
+      ),
+    );
   }
 
   @override
@@ -68,10 +73,12 @@ class _RegisterPageState extends State<RegisterPage> {
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(state.error!)));
           } else if (state.status == AuthStatus.authenticated) {
-            Navigator.of(context).pushNamedAndRemoveUntil(
-              AppRoutes.location,
-              (route) => false,
-            );
+            // New students go straight into the lifestyle questionnaire: the
+            // compatibility score is the product, and it is meaningless until
+            // the answers exist. The quiz hands off to the location step.
+            Navigator.of(
+              context,
+            ).pushNamedAndRemoveUntil(AppRoutes.quiz, (route) => false);
           }
         },
         child: Scaffold(
@@ -86,14 +93,16 @@ class _RegisterPageState extends State<RegisterPage> {
                   children: [
                     Text(
                       'Register Account',
-                      style: textTheme.headlineMedium
-                          ?.copyWith(fontWeight: FontWeight.w800),
+                      style: textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Sign up with your university email to join\na verified student community',
-                      style: textTheme.bodyLarge
-                          ?.copyWith(color: AppColors.grey),
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: AppColors.grey,
+                      ),
                     ),
                     const SizedBox(height: 28),
                     AppTextField(
@@ -117,8 +126,7 @@ class _RegisterPageState extends State<RegisterPage> {
                         hint: 'Password',
                         controller: _passwordController,
                         obscure: obscure,
-                        onToggleObscure:
-                            context.read<ToggleCubit>().toggle,
+                        onToggleObscure: context.read<ToggleCubit>().toggle,
                         validator: Validators.password,
                         textInputAction: TextInputAction.done,
                       ),
@@ -145,29 +153,38 @@ class _RegisterPageState extends State<RegisterPage> {
                                 ),
                               ),
                               child: agreed
-                                  ? const Icon(Icons.check,
-                                      size: 16, color: Colors.white)
+                                  ? const Icon(
+                                      Icons.check,
+                                      size: 16,
+                                      color: Colors.white,
+                                    )
                                   : null,
                             ),
                             const SizedBox(width: 10),
-                            Text.rich(
-                              TextSpan(
-                                text: 'Agree with ',
-                                children: [
-                                  TextSpan(
-                                    text: 'terms',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                  TextSpan(text: ' and '),
-                                  TextSpan(
-                                    text: 'privacy',
-                                    style: TextStyle(
-                                        fontWeight: FontWeight.w700),
-                                  ),
-                                ],
+                            // Wrapped so the consent line can shrink or wrap
+                            // instead of overflowing narrow screens.
+                            Expanded(
+                              child: Text.rich(
+                                TextSpan(
+                                  text: 'Agree with ',
+                                  children: [
+                                    TextSpan(
+                                      text: 'terms',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                    TextSpan(text: ' and '),
+                                    TextSpan(
+                                      text: 'privacy',
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.w700,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                style: textTheme.bodyMedium,
                               ),
-                              style: textTheme.bodyMedium,
                             ),
                           ],
                         ),
@@ -193,8 +210,9 @@ class _RegisterPageState extends State<RegisterPage> {
                     const SizedBox(height: 24),
                     Center(
                       child: InkWell(
-                        onTap: () => Navigator.of(context)
-                            .pushReplacementNamed(AppRoutes.signIn),
+                        onTap: () => Navigator.of(
+                          context,
+                        ).pushReplacementNamed(AppRoutes.signIn),
                         child: Text.rich(
                           TextSpan(
                             text: 'Already have an account ? ',

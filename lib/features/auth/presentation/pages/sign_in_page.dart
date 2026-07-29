@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/cubits/toggle_cubit.dart';
 import '../../../../core/routes/app_routes.dart';
+import '../../../lifestyle/presentation/cubit/lifestyle_cubit.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
@@ -17,7 +18,7 @@ class SignInPage extends StatefulWidget {
   State<SignInPage> createState() => _SignInPageState();
 }
 
-/// Stateful only for controller/form lifecycle.
+/// Stateful only for controller/form lifecycle — no setState anywhere.
 class _SignInPageState extends State<SignInPage> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
@@ -33,10 +34,12 @@ class _SignInPageState extends State<SignInPage> {
   void _submit(BuildContext context) {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
-    context.read<AuthBloc>().add(AuthSignInRequested(
-          email: _emailController.text.trim(),
-          password: _passwordController.text,
-        ));
+    context.read<AuthBloc>().add(
+      AuthSignInRequested(
+        email: _emailController.text.trim(),
+        password: _passwordController.text,
+      ),
+    );
   }
 
   @override
@@ -54,8 +57,15 @@ class _SignInPageState extends State<SignInPage> {
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(state.error!)));
           } else if (state.status == AuthStatus.authenticated) {
-            Navigator.of(context)
-                .pushNamedAndRemoveUntil(AppRoutes.main, (route) => false);
+            Navigator.of(context).pushNamedAndRemoveUntil(
+              // Students who signed up before the questionnaire existed, or
+              // who skipped it, are sent through it now rather than landing on
+              // a feed of scores computed from nothing.
+              context.read<LifestyleCubit>().state.hasProfile
+                  ? AppRoutes.main
+                  : AppRoutes.quiz,
+              (route) => false,
+            );
           }
         },
         child: Scaffold(
@@ -70,14 +80,16 @@ class _SignInPageState extends State<SignInPage> {
                   children: [
                     Text(
                       'Welcome Back',
-                      style: textTheme.headlineMedium
-                          ?.copyWith(fontWeight: FontWeight.w800),
+                      style: textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Sign in with your email and password\nor social media to continue',
-                      style:
-                          textTheme.bodyLarge?.copyWith(color: AppColors.grey),
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: AppColors.grey,
+                      ),
                     ),
                     const SizedBox(height: 28),
                     AppTextField(
@@ -99,7 +111,16 @@ class _SignInPageState extends State<SignInPage> {
                         textInputAction: TextInputAction.done,
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
+                        onPressed: () => Navigator.of(
+                          context,
+                        ).pushNamed(AppRoutes.forgotPassword),
+                        child: const Text('Forgot password?'),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
                     BlocBuilder<AuthBloc, AuthState>(
                       buildWhen: (previous, current) =>
                           previous.busy != current.busy,
@@ -114,8 +135,9 @@ class _SignInPageState extends State<SignInPage> {
                     const SizedBox(height: 24),
                     Center(
                       child: InkWell(
-                        onTap: () => Navigator.of(context)
-                            .pushReplacementNamed(AppRoutes.register),
+                        onTap: () => Navigator.of(
+                          context,
+                        ).pushReplacementNamed(AppRoutes.register),
                         child: Text.rich(
                           TextSpan(
                             text: "Don't have an account ? ",

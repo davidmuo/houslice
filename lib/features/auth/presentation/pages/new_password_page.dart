@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 import '../../../../core/cubits/toggle_cubit.dart';
+import '../../../../core/routes/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
@@ -31,9 +32,9 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
   void _submit(BuildContext context) {
     FocusScope.of(context).unfocus();
     if (!_formKey.currentState!.validate()) return;
-    context
-        .read<AuthBloc>()
-        .add(AuthPasswordChangeRequested(_passwordController.text));
+    context.read<AuthBloc>().add(
+      AuthPasswordChangeRequested(_passwordController.text),
+    );
   }
 
   @override
@@ -52,7 +53,11 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
               ..hideCurrentSnackBar()
               ..showSnackBar(SnackBar(content: Text(message)));
           }
-          if (state.notice != null) Navigator.of(context).pop();
+          // A successful change lands on the confirmation screen from the
+          // Figma rather than silently popping back.
+          if (state.notice != null) {
+            Navigator.of(context).pushReplacementNamed(AppRoutes.resetSuccess);
+          }
         },
         child: Scaffold(
           appBar: AppBar(centerTitle: false),
@@ -66,14 +71,16 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   children: [
                     Text(
                       'Create New Password',
-                      style: textTheme.headlineMedium
-                          ?.copyWith(fontWeight: FontWeight.w800),
+                      style: textTheme.headlineMedium?.copyWith(
+                        fontWeight: FontWeight.w800,
+                      ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       'Please enter a new password\nto change',
-                      style:
-                          textTheme.bodyLarge?.copyWith(color: AppColors.grey),
+                      style: textTheme.bodyLarge?.copyWith(
+                        color: AppColors.grey,
+                      ),
                     ),
                     const SizedBox(height: 28),
                     BlocBuilder<ToggleCubit, bool>(
@@ -84,8 +91,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                             hint: 'Password',
                             controller: _passwordController,
                             obscure: obscure,
-                            onToggleObscure:
-                                context.read<ToggleCubit>().toggle,
+                            onToggleObscure: context.read<ToggleCubit>().toggle,
                             validator: Validators.password,
                           ),
                           const SizedBox(height: 20),
@@ -94,10 +100,11 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                             hint: 'Password',
                             controller: _confirmController,
                             obscure: obscure,
-                            onToggleObscure:
-                                context.read<ToggleCubit>().toggle,
+                            onToggleObscure: context.read<ToggleCubit>().toggle,
                             validator: (value) => Validators.confirmPassword(
-                                value, _passwordController.text),
+                              value,
+                              _passwordController.text,
+                            ),
                             textInputAction: TextInputAction.done,
                           ),
                         ],
