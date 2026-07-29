@@ -20,6 +20,12 @@ class AuthFailure extends Failure {
 }
 
 class NetworkFailure extends Failure {
-  const NetworkFailure(
-      [super.message = 'No internet connection. Check your network.']);
+  const NetworkFailure([
+    super.message = 'No internet connection. Check your network.',
+  ]);
+}
+
+/// Raised when on-device storage (SharedPreferences) cannot be read or written.
+class CacheFailure extends Failure {
+  const CacheFailure([super.message = 'Could not save your settings.']);
 }

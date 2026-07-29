@@ -6,8 +6,10 @@ import 'failures.dart';
 sealed class Result<T> {
   const Result();
 
-  R fold<R>(R Function(Failure failure) onFailure,
-      R Function(T value) onSuccess) {
+  R fold<R>(
+    R Function(Failure failure) onFailure,
+    R Function(T value) onSuccess,
+  ) {
     final self = this;
     return switch (self) {
       Success<T>(:final value) => onSuccess(value),

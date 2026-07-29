@@ -10,4 +10,14 @@ abstract final class AppRoutes {
   static const booking = '/booking';
   static const search = '/search';
   static const notifications = '/notifications';
+  static const settings = '/settings';
+  static const quiz = '/quiz';
+  static const createListing = '/create-listing';
+  static const forgotPassword = '/forgot-password';
+  static const verifyCode = '/verify-code';
+  static const resetSuccess = '/reset-success';
+  static const editProfile = '/edit-profile';
+  static const addCard = '/add-card';
+  static const locationPicker = '/location-picker';
+  static const compatibility = '/compatibility';
 }

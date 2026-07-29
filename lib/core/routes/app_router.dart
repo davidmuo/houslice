@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
+import '../../features/auth/presentation/pages/forgot_password_page.dart';
 import '../../features/auth/presentation/pages/new_password_page.dart';
 import '../../features/auth/presentation/pages/register_page.dart';
 import '../../features/auth/presentation/pages/sign_in_page.dart';
+import '../../features/auth/presentation/pages/reset_success_page.dart';
+import '../../features/auth/presentation/pages/verify_code_page.dart';
+import '../../features/booking/presentation/pages/add_card_page.dart';
+import '../../features/onboarding/presentation/pages/location_picker_page.dart';
+import '../../features/profile/presentation/pages/edit_profile_page.dart';
+import '../../features/lifestyle/presentation/pages/quiz_page.dart';
+import '../../features/property/presentation/pages/create_listing_page.dart';
 import '../../features/booking/presentation/pages/booking_page.dart';
 import '../../features/notifications/presentation/pages/notifications_page.dart';
 import '../../features/onboarding/presentation/pages/location_page.dart';
@@ -10,7 +18,9 @@ import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/onboarding/presentation/pages/splash_page.dart';
 import '../../features/property/domain/entities/property.dart';
 import '../../features/property/presentation/pages/property_details_page.dart';
+import '../../features/property/presentation/pages/compatibility_page.dart';
 import '../../features/property/presentation/pages/search_page.dart';
+import '../../features/settings/presentation/pages/settings_page.dart';
 import '../../features/shell/presentation/pages/main_shell.dart';
 import 'app_routes.dart';
 
@@ -35,6 +45,29 @@ abstract final class AppRouter {
         return _page(const SearchPage(), settings);
       case AppRoutes.notifications:
         return _page(const NotificationsPage(), settings);
+      case AppRoutes.compatibility:
+        return _page(const CompatibilityPage(), settings);
+      case AppRoutes.settings:
+        return _page(const SettingsPage(), settings);
+      case AppRoutes.quiz:
+        return _page(const QuizPage(), settings);
+      case AppRoutes.createListing:
+        return _page(const CreateListingPage(), settings);
+      case AppRoutes.forgotPassword:
+        return _page(const ForgotPasswordPage(), settings);
+      case AppRoutes.resetSuccess:
+        return _page(const ResetSuccessPage(), settings);
+      case AppRoutes.editProfile:
+        return _page(const EditProfilePage(), settings);
+      case AppRoutes.addCard:
+        return _page(const AddCardPage(), settings);
+      case AppRoutes.locationPicker:
+        return _page(const LocationPickerPage(), settings);
+      case AppRoutes.verifyCode:
+        return _page(
+          VerifyCodePage(email: settings.arguments as String? ?? ''),
+          settings,
+        );
       case AppRoutes.details:
         final property = settings.arguments as Property;
         return _page(PropertyDetailsPage(property: property), settings);
@@ -43,9 +76,7 @@ abstract final class AppRouter {
         return _page(BookingPage(property: property), settings);
       default:
         return _page(
-          Scaffold(
-            body: Center(child: Text('No route for ${settings.name}')),
-          ),
+          Scaffold(body: Center(child: Text('No route for ${settings.name}'))),
           settings,
         );
     }
@@ -54,6 +85,5 @@ abstract final class AppRouter {
   static MaterialPageRoute<dynamic> _page(
     Widget child,
     RouteSettings settings,
-  ) =>
-      MaterialPageRoute(builder: (_) => child, settings: settings);
+  ) => MaterialPageRoute(builder: (_) => child, settings: settings);
 }

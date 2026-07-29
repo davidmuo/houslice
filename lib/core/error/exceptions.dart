@@ -17,3 +17,13 @@ class AuthException implements Exception {
   @override
   String toString() => message;
 }
+
+/// Thrown by local data sources when device storage fails.
+class CacheException implements Exception {
+  final String message;
+
+  const CacheException([this.message = 'Could not save your settings.']);
+
+  @override
+  String toString() => message;
+}
