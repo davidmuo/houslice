@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/widgets/primary_button.dart';
+import '../../../settings/presentation/cubit/preferences_cubit.dart';
 import '../cubit/onboarding_cubit.dart';
 
 class _Slide {
@@ -24,19 +25,12 @@ const _slides = [
         'find the best place for your dream house with\nyour family and loved ones',
   ),
   _Slide(
-    title: [
-      ('Match with ', false),
-      ('compatible\nhousemates', true),
-    ],
+    title: [('Match with ', false), ('compatible\nhousemates', true)],
     subtitle:
         'lifestyle-based matching pairs you with verified\nstudents you can actually live with',
   ),
   _Slide(
-    title: [
-      ('find your ', false),
-      ('dream home', true),
-      ('\nwith us', false),
-    ],
+    title: [('find your ', false), ('dream home', true), ('\nwith us', false)],
     subtitle:
         'Just search and select your favorite property\nyou want to locate',
   ),
@@ -59,8 +53,12 @@ class _OnboardingPageState extends State<OnboardingPage> {
     super.dispose();
   }
 
-  void _goToRegister(BuildContext context) =>
-      Navigator.of(context).pushReplacementNamed(AppRoutes.register);
+  void _goToRegister(BuildContext context) {
+    // Remember the intro has been seen so the next launch skips straight to
+    // sign-in. Persisted via SharedPreferences.
+    context.read<PreferencesCubit>().completeOnboarding();
+    Navigator.of(context).pushReplacementNamed(AppRoutes.register);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +80,9 @@ class _OnboardingPageState extends State<OnboardingPage> {
                         style: OutlinedButton.styleFrom(
                           minimumSize: Size.zero,
                           padding: const EdgeInsets.symmetric(
-                              horizontal: 20, vertical: 10),
+                            horizontal: 20,
+                            vertical: 10,
+                          ),
                           side: const BorderSide(color: AppColors.border),
                           foregroundColor: AppColors.dark,
                           shape: const StadiumBorder(),
@@ -96,13 +96,13 @@ class _OnboardingPageState extends State<OnboardingPage> {
                     child: PageView.builder(
                       controller: _controller,
                       itemCount: _slides.length,
-                      onPageChanged:
-                          context.read<OnboardingCubit>().pageChanged,
+                      onPageChanged: context
+                          .read<OnboardingCubit>()
+                          .pageChanged,
                       itemBuilder: (context, i) {
                         final slide = _slides[i];
                         return Padding(
-                          padding:
-                              const EdgeInsets.symmetric(horizontal: 24),
+                          padding: const EdgeInsets.symmetric(horizontal: 24),
                           child: Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
@@ -121,15 +121,17 @@ class _OnboardingPageState extends State<OnboardingPage> {
                                   ],
                                 ),
                                 textAlign: TextAlign.center,
-                                style: textTheme.headlineMedium
-                                    ?.copyWith(height: 1.3),
+                                style: textTheme.headlineMedium?.copyWith(
+                                  height: 1.3,
+                                ),
                               ),
                               const SizedBox(height: 16),
                               Text(
                                 slide.subtitle,
                                 textAlign: TextAlign.center,
-                                style: textTheme.bodyMedium
-                                    ?.copyWith(color: AppColors.grey),
+                                style: textTheme.bodyMedium?.copyWith(
+                                  color: AppColors.grey,
+                                ),
                               ),
                             ],
                           ),
@@ -143,8 +145,7 @@ class _OnboardingPageState extends State<OnboardingPage> {
                       for (var i = 0; i < _slides.length; i++)
                         AnimatedContainer(
                           duration: const Duration(milliseconds: 250),
-                          margin:
-                              const EdgeInsets.symmetric(horizontal: 4),
+                          margin: const EdgeInsets.symmetric(horizontal: 4),
                           width: i == index ? 28 : 8,
                           height: 8,
                           decoration: BoxDecoration(

@@ -12,8 +12,9 @@ class LocationPage extends StatelessWidget {
     ScaffoldMessenger.of(context)
       ..hideCurrentSnackBar()
       ..showSnackBar(SnackBar(content: Text(message)));
-    Navigator.of(context)
-        .pushNamedAndRemoveUntil(AppRoutes.main, (route) => false);
+    Navigator.of(
+      context,
+    ).pushNamedAndRemoveUntil(AppRoutes.main, (route) => false);
   }
 
   @override
@@ -33,14 +34,16 @@ class LocationPage extends StatelessWidget {
                     style: OutlinedButton.styleFrom(
                       minimumSize: Size.zero,
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                        horizontal: 20,
+                        vertical: 10,
+                      ),
                       side: const BorderSide(color: AppColors.border),
                       foregroundColor: AppColors.dark,
                       shape: const StadiumBorder(),
                     ),
-                    onPressed: () => Navigator.of(context)
-                        .pushNamedAndRemoveUntil(
-                            AppRoutes.main, (route) => false),
+                    onPressed: () => Navigator.of(
+                      context,
+                    ).pushNamedAndRemoveUntil(AppRoutes.main, (route) => false),
                     child: const Text('Skip'),
                   ),
                 ),
@@ -62,8 +65,9 @@ class LocationPage extends StatelessWidget {
               const SizedBox(height: 40),
               Text(
                 'Hi, Nice to meet you !',
-                style: textTheme.headlineSmall
-                    ?.copyWith(fontWeight: FontWeight.w800),
+                style: textTheme.headlineSmall?.copyWith(
+                  fontWeight: FontWeight.w800,
+                ),
               ),
               const SizedBox(height: 10),
               Text(
@@ -81,8 +85,16 @@ class LocationPage extends StatelessWidget {
               PrimaryButton(
                 label: 'Select it manually',
                 outlined: true,
-                onPressed: () => _continue(
-                    context, 'You can set your area from the Explore tab'),
+                onPressed: () async {
+                  // Returns the chosen district, or null if backed out.
+                  final district = await Navigator.of(
+                    context,
+                  ).pushNamed<String>(AppRoutes.locationPicker);
+                  if (!context.mounted) return;
+                  if (district != null) {
+                    _continue(context, 'Showing listings in $district first');
+                  }
+                },
               ),
               const SizedBox(height: 32),
             ],
