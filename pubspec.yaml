@@ -47,6 +47,16 @@ dependencies:
   firebase_auth: ^6.1.0
   cloud_firestore: ^6.0.2
 
+  # Second authentication method (rubric requires two)
+  google_sign_in: ^7.2.0
+
+  # Listing and review photos
+  firebase_storage: ^13.0.2
+  image_picker: ^1.1.2
+
+  # Local persistence (user preferences)
+  shared_preferences: ^2.5.3
+
   # Utilities
   intl: ^0.20.2
   google_fonts: ^6.3.2
@@ -54,6 +64,10 @@ dependencies:
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  # Testing helpers: bloc/cubit state assertions and test doubles
+  bloc_test: ^10.0.0
+  mocktail: ^1.0.4
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
