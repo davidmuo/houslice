@@ -19,13 +19,11 @@ class NotificationsPage extends StatelessWidget {
             return const EmptyState(
               icon: Icons.notifications_none_rounded,
               title: 'No notifications yet',
-              subtitle:
-                  Text('Updates about listings and messages land here'),
+              subtitle: Text('Updates about listings and messages land here'),
             );
           }
           final today = notifications.where((n) => n.daysAgo == 0).toList();
-          final yesterday =
-              notifications.where((n) => n.daysAgo == 1).toList();
+          final yesterday = notifications.where((n) => n.daysAgo == 1).toList();
           final older = notifications.where((n) => n.daysAgo > 1).toList();
           return ListView(
             padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
@@ -37,8 +35,7 @@ class NotificationsPage extends StatelessWidget {
               if (yesterday.isNotEmpty) ...[
                 const SizedBox(height: 16),
                 const _GroupHeader('Yesterday'),
-                for (final n in yesterday)
-                  _NotificationTile(notification: n),
+                for (final n in yesterday) _NotificationTile(notification: n),
               ],
               if (older.isNotEmpty) ...[
                 const SizedBox(height: 16),
@@ -64,10 +61,10 @@ class _GroupHeader extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8),
       child: Text(
         title,
-        style: Theme.of(context)
-            .textTheme
-            .titleLarge
-            ?.copyWith(fontWeight: FontWeight.w800, fontSize: 20),
+        style: Theme.of(context).textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w800,
+          fontSize: 20,
+        ),
       ),
     );
   }
@@ -113,8 +110,9 @@ class _NotificationTile extends StatelessWidget {
                     : Text.rich(
                         TextSpan(
                           text: notification.body,
-                          style: textTheme.bodyMedium
-                              ?.copyWith(color: AppColors.grey),
+                          style: textTheme.bodyMedium?.copyWith(
+                            color: AppColors.grey,
+                          ),
                           children: [
                             if (notification.boldText != null)
                               TextSpan(
