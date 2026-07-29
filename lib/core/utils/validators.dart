@@ -12,8 +12,7 @@ abstract final class Validators {
     'auca.ac.rw',
   ];
 
-  static final _emailRegex =
-      RegExp(r'^[\w\.\-\+]+@([\w\-]+\.)+[a-zA-Z]{2,}$');
+  static final _emailRegex = RegExp(r'^[\w\.\-\+]+@([\w\-]+\.)+[a-zA-Z]{2,}$');
 
   static String? email(String? value) {
     final v = value?.trim() ?? '';
