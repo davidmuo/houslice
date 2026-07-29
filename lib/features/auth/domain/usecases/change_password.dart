@@ -8,6 +8,5 @@ class ChangePassword extends UseCase<void, String> {
   ChangePassword(this.repository);
 
   @override
-  Future<Result<void>> call(String params) =>
-      repository.changePassword(params);
+  Future<Result<void>> call(String params) => repository.changePassword(params);
 }

@@ -12,10 +12,10 @@ class SignUp extends UseCase<AppUser, SignUpParams> {
 
   @override
   Future<Result<AppUser>> call(SignUpParams params) => repository.signUp(
-        email: params.email,
-        username: params.username,
-        password: params.password,
-      );
+    email: params.email,
+    username: params.username,
+    password: params.password,
+  );
 }
 
 class SignUpParams extends Equatable {
