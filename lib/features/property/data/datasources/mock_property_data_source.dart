@@ -21,10 +21,23 @@ class MockPropertyDataSource implements PropertyDataSource {
     final q = query.trim().toLowerCase();
     if (q.isEmpty) return all;
     return all
-        .where((p) =>
-            p.name.toLowerCase().contains(q) ||
-            p.address.toLowerCase().contains(q))
+        .where(
+          (p) =>
+              p.name.toLowerCase().contains(q) ||
+              p.address.toLowerCase().contains(q),
+        )
         .toList();
+  }
+
+  @override
+  Future<PropertyModel> createListing(PropertyModel listing) async {
+    await Future<void>.delayed(const Duration(milliseconds: 500));
+    final saved = PropertyModel.fromEntity(
+      listing,
+    ).withId('local-${DateTime.now().millisecondsSinceEpoch}');
+    // Newest first, so the student sees their listing immediately.
+    _properties.insert(0, saved);
+    return saved;
   }
 
   @override

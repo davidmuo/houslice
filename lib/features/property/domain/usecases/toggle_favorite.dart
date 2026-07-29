@@ -8,6 +8,5 @@ class ToggleFavorite extends UseCase<bool, String> {
   ToggleFavorite(this.repository);
 
   @override
-  Future<Result<bool>> call(String params) =>
-      repository.toggleFavorite(params);
+  Future<Result<bool>> call(String params) => repository.toggleFavorite(params);
 }

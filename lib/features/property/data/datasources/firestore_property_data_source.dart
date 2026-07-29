@@ -32,13 +32,25 @@ class FirestorePropertyDataSource implements PropertyDataSource {
     try {
       var snapshot = await _properties.get();
       if (snapshot.docs.isEmpty) {
-        await _seed();
-        snapshot = await _properties.get();
+        // Best-effort bootstrap. The security rules only accept listings whose
+        // ownerUid is the caller, so this is denied unless an administrator
+        // has relaxed them for seeding — see docs/ERD.md. A denial must leave
+        // the student with an empty catalogue, never a broken screen.
+        try {
+          await _seed();
+          snapshot = await _properties.get();
+        } on FirebaseException {
+          return const [];
+        }
       }
       final favoriteIds = await _favoriteIds();
       return snapshot.docs
-          .map((doc) => PropertyModel.fromMap(doc.id, doc.data())
-              .withFavorite(favoriteIds.contains(doc.id)))
+          .map(
+            (doc) => PropertyModel.fromMap(
+              doc.id,
+              doc.data(),
+            ).withFavorite(favoriteIds.contains(doc.id)),
+          )
           .toList();
     } on FirebaseException catch (e) {
       throw ServerException(e.message ?? 'Could not load properties.');
@@ -51,9 +63,11 @@ class FirestorePropertyDataSource implements PropertyDataSource {
     final q = query.trim().toLowerCase();
     if (q.isEmpty) return all;
     return all
-        .where((p) =>
-            p.name.toLowerCase().contains(q) ||
-            p.address.toLowerCase().contains(q))
+        .where(
+          (p) =>
+              p.name.toLowerCase().contains(q) ||
+              p.address.toLowerCase().contains(q),
+        )
         .toList();
   }
 
@@ -74,6 +88,23 @@ class FirestorePropertyDataSource implements PropertyDataSource {
       return true;
     } on FirebaseException catch (e) {
       throw ServerException(e.message ?? 'Could not update favorite.');
+    }
+  }
+
+  @override
+  Future<PropertyModel> createListing(PropertyModel listing) async {
+    final uid = auth.currentUser?.uid;
+    if (uid == null) {
+      throw const ServerException('Sign in to publish a listing.');
+    }
+    try {
+      // ownerUid must match the caller — the security rules reject anything
+      // else, which is what stops a student publishing on someone's behalf.
+      final owned = PropertyModel.fromEntity(listing).withOwner(uid);
+      final doc = await _properties.add(owned.toMap());
+      return owned.withId(doc.id);
+    } on FirebaseException catch (e) {
+      throw ServerException(e.message ?? 'Could not publish the listing.');
     }
   }
 

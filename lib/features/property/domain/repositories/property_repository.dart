@@ -8,4 +8,7 @@ abstract class PropertyRepository {
 
   /// Flips the favorite flag for the current user; returns the new value.
   Future<Result<bool>> toggleFavorite(String propertyId);
+
+  /// Publishes a listing owned by the signed-in user.
+  Future<Result<Property>> createListing(Property listing);
 }

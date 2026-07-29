@@ -4,6 +4,7 @@ import '../../../../core/error/result.dart';
 import '../../domain/entities/property.dart';
 import '../../domain/repositories/property_repository.dart';
 import '../datasources/property_data_source.dart';
+import '../models/property_model.dart';
 
 class PropertyRepositoryImpl implements PropertyRepository {
   final PropertyDataSource dataSource;
@@ -31,4 +32,8 @@ class PropertyRepositoryImpl implements PropertyRepository {
   @override
   Future<Result<bool>> toggleFavorite(String propertyId) =>
       _guard(() => dataSource.toggleFavorite(propertyId));
+
+  @override
+  Future<Result<Property>> createListing(Property listing) =>
+      _guard(() => dataSource.createListing(PropertyModel.fromEntity(listing)));
 }

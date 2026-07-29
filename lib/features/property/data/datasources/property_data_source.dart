@@ -9,4 +9,7 @@ abstract class PropertyDataSource {
   Future<List<PropertyModel>> search(String query);
 
   Future<bool> toggleFavorite(String propertyId);
+
+  /// Publishes a new listing and returns it with its assigned id.
+  Future<PropertyModel> createListing(PropertyModel listing);
 }

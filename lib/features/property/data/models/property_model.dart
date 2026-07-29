@@ -1,3 +1,4 @@
+import '../../../lifestyle/data/models/lifestyle_profile_model.dart';
 import '../../domain/entities/property.dart';
 
 class PropertyModel extends Property {
@@ -15,7 +16,31 @@ class PropertyModel extends Property {
     required super.agentName,
     required super.agentPhone,
     super.isFavorite,
+    super.hostType,
+    super.listingKind,
+    super.ownerUid,
+    super.hostLifestyle,
   });
+
+  factory PropertyModel.fromEntity(Property property) => PropertyModel(
+    id: property.id,
+    name: property.name,
+    address: property.address,
+    description: property.description,
+    pricePerMonth: property.pricePerMonth,
+    rating: property.rating,
+    compatibility: property.compatibility,
+    images: property.images,
+    bedrooms: property.bedrooms,
+    bathrooms: property.bathrooms,
+    agentName: property.agentName,
+    agentPhone: property.agentPhone,
+    isFavorite: property.isFavorite,
+    hostType: property.hostType,
+    listingKind: property.listingKind,
+    ownerUid: property.ownerUid,
+    hostLifestyle: property.hostLifestyle,
+  );
 
   factory PropertyModel.fromMap(String id, Map<String, dynamic> map) =>
       PropertyModel(
@@ -31,24 +56,54 @@ class PropertyModel extends Property {
         bathrooms: ((map['bathrooms'] ?? 1) as num).toInt(),
         agentName: (map['agentName'] ?? '') as String,
         agentPhone: (map['agentPhone'] ?? '') as String,
+        hostType: _decodeEnum(
+          HostType.values,
+          map['hostType'],
+          HostType.student,
+        ),
+        listingKind: _decodeEnum(
+          ListingKind.values,
+          map['listingKind'],
+          ListingKind.housemate,
+        ),
+        ownerUid: (map['ownerUid'] ?? '') as String,
+        hostLifestyle: map['hostLifestyle'] is Map
+            ? LifestyleProfileModel.fromMap(
+                Map<String, dynamic>.from(map['hostLifestyle'] as Map),
+              )
+            : null,
       );
 
   Map<String, dynamic> toMap() => {
-        'name': name,
-        'address': address,
-        'description': description,
-        'pricePerMonth': pricePerMonth,
-        'rating': rating,
-        'compatibility': compatibility,
-        'images': images,
-        'bedrooms': bedrooms,
-        'bathrooms': bathrooms,
-        'agentName': agentName,
-        'agentPhone': agentPhone,
-      };
+    'name': name,
+    'address': address,
+    'description': description,
+    'pricePerMonth': pricePerMonth,
+    'rating': rating,
+    'compatibility': compatibility,
+    'images': images,
+    'bedrooms': bedrooms,
+    'bathrooms': bathrooms,
+    'agentName': agentName,
+    'agentPhone': agentPhone,
+    'hostType': hostType.name,
+    'listingKind': listingKind.name,
+    'ownerUid': ownerUid,
+    if (hostLifestyle != null)
+      'hostLifestyle': LifestyleProfileModel.toMap(hostLifestyle!),
+  };
 
-  PropertyModel withFavorite(bool value) => PropertyModel(
-        id: id,
+  PropertyModel withId(String newId) => _copy(id: newId);
+
+  PropertyModel withFavorite(bool value) => _copy(isFavorite: value);
+
+  PropertyModel withOwner(String uid) => _copy(ownerUid: uid);
+
+  /// Single copy implementation the named helpers delegate to, so adding a
+  /// field to [Property] only has to be handled in one place.
+  PropertyModel _copy({String? id, bool? isFavorite, String? ownerUid}) =>
+      PropertyModel(
+        id: id ?? this.id,
         name: name,
         address: address,
         description: description,
@@ -60,6 +115,16 @@ class PropertyModel extends Property {
         bathrooms: bathrooms,
         agentName: agentName,
         agentPhone: agentPhone,
-        isFavorite: value,
+        isFavorite: isFavorite ?? this.isFavorite,
+        hostType: hostType,
+        listingKind: listingKind,
+        ownerUid: ownerUid ?? this.ownerUid,
+        hostLifestyle: hostLifestyle,
       );
+
+  static T _decodeEnum<T extends Enum>(
+    List<T> values,
+    dynamic name,
+    T fallback,
+  ) => values.firstWhere((value) => value.name == name, orElse: () => fallback);
 }

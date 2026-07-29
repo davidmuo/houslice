@@ -1,3 +1,5 @@
+import '../../lifestyle/domain/entities/lifestyle_profile.dart';
+import '../domain/entities/property.dart';
 import 'models/property_model.dart';
 
 const _img = 'https://images.unsplash.com';
@@ -26,6 +28,24 @@ const kSeedProperties = [
     bathrooms: 2,
     agentName: 'Aline Uwase',
     agentPhone: '+250 788 000 111',
+    hostType: HostType.student,
+    listingKind: ListingKind.housemate,
+    hostLifestyle: LifestyleProfile(
+      bedtime: Bedtime.tenToMidnight,
+      cleanliness: Cleanliness.tidy,
+      social: SocialStyle.occasional,
+      study: StudyStyle.silentRoom,
+      guests: GuestFrequency.rarely,
+      smoking: SmokingStance.nonSmokerPrefersNone,
+      budget: BudgetBand.from100To150,
+      gender: Gender.woman,
+      genderPreference: GenderPreference.noPreference,
+      sharing: SharingStyle.shareBasics,
+      pets: PetStance.fineWithThem,
+      bio:
+          'Third-year software engineering student. Early to bed, cooks '
+          'most evenings, and keeps the kitchen spotless.',
+    ),
   ),
   PropertyModel(
     id: 'sekimondo',
@@ -48,6 +68,24 @@ const kSeedProperties = [
     bathrooms: 2,
     agentName: 'Eric Mugisha',
     agentPhone: '+250 788 000 222',
+    hostType: HostType.student,
+    listingKind: ListingKind.housemate,
+    hostLifestyle: LifestyleProfile(
+      bedtime: Bedtime.afterTwo,
+      cleanliness: Cleanliness.cleanWhenNeeded,
+      social: SocialStyle.verySocial,
+      study: StudyStyle.campusOrLibrary,
+      guests: GuestFrequency.often,
+      smoking: SmokingStance.nonSmokerTolerant,
+      budget: BudgetBand.from150To250,
+      gender: Gender.man,
+      genderPreference: GenderPreference.noPreference,
+      sharing: SharingStyle.shareEverything,
+      pets: PetStance.loveThem,
+      bio:
+          'Final-year business student. I DJ on weekends, so the house is '
+          'rarely quiet on a Friday night.',
+    ),
   ),
   PropertyModel(
     id: 'ben',
@@ -69,6 +107,8 @@ const kSeedProperties = [
     bathrooms: 1,
     agentName: 'Ben Habimana',
     agentPhone: '+250 788 000 333',
+    hostType: HostType.realtor,
+    listingKind: ListingKind.entirePlace,
   ),
   PropertyModel(
     id: 'bosko',
@@ -90,6 +130,24 @@ const kSeedProperties = [
     bathrooms: 1,
     agentName: 'Josiane Ingabire',
     agentPhone: '+250 788 000 444',
+    hostType: HostType.student,
+    listingKind: ListingKind.housemate,
+    hostLifestyle: LifestyleProfile(
+      bedtime: Bedtime.beforeTen,
+      cleanliness: Cleanliness.spotless,
+      social: SocialStyle.homebody,
+      study: StudyStyle.silentRoom,
+      guests: GuestFrequency.never,
+      smoking: SmokingStance.nonSmokerPrefersNone,
+      budget: BudgetBand.from100To150,
+      gender: Gender.woman,
+      genderPreference: GenderPreference.sameGenderOnly,
+      sharing: SharingStyle.keepSeparate,
+      pets: PetStance.allergic,
+      bio:
+          'Medical student on early rotations. Quiet hours from 9pm, and I '
+          'keep the shared spaces spotless.',
+    ),
   ),
   PropertyModel(
     id: 'manhari',
@@ -111,6 +169,24 @@ const kSeedProperties = [
     bathrooms: 3,
     agentName: 'Nadia Keza',
     agentPhone: '+250 788 000 555',
+    hostType: HostType.student,
+    listingKind: ListingKind.housemate,
+    hostLifestyle: LifestyleProfile(
+      bedtime: Bedtime.midnightToTwo,
+      cleanliness: Cleanliness.tidy,
+      social: SocialStyle.mostWeekends,
+      study: StudyStyle.musicInRoom,
+      guests: GuestFrequency.sometimes,
+      smoking: SmokingStance.nonSmokerTolerant,
+      budget: BudgetBand.from150To250,
+      gender: Gender.man,
+      genderPreference: GenderPreference.noPreference,
+      sharing: SharingStyle.shareBasics,
+      pets: PetStance.fineWithThem,
+      bio:
+          'Second-year economics. Out most Saturdays, in the library most '
+          'Sundays.',
+    ),
   ),
   PropertyModel(
     id: 'mavoona',
@@ -132,6 +208,8 @@ const kSeedProperties = [
     bathrooms: 1,
     agentName: 'Patrick Ndoli',
     agentPhone: '+250 788 000 666',
+    hostType: HostType.realtor,
+    listingKind: ListingKind.entirePlace,
   ),
   PropertyModel(
     id: 'takitea',
@@ -153,6 +231,24 @@ const kSeedProperties = [
     bathrooms: 2,
     agentName: 'Mama Takitea',
     agentPhone: '+250 788 000 777',
+    hostType: HostType.student,
+    listingKind: ListingKind.housemate,
+    hostLifestyle: LifestyleProfile(
+      bedtime: Bedtime.tenToMidnight,
+      cleanliness: Cleanliness.cleanWhenNeeded,
+      social: SocialStyle.mostWeekends,
+      study: StudyStyle.anywhere,
+      guests: GuestFrequency.sometimes,
+      smoking: SmokingStance.nonSmokerTolerant,
+      budget: BudgetBand.from150To250,
+      gender: Gender.woman,
+      genderPreference: GenderPreference.noPreference,
+      sharing: SharingStyle.shareEverything,
+      pets: PetStance.loveThem,
+      bio:
+          'Design student, always a project on the table. Friendly house '
+          'with shared meals on Sundays.',
+    ),
   ),
   PropertyModel(
     id: 'simba',
@@ -174,6 +270,24 @@ const kSeedProperties = [
     bathrooms: 1,
     agentName: 'Divine Umutoni',
     agentPhone: '+250 788 000 888',
+    hostType: HostType.student,
+    listingKind: ListingKind.housemate,
+    hostLifestyle: LifestyleProfile(
+      bedtime: Bedtime.midnightToTwo,
+      cleanliness: Cleanliness.tidy,
+      social: SocialStyle.occasional,
+      study: StudyStyle.silentRoom,
+      guests: GuestFrequency.rarely,
+      smoking: SmokingStance.nonSmokerPrefersNone,
+      budget: BudgetBand.from150To250,
+      gender: Gender.man,
+      genderPreference: GenderPreference.noPreference,
+      sharing: SharingStyle.shareBasics,
+      pets: PetStance.preferNone,
+      bio:
+          'Engineering finalist. Long study nights, a quiet house, and the '
+          'occasional football match on the TV.',
+    ),
   ),
   PropertyModel(
     id: 'kigali-heights',
@@ -195,5 +309,7 @@ const kSeedProperties = [
     bathrooms: 3,
     agentName: 'Samuel Iradukunda',
     agentPhone: '+250 788 000 999',
+    hostType: HostType.realtor,
+    listingKind: ListingKind.entirePlace,
   ),
 ];
