@@ -1,9 +1,15 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 
+import '../services/photo_service.dart';
 import '../theme/app_colors.dart';
 
-/// Network image with rounded corners, loading placeholder and offline
+/// Listing image with rounded corners, loading placeholder and offline
 /// fallback so the UI never breaks without connectivity.
+///
+/// Accepts both remote URLs and on-device file paths, so a photo just picked
+/// from the gallery previews identically to one already published.
 class PropertyImage extends StatelessWidget {
   final String url;
   final double? width;
@@ -22,9 +28,36 @@ class PropertyImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ClipRRect(
-      borderRadius: radius ?? BorderRadius.circular(12),
-      child: Image.network(
+    if (url.isEmpty) return _rounded(_placeholder());
+
+    // Photos stored inline in the Firestore document (free-plan fallback for
+    // Cloud Storage) arrive as base64 data URIs.
+    if (PhotoService.isInline(url)) {
+      return _rounded(
+        Image.memory(
+          PhotoService.decodeInline(url),
+          width: width,
+          height: height,
+          fit: fit,
+          errorBuilder: (context, error, stackTrace) => _placeholder(),
+        ),
+      );
+    }
+
+    if (PhotoService.isLocal(url)) {
+      return _rounded(
+        Image.file(
+          File(url),
+          width: width,
+          height: height,
+          fit: fit,
+          errorBuilder: (context, error, stackTrace) => _placeholder(),
+        ),
+      );
+    }
+
+    return _rounded(
+      Image.network(
         url,
         width: width,
         height: height,
@@ -36,11 +69,18 @@ class PropertyImage extends StatelessWidget {
     );
   }
 
+  Widget _rounded(Widget child) {
+    return ClipRRect(
+      borderRadius: radius ?? BorderRadius.circular(12),
+      child: child,
+    );
+  }
+
   Widget _placeholder() => Container(
-        width: width,
-        height: height,
-        color: AppColors.surface,
-        alignment: Alignment.center,
-        child: const Icon(Icons.home_rounded, color: AppColors.grey, size: 32),
-      );
+    width: width,
+    height: height,
+    color: AppColors.surface,
+    alignment: Alignment.center,
+    child: const Icon(Icons.home_rounded, color: AppColors.grey, size: 32),
+  );
 }

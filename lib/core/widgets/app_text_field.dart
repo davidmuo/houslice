@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../theme/app_colors.dart';
 
@@ -14,6 +15,11 @@ class AppTextField extends StatelessWidget {
   final String? Function(String?)? validator;
   final TextInputAction textInputAction;
 
+  /// Live input masking, e.g. grouping card digits into fours.
+  final List<TextInputFormatter>? inputFormatters;
+
+  final TextCapitalization textCapitalization;
+
   const AppTextField({
     super.key,
     required this.label,
@@ -24,6 +30,8 @@ class AppTextField extends StatelessWidget {
     this.onToggleObscure,
     this.validator,
     this.textInputAction = TextInputAction.next,
+    this.inputFormatters,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   @override
@@ -33,10 +41,9 @@ class AppTextField extends StatelessWidget {
       children: [
         Text(
           label,
-          style: Theme.of(context)
-              .textTheme
-              .titleMedium
-              ?.copyWith(fontWeight: FontWeight.w700),
+          style: Theme.of(
+            context,
+          ).textTheme.titleMedium?.copyWith(fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 10),
         TextFormField(
@@ -45,6 +52,8 @@ class AppTextField extends StatelessWidget {
           obscureText: obscure,
           validator: validator,
           textInputAction: textInputAction,
+          inputFormatters: inputFormatters,
+          textCapitalization: textCapitalization,
           decoration: InputDecoration(
             hintText: hint,
             suffixIcon: onToggleObscure == null

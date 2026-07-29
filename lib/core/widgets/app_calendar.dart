@@ -38,14 +38,19 @@ class AppCalendar extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(
-              DateFormat('MMMM yyyy').format(visibleMonth),
-              style: textTheme.titleLarge?.copyWith(
-                fontWeight: FontWeight.w800,
-                fontSize: 20,
+            // The month label yields to the nav buttons rather than pushing
+            // them off the edge on narrow screens.
+            Expanded(
+              child: Text(
+                DateFormat('MMMM yyyy').format(visibleMonth),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: textTheme.titleLarge?.copyWith(
+                  fontWeight: FontWeight.w800,
+                  fontSize: 20,
+                ),
               ),
             ),
-            const Spacer(),
             _NavButton(icon: Icons.chevron_left, onTap: onPrevMonth),
             const SizedBox(width: 10),
             _NavButton(icon: Icons.chevron_right, onTap: onNextMonth),
@@ -59,8 +64,9 @@ class AppCalendar extends StatelessWidget {
                 child: Center(
                   child: Text(
                     day,
-                    style: textTheme.titleSmall
-                        ?.copyWith(fontWeight: FontWeight.w700),
+                    style: textTheme.titleSmall?.copyWith(
+                      fontWeight: FontWeight.w700,
+                    ),
                   ),
                 ),
               ),
@@ -134,7 +140,8 @@ class _DayCell extends StatelessWidget {
     final inMonth = day.month == visibleMonth.month;
     final isStart = _sameDay(rangeStart, day);
     final isEnd = _sameDay(rangeEnd, day);
-    final inRange = rangeStart != null &&
+    final inRange =
+        rangeStart != null &&
         rangeEnd != null &&
         day.isAfter(rangeStart!) &&
         day.isBefore(rangeEnd!);
@@ -165,10 +172,11 @@ class _DayCell extends StatelessWidget {
             child: Text(
               '${day.day}',
               style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                    color: fg,
-                    fontWeight:
-                        isStart || isEnd ? FontWeight.w700 : FontWeight.w500,
-                  ),
+                color: fg,
+                fontWeight: isStart || isEnd
+                    ? FontWeight.w700
+                    : FontWeight.w500,
+              ),
             ),
           ),
         ),

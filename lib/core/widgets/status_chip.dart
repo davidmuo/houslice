@@ -21,12 +21,16 @@ class StatusChip extends StatelessWidget {
         color: background,
         borderRadius: BorderRadius.circular(20),
       ),
+      // Single line with ellipsis so a long status ("Waiting payment") can
+      // shrink inside a Flexible parent instead of overflowing the row.
       child: Text(
         label,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: Theme.of(context).textTheme.labelMedium?.copyWith(
-              color: foreground,
-              fontWeight: FontWeight.w600,
-            ),
+          color: foreground,
+          fontWeight: FontWeight.w600,
+        ),
       ),
     );
   }
