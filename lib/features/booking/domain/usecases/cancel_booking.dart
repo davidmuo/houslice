@@ -8,6 +8,5 @@ class CancelBooking extends UseCase<void, String> {
   CancelBooking(this.repository);
 
   @override
-  Future<Result<void>> call(String params) =>
-      repository.cancelBooking(params);
+  Future<Result<void>> call(String params) => repository.cancelBooking(params);
 }

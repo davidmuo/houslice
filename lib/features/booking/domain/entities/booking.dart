@@ -6,11 +6,11 @@ enum BookingStatus { waitingPayment, checkin, completed, cancelled }
 
 extension BookingStatusX on BookingStatus {
   String get label => switch (this) {
-        BookingStatus.waitingPayment => 'Waiting payment',
-        BookingStatus.checkin => 'Checkin',
-        BookingStatus.completed => 'Completed',
-        BookingStatus.cancelled => 'Cancelled',
-      };
+    BookingStatus.waitingPayment => 'Waiting payment',
+    BookingStatus.checkin => 'Checkin',
+    BookingStatus.completed => 'Completed',
+    BookingStatus.cancelled => 'Cancelled',
+  };
 
   bool get isUpcoming =>
       this == BookingStatus.waitingPayment || this == BookingStatus.checkin;
@@ -50,15 +50,15 @@ class Booking extends Equatable {
 
   @override
   List<Object?> get props => [
-        id,
-        propertyId,
-        propertyName,
-        propertyAddress,
-        propertyImage,
-        startDate,
-        endDate,
-        monthlyPrice,
-        tax,
-        status,
-      ];
+    id,
+    propertyId,
+    propertyName,
+    propertyAddress,
+    propertyImage,
+    startDate,
+    endDate,
+    monthlyPrice,
+    tax,
+    status,
+  ];
 }
