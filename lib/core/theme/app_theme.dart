@@ -4,31 +4,63 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 abstract final class AppTheme {
-  static ThemeData get light {
+  static ThemeData get light => _build(
+    brightness: Brightness.light,
+    background: Colors.white,
+    surface: AppColors.surface,
+    onSurface: AppColors.dark,
+    muted: AppColors.grey,
+    border: AppColors.border,
+  );
+
+  static ThemeData get dark => _build(
+    brightness: Brightness.dark,
+    background: AppColors.darkBackground,
+    surface: AppColors.darkSurface,
+    onSurface: AppColors.darkText,
+    muted: AppColors.darkGrey,
+    border: AppColors.darkBorder,
+  );
+
+  /// Single source of truth for both themes — light and dark differ only by
+  /// the palette passed in, so button shapes, radii, and type scale can never
+  /// drift apart between the two.
+  static ThemeData _build({
+    required Brightness brightness,
+    required Color background,
+    required Color surface,
+    required Color onSurface,
+    required Color muted,
+    required Color border,
+  }) {
     final base = ThemeData(
       useMaterial3: true,
+      brightness: brightness,
       colorScheme: ColorScheme.fromSeed(
         seedColor: AppColors.primary,
+        brightness: brightness,
         primary: AppColors.primary,
+        surface: surface,
       ),
-      scaffoldBackgroundColor: Colors.white,
+      scaffoldBackgroundColor: background,
     );
 
-    final textTheme = GoogleFonts.plusJakartaSansTextTheme(base.textTheme)
-        .apply(bodyColor: AppColors.dark, displayColor: AppColors.dark);
+    final textTheme = GoogleFonts.plusJakartaSansTextTheme(
+      base.textTheme,
+    ).apply(bodyColor: onSurface, displayColor: onSurface);
 
     return base.copyWith(
       textTheme: textTheme,
       appBarTheme: AppBarTheme(
-        backgroundColor: Colors.white,
+        backgroundColor: background,
         elevation: 0,
         scrolledUnderElevation: 0,
         centerTitle: true,
-        foregroundColor: AppColors.dark,
+        foregroundColor: onSurface,
         titleTextStyle: textTheme.titleLarge?.copyWith(
           fontSize: 18,
           fontWeight: FontWeight.w700,
-          color: AppColors.dark,
+          color: onSurface,
         ),
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -36,6 +68,7 @@ abstract final class AppTheme {
           backgroundColor: AppColors.primary,
           foregroundColor: Colors.white,
           elevation: 0,
+          // 56dp clears the 48dp Material minimum tap target.
           minimumSize: const Size.fromHeight(56),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
@@ -61,12 +94,14 @@ abstract final class AppTheme {
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
-        hintStyle: textTheme.bodyLarge?.copyWith(color: AppColors.grey),
-        contentPadding:
-            const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+        hintStyle: textTheme.bodyLarge?.copyWith(color: muted),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 18,
+        ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(color: AppColors.border),
+          borderSide: BorderSide(color: border),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
@@ -83,16 +118,12 @@ abstract final class AppTheme {
       ),
       snackBarTheme: SnackBarThemeData(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: AppColors.dark,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(12),
-        ),
+        backgroundColor: brightness == Brightness.light
+            ? AppColors.dark
+            : AppColors.darkSurface,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       ),
-      dividerTheme: const DividerThemeData(
-        color: AppColors.border,
-        thickness: 1,
-        space: 1,
-      ),
+      dividerTheme: DividerThemeData(color: border, thickness: 1, space: 1),
     );
   }
 }

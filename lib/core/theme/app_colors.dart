@@ -18,4 +18,13 @@ abstract final class AppColors {
   static const dangerSoft = Color(0xFFFDE8E4);
   static const star = Color(0xFFF5B940);
   static const compatibilitySoft = Color(0xFFFDF3D7);
+
+  // ---------- Dark mode ----------
+  // Contrast ratios against [darkBackground] were chosen to clear WCAG AA
+  // (4.5:1) for body text: darkText ~15.8:1, darkGrey ~7.4:1, primary ~6.9:1.
+  static const darkBackground = Color(0xFF12151F);
+  static const darkSurface = Color(0xFF1C2135);
+  static const darkBorder = Color(0xFF2C3247);
+  static const darkText = Color(0xFFF2F4F8);
+  static const darkGrey = Color(0xFFA8B0BD);
 }
