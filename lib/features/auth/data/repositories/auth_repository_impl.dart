@@ -26,20 +26,21 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<Result<AppUser>> signIn({
     required String email,
     required String password,
-  }) =>
-      _guard(() => dataSource.signIn(email: email, password: password));
+  }) => _guard(() => dataSource.signIn(email: email, password: password));
 
   @override
   Future<Result<AppUser>> signUp({
     required String email,
     required String username,
     required String password,
-  }) =>
-      _guard(() => dataSource.signUp(
-            email: email,
-            username: username,
-            password: password,
-          ));
+  }) => _guard(
+    () =>
+        dataSource.signUp(email: email, username: username, password: password),
+  );
+
+  @override
+  Future<Result<AppUser>> signInWithGoogle() =>
+      _guard(() => dataSource.signInWithGoogle());
 
   @override
   Future<Result<void>> signOut() => _guard(() => dataSource.signOut());
@@ -51,4 +52,25 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Result<void>> changePassword(String newPassword) =>
       _guard(() => dataSource.changePassword(newPassword));
+
+  @override
+  Future<Result<void>> sendPasswordReset(String email) =>
+      _guard(() => dataSource.sendPasswordReset(email));
+
+  @override
+  Future<Result<AppUser>> updateProfile({
+    required String username,
+    String? photoUrl,
+    String? dateOfBirth,
+  }) => _guard(
+    () => dataSource.updateProfile(
+      username: username,
+      photoUrl: photoUrl,
+      dateOfBirth: dateOfBirth,
+    ),
+  );
+
+  @override
+  Future<Result<void>> sendEmailVerification() =>
+      _guard(() => dataSource.sendEmailVerification());
 }

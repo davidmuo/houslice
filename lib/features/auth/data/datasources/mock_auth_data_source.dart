@@ -46,7 +46,8 @@ class MockAuthDataSource implements AuthDataSource {
     final key = email.trim().toLowerCase();
     if (_accounts.containsKey(key)) {
       throw const AuthException(
-          'An account already exists with this email. Sign in instead.');
+        'An account already exists with this email. Sign in instead.',
+      );
     }
     final user = UserModel(
       uid: 'user-${DateTime.now().millisecondsSinceEpoch}',
@@ -58,6 +59,51 @@ class MockAuthDataSource implements AuthDataSource {
     return user;
   }
 
+  /// Demo mode has no Google SDK, so this stands in with a fixed university
+  /// account — enough to exercise the whole flow before Firebase is wired.
+  @override
+  Future<UserModel> signInWithGoogle() async {
+    await Future<void>.delayed(const Duration(milliseconds: 800));
+    const user = UserModel(
+      uid: 'demo-google-user',
+      email: 'g.demo@alustudent.com',
+      username: 'Google Demo Student',
+    );
+    _accounts[user.email] = (user: user, password: 'google');
+    _current = user;
+    return user;
+  }
+
+  @override
+  Future<UserModel> updateProfile({
+    required String username,
+    String? photoUrl,
+    String? dateOfBirth,
+  }) async {
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+    final current = _current;
+    if (current == null) {
+      throw const AuthException('You need to be signed in to do that.');
+    }
+    final updated = UserModel(
+      uid: current.uid,
+      email: current.email,
+      username: username,
+      photoUrl: photoUrl ?? current.photoUrl,
+      dateOfBirth: dateOfBirth ?? current.dateOfBirth,
+      emailVerified: current.emailVerified,
+    );
+    final password = _accounts[current.email]?.password ?? '';
+    _accounts[current.email] = (user: updated, password: password);
+    _current = updated;
+    return updated;
+  }
+
+  @override
+  Future<void> sendEmailVerification() async {
+    await Future<void>.delayed(const Duration(milliseconds: 400));
+  }
+
   @override
   Future<void> signOut() async {
     await Future<void>.delayed(const Duration(milliseconds: 250));
@@ -66,6 +112,13 @@ class MockAuthDataSource implements AuthDataSource {
 
   @override
   Future<UserModel?> currentUser() async => _current;
+
+  @override
+  Future<void> sendPasswordReset(String email) async {
+    // Demo mode has no mail server; the delay stands in for the round trip so
+    // the UI exercises its loading state.
+    await Future<void>.delayed(const Duration(milliseconds: 700));
+  }
 
   @override
   Future<void> changePassword(String newPassword) async {
