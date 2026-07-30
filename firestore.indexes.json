@@ -1,0 +1,33 @@
+{
+  "//": [
+    "Composite indexes for Houseslice. Single-field indexes are created by",
+    "Firestore automatically and are not repeated here.",
+    "",
+    "The My Bookings screen shows Upcoming / Completed / Cancelled tabs, each",
+    "ordered newest-first. Filtering on `status` while ordering by `startDate`",
+    "is a composite query and therefore needs the index below.",
+    "",
+    "Sorting favourites by `savedAt` alone needs no entry here: Firestore",
+    "rejects single-field indexes at deploy time because it maintains them",
+    "automatically."
+  ],
+  "indexes": [
+    {
+      "collectionGroup": "bookings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "status", "order": "ASCENDING" },
+        { "fieldPath": "startDate", "order": "DESCENDING" }
+      ]
+    },
+    {
+      "collectionGroup": "bookings",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "propertyId", "order": "ASCENDING" },
+        { "fieldPath": "startDate", "order": "DESCENDING" }
+      ]
+    }
+  ],
+  "fieldOverrides": []
+}
