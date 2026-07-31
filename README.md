@@ -8,6 +8,7 @@ Flutter + Firebase implementation of our Figma prototype.
 - **Firebase project:** `houseslice-69a7f`
 - **Android package:** `com.group22.houslice`
 - **Report:** [`docs/REPORT.md`](docs/REPORT.md) · **Database design:** [`docs/ERD.md`](docs/ERD.md)
+- **Demo video script:** [`docs/VIDEO_SCRIPT.md`](docs/VIDEO_SCRIPT.md)
 
 ## Features
 
@@ -168,8 +169,8 @@ Rules live in [`firestore.rules`](firestore.rules) and indexes in
 
 ```sh
 flutter analyze lib test   # 0 issues
-flutter test               # 265 tests, all passing
-flutter test --coverage    # 72.3% line coverage
+flutter test               # 298 tests, all passing
+flutter test --coverage    # 74.5% line coverage
 dart format lib test
 ```
 

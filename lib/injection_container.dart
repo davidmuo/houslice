@@ -106,7 +106,7 @@ Future<void> init({required bool useFirebase}) async {
   } else {
     sl.registerLazySingleton<AuthDataSource>(() => MockAuthDataSource());
     sl.registerLazySingleton<PropertyDataSource>(
-      () => MockPropertyDataSource(),
+      () => MockPropertyDataSource(sl()),
     );
     sl.registerLazySingleton<BookingDataSource>(() => MockBookingDataSource());
   }

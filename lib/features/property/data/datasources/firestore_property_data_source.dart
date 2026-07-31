@@ -137,12 +137,19 @@ class FirestorePropertyDataSource implements PropertyDataSource {
     }
     try {
       await _properties.doc(propertyId).delete();
-      // A deleted listing must not linger in anyone's favourites list. Only
-      // the caller's own can be reached from the client; other users' copies
-      // resolve to nothing on read and are filtered out there.
-      await _favorites?.doc(propertyId).delete();
     } on FirebaseException catch (e) {
       throw ServerException(e.message ?? 'Could not delete the listing.');
+    }
+
+    // Tidying the caller's own favourite is best-effort and deliberately in
+    // its own try: the listing is already gone, so letting a failure here
+    // propagate would report a successful delete as failed and put the row
+    // back in a UI that no longer matches the backend. An orphaned favourite
+    // is harmless — it matches no listing on read and is filtered out.
+    try {
+      await _favorites?.doc(propertyId).delete();
+    } on FirebaseException {
+      // Ignored deliberately; see above.
     }
   }
 

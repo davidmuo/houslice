@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:houslice/features/auth/data/datasources/auth_data_source.dart';
 import 'package:houslice/features/property/data/datasources/property_data_source.dart';
 import 'package:houslice/features/property/data/models/property_model.dart';
 import 'package:houslice/features/property/presentation/pages/my_listings_page.dart';
@@ -59,8 +60,16 @@ void main() {
 
   group('with a listing the student published', () {
     /// Publishes a listing through the real data source so it comes back
-    /// stamped with the demo owner uid, exactly as Firestore would stamp it.
+    /// stamped with the signed-in uid, exactly as Firestore would stamp it.
+    ///
+    /// The session is established on the data source directly because this
+    /// runs before the AuthBloc's own sign-in has been pumped — and
+    /// publishing requires an owner, just as it does in the app.
     Future<void> publishOne() async {
+      await di.sl<AuthDataSource>().signIn(
+        email: 'j.simmons@alustudent.com',
+        password: 'password123',
+      );
       await di.sl<PropertyDataSource>().createListing(
         PropertyModel.fromEntity(
           buildProperty(id: '', name: 'My Spare Room', pricePerMonth: 150),

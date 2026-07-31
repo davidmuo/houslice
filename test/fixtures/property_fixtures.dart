@@ -1,3 +1,4 @@
+import 'package:houslice/features/lifestyle/domain/entities/lifestyle_profile.dart';
 import 'package:houslice/features/property/domain/entities/property.dart';
 
 /// Builds a listing with sensible defaults so tests only state what matters.
@@ -18,6 +19,7 @@ Property buildProperty({
   String ownerUid = '',
   HostType hostType = HostType.student,
   ListingKind listingKind = ListingKind.housemate,
+  LifestyleProfile? hostLifestyle,
 }) {
   return Property(
     id: id,
@@ -36,5 +38,6 @@ Property buildProperty({
     ownerUid: ownerUid,
     hostType: hostType,
     listingKind: listingKind,
+    hostLifestyle: hostLifestyle,
   );
 }

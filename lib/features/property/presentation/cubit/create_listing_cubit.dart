@@ -172,7 +172,14 @@ class CreateListingCubit extends Cubit<CreateListingState> {
       // Preserved so the rules' ownerUid-immutability check passes; on create
       // the data source stamps the caller's uid.
       ownerUid: existing?.ownerUid ?? '',
-      hostLifestyle: state.attachesLifestyle ? hostLifestyle : null,
+      // Falling back to the stored answers matters on edit: the quiz lives in
+      // device-local storage, so a host editing from a second device has no
+      // profile loaded. Without this, saving would strip the listing's
+      // compatibility data and drop every browser's match score to the
+      // baseline. An update is never allowed to destroy what it did not set.
+      hostLifestyle: state.attachesLifestyle
+          ? (hostLifestyle ?? existing?.hostLifestyle)
+          : null,
     );
 
     final result = isEditing
