@@ -112,9 +112,9 @@ favourites, and preferences that persist across restarts.
 | 12 | Entity–relationship diagram | Section 5.3 |
 | 13 | My Listings with edit and delete | **[INSERT SCREENSHOT]** |
 | 14 | Firestore console showing a document written by the app | **[INSERT SCREENSHOT]** |
-| 15 | `flutter analyze` reporting zero issues | **[INSERT SCREENSHOT]** |
-| 16 | `flutter test` reporting all tests passing | **[INSERT SCREENSHOT]** |
-| 17 | Test coverage percentage | **[INSERT SCREENSHOT]** |
+| 15 | `flutter analyze` reporting zero issues | `docs/screenshots/12-analyze.png` |
+| 16 | `flutter test` — 298 tests passing | `docs/screenshots/13-tests.png` |
+| 17 | Test coverage by feature area | `docs/screenshots/14-coverage.png` |
 | 18 | Project folder structure in the editor | **[INSERT SCREENSHOT]** |
 
 ---
@@ -753,9 +753,16 @@ booking price row, the select-date sheet, the My Bookings segments, and finally
 the location chooser (134 px in landscape) and the create-new-password form
 (34 px). All are fixed, and the responsive suite is what keeps them fixed.
 
-**[INSERT SCREENSHOT (Figure 15): `flutter analyze` output showing 0 issues.]**
-**[INSERT SCREENSHOT (Figure 16): `flutter test` output showing all tests passing.]**
-**[INSERT SCREENSHOT (Figure 17): the coverage percentage.]**
+Static analysis reports no issues across `lib` and `test` (Figure 15), the full
+suite passes (Figure 16), and coverage is reported per feature area rather than
+as a single number, so gaps are visible rather than averaged away (Figure 17).
+
+The weakest area is `features/auth` at 48.3%, and the reason is worth stating
+plainly rather than hiding: `FirebaseAuthDataSource` is deliberately untested,
+because exercising it would mean either mocking the entire Firebase SDK surface
+or making live network calls from the test suite. The logic that sits *above* it
+— `AuthBloc`, the use cases and the validators — is covered, and the data source
+is exercised by hand against the live project during the demonstration.
 
 ---
 
@@ -951,10 +958,15 @@ Every item below must be supplied before submission.
 | 4 | Group contribution tracker link | Group Activities |
 | 5 | Research half: problem statement, literature review, personas, empathy maps, competitor analysis, journey map, storyboard | §1.2 |
 | 6 | Research references, merged alphabetically | §10 |
-| 7 | Screenshot: My Listings with edit and delete | Figure 13 |
-| 8 | Screenshot: Firestore console showing a document written by the app | Figure 14 |
-| 9 | Screenshot: `flutter analyze` — 0 issues | Figure 15 |
-| 10 | Screenshot: `flutter test` — all passing | Figure 16 |
-| 11 | Screenshot: coverage percentage | Figure 17 |
-| 12 | Screenshot: `lib/` folder structure in the editor | Figure 18 |
-| 13 | Existing screenshots 01–11 embedded as Figures 1–11 | Throughout |
+| 7 | Screenshot: My Listings with edit and delete — take on the phone, from a release build | Figure 13 |
+| 8 | Screenshot: Firestore console showing a document written by the app — needs a Firebase login | Figure 14 |
+| 9 | Screenshot: `lib/` folder structure in the editor | Figure 18 |
+
+Figures 1–11 and 15–17 are already embedded. Figures 15–17 regenerate from real
+command output with:
+
+```sh
+flutter analyze lib test  > docs/build/analyze.txt
+flutter test --coverage   > docs/build/test_raw.txt
+python tool/capture_terminal.py
+```

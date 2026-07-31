@@ -50,7 +50,13 @@ FIGURES = {
     9: ("09-profile.png", "Profile"),
     10: ("10-settings-light.png", "Settings in light theme"),
     11: ("11-settings-dark.png", "Settings in dark theme"),
+    15: ("12-analyze.png", "`flutter analyze` reporting zero issues"),
+    16: ("13-tests.png", "`flutter test` — 298 tests passing"),
+    17: ("14-coverage.png", "Test coverage by feature area"),
 }
+
+# Terminal captures are wide and unreadable at the default figure width.
+WIDE_FIGURES = {15, 16, 17}
 
 CSS = """
 @page { size: A4; margin: 25mm 20mm; }
@@ -166,9 +172,12 @@ def figure_html(number: int) -> str:
     path = SCREENSHOTS / name
     if not path.exists():
         return ""
+    cls = "figure wide" if number in WIDE_FIGURES else "figure"
+    # inline() renders the backticks in captions as <code>.
     return (
-        f'<figure><img src="{data_uri(path)}" alt="{html.escape(caption)}">'
-        f"<figcaption>Figure {number}. {html.escape(caption)}</figcaption></figure>"
+        f'<figure class="{cls}"><img src="{data_uri(path)}" '
+        f'alt="{html.escape(caption.replace("`", ""))}">'
+        f"<figcaption>Figure {number}. {inline(caption)}</figcaption></figure>"
     )
 
 
