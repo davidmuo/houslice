@@ -19,12 +19,18 @@ import 'package:shared_preferences/shared_preferences.dart';
 /// Using the real container rather than mocks means these widget tests
 /// exercise the blocs and mock data sources too, which is what makes them
 /// worth writing: one pump covers presentation, domain and data.
+/// [arrange] runs after the container is built but before the blocs load, so a
+/// test can put data in the in-memory backend and have the screen pick it up
+/// on its first fetch. It is run through [WidgetTester.runAsync] because the
+/// mock data sources use real `Future.delayed` timers, which never fire inside
+/// the fake-async zone a widget test normally runs in.
 Future<void> pumpPage(
   WidgetTester tester,
   Widget page, {
   Map<String, Object> storedPreferences = const {},
   bool signedIn = false,
   Size surfaceSize = const Size(430, 932),
+  Future<void> Function()? arrange,
 }) async {
   await tester.binding.setSurfaceSize(surfaceSize);
   addTearDown(() => tester.binding.setSurfaceSize(null));
@@ -34,6 +40,8 @@ Future<void> pumpPage(
   await di.init(useFirebase: false);
   await di.sl<PreferencesCubit>().load();
   await di.sl<LifestyleCubit>().load();
+
+  if (arrange != null) await tester.runAsync(arrange);
 
   final authBloc = di.sl<AuthBloc>();
   if (signedIn) {

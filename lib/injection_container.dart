@@ -42,6 +42,8 @@ import 'features/property/data/datasources/property_data_source.dart';
 import 'features/property/data/repositories/property_repository_impl.dart';
 import 'features/property/domain/repositories/property_repository.dart';
 import 'features/property/domain/usecases/create_listing.dart';
+import 'features/property/domain/usecases/delete_listing.dart';
+import 'features/property/domain/usecases/update_listing.dart';
 import 'features/property/domain/usecases/get_properties.dart';
 import 'features/property/domain/usecases/search_properties.dart';
 import 'features/property/domain/usecases/toggle_favorite.dart';
@@ -104,7 +106,7 @@ Future<void> init({required bool useFirebase}) async {
   } else {
     sl.registerLazySingleton<AuthDataSource>(() => MockAuthDataSource());
     sl.registerLazySingleton<PropertyDataSource>(
-      () => MockPropertyDataSource(),
+      () => MockPropertyDataSource(sl()),
     );
     sl.registerLazySingleton<BookingDataSource>(() => MockBookingDataSource());
   }
@@ -138,6 +140,8 @@ Future<void> init({required bool useFirebase}) async {
   sl.registerLazySingleton(() => SearchProperties(sl()));
   sl.registerLazySingleton(() => ToggleFavorite(sl()));
   sl.registerLazySingleton(() => CreateListing(sl()));
+  sl.registerLazySingleton(() => UpdateListing(sl()));
+  sl.registerLazySingleton(() => DeleteListing(sl()));
   sl.registerLazySingleton(() => GetBookings(sl()));
   sl.registerLazySingleton(() => CreateBooking(sl()));
   sl.registerLazySingleton(() => CancelBooking(sl()));
@@ -160,7 +164,11 @@ Future<void> init({required bool useFirebase}) async {
     ),
   );
   sl.registerFactory(
-    () => PropertyBloc(getProperties: sl(), toggleFavorite: sl()),
+    () => PropertyBloc(
+      getProperties: sl(),
+      toggleFavorite: sl(),
+      deleteListing: sl(),
+    ),
   );
   sl.registerFactory(
     () => BookingBloc(

@@ -108,6 +108,51 @@ class FirestorePropertyDataSource implements PropertyDataSource {
     }
   }
 
+  @override
+  Future<PropertyModel> updateListing(PropertyModel listing) async {
+    final uid = auth.currentUser?.uid;
+    if (uid == null) {
+      throw const ServerException('Sign in to edit a listing.');
+    }
+    if (listing.ownerUid != uid) {
+      // The rules would reject this anyway; failing here gives the student a
+      // sentence they can act on instead of a raw permission-denied.
+      throw const ServerException('You can only edit your own listings.');
+    }
+    try {
+      // A full document write rather than a partial update: the rules pin
+      // ownerUid to its existing value, so the whole map is safe to send and
+      // the stored document can never drift from the model.
+      await _properties.doc(listing.id).set(listing.toMap());
+      return listing;
+    } on FirebaseException catch (e) {
+      throw ServerException(e.message ?? 'Could not save the listing.');
+    }
+  }
+
+  @override
+  Future<void> deleteListing(String propertyId) async {
+    if (auth.currentUser == null) {
+      throw const ServerException('Sign in to delete a listing.');
+    }
+    try {
+      await _properties.doc(propertyId).delete();
+    } on FirebaseException catch (e) {
+      throw ServerException(e.message ?? 'Could not delete the listing.');
+    }
+
+    // Tidying the caller's own favourite is best-effort and deliberately in
+    // its own try: the listing is already gone, so letting a failure here
+    // propagate would report a successful delete as failed and put the row
+    // back in a UI that no longer matches the backend. An orphaned favourite
+    // is harmless — it matches no listing on read and is filtered out.
+    try {
+      await _favorites?.doc(propertyId).delete();
+    } on FirebaseException {
+      // Ignored deliberately; see above.
+    }
+  }
+
   Future<Set<String>> _favoriteIds() async {
     final favorites = _favorites;
     if (favorites == null) return {};

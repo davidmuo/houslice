@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:houslice/core/error/failures.dart';
 import 'package:houslice/core/error/result.dart';
 import 'package:houslice/core/usecases/usecase.dart';
+import 'package:houslice/features/property/domain/usecases/delete_listing.dart';
 import 'package:houslice/features/property/domain/usecases/get_properties.dart';
 import 'package:houslice/features/property/domain/usecases/toggle_favorite.dart';
 import 'package:houslice/features/property/presentation/bloc/property_bloc.dart';
@@ -14,26 +15,35 @@ class _MockGetProperties extends Mock implements GetProperties {}
 
 class _MockToggleFavorite extends Mock implements ToggleFavorite {}
 
-/// Bloc tests for listing load and the optimistic favourite toggle.
+class _MockDeleteListing extends Mock implements DeleteListing {}
+
+/// Bloc tests for listing load, the optimistic favourite toggle, and the
+/// optimistic delete.
 void main() {
   late _MockGetProperties getProperties;
   late _MockToggleFavorite toggleFavorite;
+  late _MockDeleteListing deleteListing;
 
   final listings = [
     buildProperty(id: 'a', name: 'Alpha'),
     buildProperty(id: 'b', name: 'Beta', isFavorite: true),
   ];
 
-  setUpAll(() => registerFallbackValue(const NoParams()));
+  setUpAll(() {
+    registerFallbackValue(const NoParams());
+    registerFallbackValue(const DeleteListingParams('a'));
+  });
 
   setUp(() {
     getProperties = _MockGetProperties();
     toggleFavorite = _MockToggleFavorite();
+    deleteListing = _MockDeleteListing();
   });
 
   PropertyBloc build() => PropertyBloc(
     getProperties: getProperties,
     toggleFavorite: toggleFavorite,
+    deleteListing: deleteListing,
   );
 
   group('PropertiesRequested', () {
@@ -132,6 +142,67 @@ void main() {
     );
   });
 
+  group('PropertyDeleted', () {
+    blocTest<PropertyBloc, PropertyState>(
+      'removes the listing immediately and confirms when the write succeeds',
+      setUp: () {
+        when(
+          () => deleteListing(any()),
+        ).thenAnswer((_) async => const Success(null));
+      },
+      build: build,
+      seed: () =>
+          PropertyState(status: PropertyStatus.loaded, properties: listings),
+      act: (bloc) => bloc.add(const PropertyDeleted('a')),
+      expect: () => [
+        // Optimistic removal, before the backend has answered.
+        PropertyState(status: PropertyStatus.loaded, properties: [listings[1]]),
+        PropertyState(
+          status: PropertyStatus.loaded,
+          properties: [listings[1]],
+          message: 'Listing deleted.',
+        ),
+      ],
+    );
+
+    blocTest<PropertyBloc, PropertyState>(
+      'puts the listing back and reports the error when the write fails',
+      setUp: () {
+        when(() => deleteListing(any())).thenAnswer(
+          (_) async => const Err(ServerFailure('Permission denied')),
+        );
+      },
+      build: build,
+      seed: () =>
+          PropertyState(status: PropertyStatus.loaded, properties: listings),
+      act: (bloc) => bloc.add(const PropertyDeleted('a')),
+      expect: () => [
+        PropertyState(status: PropertyStatus.loaded, properties: [listings[1]]),
+        PropertyState(
+          status: PropertyStatus.loaded,
+          properties: listings,
+          message: 'Permission denied',
+        ),
+      ],
+    );
+
+    blocTest<PropertyBloc, PropertyState>(
+      'passes the listing id through to the use case',
+      setUp: () {
+        when(
+          () => deleteListing(any()),
+        ).thenAnswer((_) async => const Success(null));
+      },
+      build: build,
+      seed: () =>
+          PropertyState(status: PropertyStatus.loaded, properties: listings),
+      act: (bloc) => bloc.add(const PropertyDeleted('b')),
+      verify: (_) {
+        verify(() => deleteListing(const DeleteListingParams('b'))).called(1);
+      },
+    );
+  });
+
   group('PropertyState helpers', () {
     test('favorites returns only the hearted listings', () {
       final state = PropertyState(properties: listings);
@@ -145,5 +216,33 @@ void main() {
       expect(state.byId('a')?.name, 'Alpha');
       expect(state.byId('missing'), isNull);
     });
+
+    test('mine returns only the listings published by that uid', () {
+      final state = PropertyState(
+        properties: [
+          buildProperty(id: 'x', ownerUid: 'uid-1'),
+          buildProperty(id: 'y', ownerUid: 'uid-2'),
+          buildProperty(id: 'z', ownerUid: 'uid-1'),
+        ],
+      );
+
+      expect(state.mine('uid-1').map((p) => p.id), ['x', 'z']);
+    });
+
+    test(
+      'mine never matches the seeded catalogue, whose ownerUid is empty',
+      () {
+        // Guards against an empty uid (signed out) exposing seeded listings as
+        // the caller's own and offering them an edit button.
+        final state = PropertyState(
+          properties: [
+            buildProperty(id: 'seeded'),
+            buildProperty(id: 'other'),
+          ],
+        );
+
+        expect(state.mine(''), isEmpty);
+      },
+    );
   });
 }

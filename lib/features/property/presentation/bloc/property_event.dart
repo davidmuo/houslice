@@ -19,3 +19,13 @@ class PropertyFavoriteToggled extends PropertyEvent {
   @override
   List<Object?> get props => [propertyId];
 }
+
+/// Deletes a listing the signed-in user owns.
+class PropertyDeleted extends PropertyEvent {
+  final String propertyId;
+
+  const PropertyDeleted(this.propertyId);
+
+  @override
+  List<Object?> get props => [propertyId];
+}

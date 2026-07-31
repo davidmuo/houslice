@@ -16,6 +16,12 @@ class PropertyState extends Equatable {
   List<Property> get favorites =>
       properties.where((p) => p.isFavorite).toList();
 
+  /// Listings published by [uid]. An empty [uid] matches nothing rather than
+  /// matching the seeded catalogue, whose `ownerUid` is also empty.
+  List<Property> mine(String uid) => uid.isEmpty
+      ? const []
+      : properties.where((p) => p.ownerUid == uid).toList();
+
   Property? byId(String id) {
     for (final property in properties) {
       if (property.id == id) return property;

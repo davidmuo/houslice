@@ -6,6 +6,7 @@ import '../../../../core/routes/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
 import '../../../../core/utils/validators.dart';
 import '../../../../core/widgets/app_text_field.dart';
+import '../../../../core/widgets/fill_viewport_scroll.dart';
 import '../../../../core/widgets/primary_button.dart';
 import '../bloc/auth_bloc.dart';
 
@@ -62,7 +63,9 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
         child: Scaffold(
           appBar: AppBar(centerTitle: false),
           body: SafeArea(
-            child: Padding(
+            // Two text fields plus the heading exceed a landscape viewport, so
+            // the form scrolls rather than overflowing.
+            child: FillViewportScroll(
               padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Form(
                 key: _formKey,

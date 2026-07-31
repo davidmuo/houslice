@@ -13,6 +13,7 @@ abstract final class AppRoutes {
   static const settings = '/settings';
   static const quiz = '/quiz';
   static const createListing = '/create-listing';
+  static const myListings = '/my-listings';
   static const forgotPassword = '/forgot-password';
   static const verifyCode = '/verify-code';
   static const resetSuccess = '/reset-success';

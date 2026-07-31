@@ -43,3 +43,16 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# One-off admin script for exporting the seed catalogue. Deliberately not part
+# of the app: it is a console tool, so its `print` calls would be the only
+# `flutter analyze` issue in the project.
+/tool/export_seed.dart
+
+# Intermediate HTML the report builder prints from. The PDF it produces is
+# committed; this is not.
+/docs/build/
+
+# Built PDF and internal demo script are not part of the repository.
+/docs/Group22_Final_Project_Submission.pdf
+/docs/VIDEO_SCRIPT.md

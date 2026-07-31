@@ -6,6 +6,7 @@ import '../../../../core/error/exceptions.dart';
 import '../../../../core/services/photo_service.dart';
 import '../../domain/entities/property.dart';
 import '../../domain/usecases/create_listing.dart';
+import '../../domain/usecases/update_listing.dart';
 
 enum CreateListingStatus { editing, submitting, success, failure }
 
@@ -67,10 +68,33 @@ class CreateListingState extends Equatable {
 
 class CreateListingCubit extends Cubit<CreateListingState> {
   final CreateListing createListing;
+  final UpdateListing updateListing;
   final PhotoService photoService;
 
-  CreateListingCubit({required this.createListing, required this.photoService})
-    : super(const CreateListingState());
+  /// The listing being edited, or null when publishing a new one. Editing
+  /// reuses this cubit wholesale because the form is identical — only the
+  /// call it ends in differs.
+  final Property? existing;
+
+  CreateListingCubit({
+    required this.createListing,
+    required this.updateListing,
+    required this.photoService,
+    this.existing,
+  }) : super(
+         // Seed the toggles from the listing so an edit opens on its own
+         // values instead of the defaults for a brand-new listing.
+         existing == null
+             ? const CreateListingState()
+             : CreateListingState(
+                 hostType: existing.hostType,
+                 listingKind: existing.listingKind,
+                 bedrooms: existing.bedrooms,
+                 bathrooms: existing.bathrooms,
+               ),
+       );
+
+  bool get isEditing => existing != null;
 
   void setHostType(HostType type) {
     // A letting agent never lists a housemate room, so keep the pair coherent.
@@ -127,15 +151,17 @@ class CreateListingCubit extends Cubit<CreateListingState> {
     }
 
     final listing = Property(
-      // Replaced by the backend-assigned id on save.
-      id: '',
+      // Empty on create — replaced by the backend-assigned id on save. An edit
+      // keeps the existing id so the same document is written.
+      id: existing?.id ?? '',
       name: name,
       address: address,
       description: description,
       pricePerMonth: pricePerMonth,
-      // A brand-new listing has no reviews yet.
-      rating: 0,
-      compatibility: 0,
+      // A brand-new listing has no reviews yet; an edit must not wipe the
+      // rating and baseline score the listing has already earned.
+      rating: existing?.rating ?? 0,
+      compatibility: existing?.compatibility ?? 0,
       images: uploaded,
       bedrooms: state.bedrooms,
       bathrooms: state.bathrooms,
@@ -143,10 +169,22 @@ class CreateListingCubit extends Cubit<CreateListingState> {
       agentPhone: contactPhone,
       hostType: state.hostType,
       listingKind: state.listingKind,
-      hostLifestyle: state.attachesLifestyle ? hostLifestyle : null,
+      // Preserved so the rules' ownerUid-immutability check passes; on create
+      // the data source stamps the caller's uid.
+      ownerUid: existing?.ownerUid ?? '',
+      // Falling back to the stored answers matters on edit: the quiz lives in
+      // device-local storage, so a host editing from a second device has no
+      // profile loaded. Without this, saving would strip the listing's
+      // compatibility data and drop every browser's match score to the
+      // baseline. An update is never allowed to destroy what it did not set.
+      hostLifestyle: state.attachesLifestyle
+          ? (hostLifestyle ?? existing?.hostLifestyle)
+          : null,
     );
 
-    final result = await createListing(CreateListingParams(listing));
+    final result = isEditing
+        ? await updateListing(UpdateListingParams(listing))
+        : await createListing(CreateListingParams(listing));
     result.fold(
       (failure) => emit(
         state.copyWith(

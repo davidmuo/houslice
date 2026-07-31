@@ -36,7 +36,7 @@ erDiagram
         number pricePerMonth
         number rating
         number compatibility "0-100 baseline score"
-        array images "list of URLs"
+        array images "https URLs (seeded) or data:image URIs (user uploads)"
         number bedrooms
         number bathrooms
         string agentName
@@ -141,7 +141,7 @@ Full rules: [`firestore.rules`](../firestore.rules). Summary of what they enforc
 
 | Path | Read | Write |
 |---|---|---|
-| `properties/{id}` | any signed-in user | create only as yourself (`ownerUid == auth.uid`); edit/delete only your own; `ownerUid` immutable |
+| `properties/{id}` | any signed-in user | create only as yourself (`ownerUid == auth.uid`); edit/delete only your own; `ownerUid` immutable; the same field checks apply to create and update |
 | `users/{uid}` | owner only | owner only; `email` immutable after create; `username` ≥ 3 chars |
 | `users/{uid}/favorites/{id}` | owner only | owner only; body must be exactly `{savedAt}` |
 | `users/{uid}/bookings/{id}` | owner only | owner only; on update **only `status` may change** |

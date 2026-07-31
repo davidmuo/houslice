@@ -48,6 +48,23 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
     BookingSubmitted event,
     Emitter<BookingState> emit,
   ) async {
+    // One active booking per property. Without this a student can book the
+    // same room repeatedly and end up with several live bookings for a place
+    // they can only actually take once. Completed and cancelled stays are not
+    // counted, so re-booking somewhere you stayed before is still allowed.
+    final alreadyBooked = state.upcoming.any(
+      (b) => b.propertyId == event.booking.propertyId,
+    );
+    if (alreadyBooked) {
+      emit(
+        state.copyWith(
+          status: BookingViewStatus.failure,
+          message: 'You already have an active booking for this place.',
+        ),
+      );
+      return;
+    }
+
     emit(state.copyWith(status: BookingViewStatus.creating));
     final result = await createBooking(event.booking);
     result.fold(
@@ -78,7 +95,17 @@ class BookingBloc extends Bloc<BookingEvent, BookingState> {
           message: failure.message,
         ),
       ),
-      (_) => add(const BookingsRequested()),
+      (_) {
+        // Confirm before refetching: BookingsRequested clears the message, so
+        // emitting afterwards would leave the cancellation silent.
+        emit(
+          state.copyWith(
+            status: BookingViewStatus.loaded,
+            message: 'Booking cancelled.',
+          ),
+        );
+        add(const BookingsRequested());
+      },
     );
   }
 }

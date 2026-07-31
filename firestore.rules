@@ -35,20 +35,28 @@ service cloud.firestore {
     match /properties/{propertyId} {
       allow read: if isSignedIn();
 
+      // Shape checks shared by create and update, so an edit cannot write a
+      // listing that would have been rejected as a new one.
+      function validListing() {
+        return incoming().name is string
+               && incoming().name.size() > 0
+               && incoming().pricePerMonth is number
+               && incoming().pricePerMonth > 0
+               && incoming().hostType in ['student', 'realtor']
+               && incoming().listingKind in ['housemate', 'entirePlace'];
+      }
+
       allow create: if isSignedIn()
                     && incoming().ownerUid == request.auth.uid
-                    && incoming().name is string
-                    && incoming().name.size() > 0
-                    && incoming().pricePerMonth is number
-                    && incoming().pricePerMonth > 0
-                    && incoming().hostType in ['student', 'realtor']
-                    && incoming().listingKind in ['housemate', 'entirePlace'];
+                    && validListing();
 
       // Ownership itself is immutable: a listing cannot be handed to someone
-      // else, and someone else's listing cannot be claimed.
+      // else, and someone else's listing cannot be claimed. The edit screen
+      // sends the whole document, so the same shape checks apply here.
       allow update: if isSignedIn()
                     && resource.data.ownerUid == request.auth.uid
-                    && incoming().ownerUid == resource.data.ownerUid;
+                    && incoming().ownerUid == resource.data.ownerUid
+                    && validListing();
 
       allow delete: if isSignedIn()
                     && resource.data.ownerUid == request.auth.uid;
