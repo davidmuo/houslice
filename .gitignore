@@ -52,3 +52,7 @@ app.*.map.json
 # Intermediate HTML the report builder prints from. The PDF it produces is
 # committed; this is not.
 /docs/build/
+
+# Built PDF and internal demo script are not part of the repository.
+/docs/Group22_Final_Project_Submission.pdf
+/docs/VIDEO_SCRIPT.md

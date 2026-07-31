@@ -7,11 +7,9 @@ Flutter + Firebase implementation of our Figma prototype.
 
 - **Firebase project:** `houseslice-69a7f`
 - **Android package:** `com.group22.houslice`
-- **Report:** [`docs/REPORT.md`](docs/REPORT.md) → PDF at
-  [`docs/Group22_Final_Project_Submission.pdf`](docs/Group22_Final_Project_Submission.pdf)
-  (regenerate with `python tool/build_report.py`)
-- **Database design:** [`docs/ERD.md`](docs/ERD.md) · **Demo video script:**
-  [`docs/VIDEO_SCRIPT.md`](docs/VIDEO_SCRIPT.md)
+- **Report:** [`docs/REPORT.md`](docs/REPORT.md) — build the submission PDF with
+  `python tool/build_report.py`
+- **Database design:** [`docs/ERD.md`](docs/ERD.md)
 
 ## Features
 

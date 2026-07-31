@@ -15,8 +15,7 @@
 > **Note for the team — not part of the submission.** This file is the source of
 > truth for the report. Regenerate the PDF after any edit with
 > `python tool/build_report.py`, which applies Times New Roman 12 pt body and
-> 14 pt headings, embeds the screenshots and writes
-> `docs/Group22_Final_Project_Submission.pdf`.
+> 14 pt headings, embeds the screenshots and writes the submission PDF.
 >
 > Markers written as **[INSERT …]** need something only the team can supply — a
 > link, a screenshot, or content from the research half of the report. They are
