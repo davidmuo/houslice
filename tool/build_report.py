@@ -50,13 +50,12 @@ FIGURES = {
     9: ("09-profile.png", "Profile"),
     10: ("10-settings-light.png", "Settings in light theme"),
     11: ("11-settings-dark.png", "Settings in dark theme"),
-    # Not captured yet — these two need the app on a phone and a Firebase
-    # login. Drop the files in and rebuild; the placeholders resolve
-    # themselves. See placeholder_html() below.
     13: ("15-my-listings.png", "My Listings, with edit and delete on each row"),
     14: (
         "16-firestore-console.png",
-        "The Firestore console showing a listing document written by the app",
+        "The Firestore console after publishing from the app: `ownerUid` set to "
+        "the publisher, the photo embedded as a `data:image` URI, and the "
+        "host's lifestyle answers embedded on the listing",
     ),
     15: ("12-analyze.png", "`flutter analyze` reporting zero issues"),
     16: ("13-tests.png", "`flutter test` — 298 tests passing"),
@@ -64,7 +63,7 @@ FIGURES = {
 }
 
 # Terminal captures are wide and unreadable at the default figure width.
-WIDE_FIGURES = {15, 16, 17}
+WIDE_FIGURES = {14, 15, 16, 17}
 
 CSS = """
 @page { size: A4; margin: 25mm 20mm; }

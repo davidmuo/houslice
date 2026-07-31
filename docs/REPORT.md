@@ -110,8 +110,8 @@ favourites, and preferences that persist across restarts.
 | 10 | Settings in light theme | `docs/screenshots/10-settings-light.png` |
 | 11 | Settings in dark theme | `docs/screenshots/11-settings-dark.png` |
 | 12 | Entity–relationship diagram | Section 5.3 |
-| 13 | My Listings with edit and delete | `docs/screenshots/15-my-listings.png` **(to capture)** |
-| 14 | Firestore console showing a document written by the app | `docs/screenshots/16-firestore-console.png` **(to capture)** |
+| 13 | My Listings with edit and delete | `docs/screenshots/15-my-listings.png` |
+| 14 | Firestore console showing a document written by the app | `docs/screenshots/16-firestore-console.png` |
 | 15 | `flutter analyze` reporting zero issues | `docs/screenshots/12-analyze.png` |
 | 16 | `flutter test` — 298 tests passing | `docs/screenshots/13-tests.png` |
 | 17 | Test coverage by feature area | `docs/screenshots/14-coverage.png` |
@@ -668,8 +668,27 @@ the change appears at once and is reverted, with an explanatory message, if the
 backend rejects it.
 
 Figure 14 shows the Firestore console immediately after a listing was published
-from the application, with the `ownerUid` field set to the publishing student's
-Firebase Auth UID — the field every rule in Section 5.4 is written against.
+from the application, and four details in it are worth pointing out because each
+corroborates a claim made elsewhere in this report.
+
+**`ownerUid` is set to the publishing student's Firebase Auth UID.** This is the
+field every rule in Section 5.4 is written against, and the field My Listings
+filters on — which is what keeps the interface and the security rules in
+agreement.
+
+**`images[0]` begins `data:image/jpeg;base64,`.** This is the inline photo
+storage described in Section 8: the photo was chosen from the device gallery,
+compressed, and embedded on the document itself rather than uploaded to Cloud
+Storage, which the project's billing plan does not include.
+
+**The host's lifestyle answers are embedded on the listing**, visible as
+`sharing`, `smoking`, `social`, `study` and `pets`. This is the denormalisation
+decision from Section 5.3: embedding rather than referencing means a browsing
+student scores the listing from a single read.
+
+**`rating` is 0.** A newly published listing has earned no reviews yet, and an
+edit deliberately preserves this value rather than resetting it — the behaviour
+covered by the `CreateListingCubit` tests.
 
 ## 5.6 Authentication
 
@@ -959,11 +978,9 @@ Every item below must be supplied before submission.
 | 4 | Group contribution tracker link | Group Activities |
 | 5 | Research half: problem statement, literature review, personas, empathy maps, competitor analysis, journey map, storyboard | §1.2 |
 | 6 | Research references, merged alphabetically | §10 |
-| 7 | Screenshot: My Listings with edit and delete — take on the phone, from a release build | Figure 13 |
-| 8 | Screenshot: Firestore console showing a document written by the app — needs a Firebase login | Figure 14 |
-| 9 | Screenshot: `lib/` folder structure in the editor | Figure 18 |
+| 7 | Screenshot: `lib/` folder structure in the editor | Figure 18 |
 
-Figures 1–11 and 15–17 are already embedded. Figures 15–17 regenerate from real
+Figures 1–17 are already embedded. Figures 15–17 regenerate from real
 command output with:
 
 ```sh
