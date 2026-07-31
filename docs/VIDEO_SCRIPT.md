@@ -1,337 +1,291 @@
 # Houseslice — Demo Video Script
 
-**Group 22 · Target length 10 minutes · Five speakers**
+**Group 22 · Five speakers · Order: David → Aime → Nelly → Gift → Nkuba**
 
-**Speaking order:** David → Aime → Nelly → Gift → Nkuba
+This script contains **only what the rubric scores**. Nothing here is padding,
+so nothing here is safe to cut. Read at whatever pace is natural: a brisk team
+will land around 7 minutes, a measured one around 10, a slow one around 12. All
+three are fine — the brief asks for 10 to 15 minutes and a slow read gets there
+on its own.
+
+**If your dry run finishes under 10:00**, use the add-back lines at the end of
+this document. They are written out so nobody has to improvise on camera.
 
 Each member presents the part of the application they built, so any question put
-to a speaker is about their own code. The order also follows a coherent journey
-through the app: a returning user, then a new registration, then the
-questionnaire that drives matching, then browsing, then booking.
-
-### Timing budget
-
-| Segment | Speaker | Target | Running total |
-|---|---|---|---|
-| 1 | David | 2 min 45 s | 2:45 |
-| 2 | Aime | 2 min 15 s | 5:00 |
-| 3 | Nelly | 2 min 00 s | 7:00 |
-| 4 | Gift | 1 min 30 s | 8:30 |
-| 5 | Nkuba | 1 min 45 s | 10:15 |
-
-**10 minutes is the rubric's floor, not a target to beat.** If you finish at
-9:30 you are under the requirement. Pad by letting the *(pause)* beats breathe —
-never by cutting an action.
-
-**Every action in this script is scored.** If you run long, speak faster and
-narrate less; do not drop a step. The coverage table at the end shows which
-rubric line each action satisfies.
+to a speaker is about their own code.
 
 ---
 
-## Before you record — non-negotiables
+## Before you record
 
-| Requirement | Why it matters |
+| Requirement | Detail |
 |---|---|
-| **Release APK on a physical Android phone** | A web, desktop or Chrome build scores **zero**. Build with `flutter build apk --release` and install it. |
-| **One continuous recording** | No cuts, no speed-ups, no transitions. One take. |
-| **No slide deck, no team introductions** | The brief says so twice. Start on the app. |
-| **≥ 1080p, clear audio** | Screen-record on the phone, or use `scrcpy` and capture the window. Quiet room; no fans or echo. |
-| **Firebase Console visible during CRUD** | Second screen or split view. The document must be legible when it changes. |
-| **Every member speaks** | Each of the five presents their own segment. Hand off by name. |
-| **Rotate the device at least once** | The rubric asks for it explicitly. |
+| **Release APK on a physical Android phone** | Web, desktop or Chrome build scores **zero**. `flutter build apk --release`. |
+| **One continuous take** | No cuts, no speed-ups, no transitions. |
+| **No slide deck, no introductions** | Start on the app. |
+| **≥ 1080p, clear audio** | Quiet room. No fans, no echo. |
+| **Firebase Console legible during every CRUD step** | Second screen or split view. |
+| **Every member speaks** | Five segments, five speakers. |
+| **Rotate the device once** | Segment 3. |
 
-### Setup checklist
+### Setup — do all of this before recording
 
-At 10 minutes there is no room to fix anything mid-take. Do all of this first.
-
-- [ ] Release APK installed on the phone
-- [ ] **Signed in already, questionnaire completed**, so Segment 1's cold start
-      shows a persisted session. Aime registers a fresh account live in Segment 2
-- [ ] **Two listings already published by your account**, so My Listings has
-      something to edit and delete without publishing one first
-- [ ] Firebase Console open at **Firestore → Data**, second tab at
-      **Authentication → Users**, both already scrolled to the right place
-- [ ] A spare university email typed into a notes app, ready to paste
-- [ ] A university-domain Google account already added to the phone
-- [ ] Phone on Do Not Disturb, battery above 50%, **auto-rotate on**
-- [ ] Screen recorder at 1080p+
-- [ ] One person drives the phone throughout; speakers change, the driver does not
-- [ ] **Do one full dry run.** At this length, a single fumbled navigation costs
-      10% of the video
+- [ ] Release APK installed
+- [ ] **Signed in, questionnaire completed** — so Segment 1's cold start shows a
+      persisted session
+- [ ] **Two listings already published by your account** — so My Listings has
+      something to edit and delete
+- [ ] **In Settings, turn ON "Replay the intro slides"** — the onboarding screens
+      only appear when signed out, so this is what makes them show for Aime after
+      David signs out. Without it, that screen never appears in the video.
+- [ ] Firebase Console open: **Firestore → Data** in one tab, **Authentication →
+      Users** in another, both pre-scrolled
+- [ ] Spare university email in a notes app, ready to paste
+- [ ] University-domain Google account already on the phone
+- [ ] Do Not Disturb on, **auto-rotate on**, battery above 50%
+- [ ] One person drives the phone for the whole video; only the speaker changes
+- [ ] **One full dry run**, timed
 
 ---
 
-## Segment 1 — Cold start, compatibility, and listing CRUD
-### Speaker: **David Muotoh** · 2 min 45 s
+## Segment 1 — David Muotoh
+### Cold start · listing create, update, delete · validation error
 
-> "Houseslice — a verified student-only housing marketplace for Kigali, running
-> as a release build on a physical phone. Starting cold."
+**Do:** Launch the app from the home screen (cold).
 
-**Do:** Tap the app icon.
+> "Houseslice — a student-only housing marketplace for Kigali, running as a
+> release build on a physical phone. Cold launch, and it goes straight to the
+> home feed: the session persisted across the restart."
 
-> "Straight to the home feed, no sign-in screen: the session persisted across
-> the restart."
+**Do:** Open a listing. Tap **"Why?"**.
 
-**Do:** Scroll the feed briefly.
+> "Every listing shows a match percentage, computed on the device from my
+> lifestyle answers against the host's. This breaks that score down across nine
+> dimensions and explains each one."
 
-> "Every card carries two things. A **Student** or **Realtor** badge — on
-> Facebook you can't tell a peer from a letting agent, here you always can. And
-> a **match percentage**, which isn't stored in the database. It's computed on
-> the device from my lifestyle answers against the host's."
+**Do:** Close the sheet. **Profile → My Listings → New listing.** Submit with a
+required field left blank.
 
-**Do:** Open a high-scoring listing. Tap **"Why?"**.
+> *(pause)* "Validation stops it before anything reaches the network."
 
-> "Rather than just asserting a number, it breaks the score across nine
-> dimensions and explains each one — so I can see we match on sleep schedule but
-> differ on guests, and judge for myself."
+**Do:** Complete the form, attach a photo, publish. **Switch to the console.**
 
-**Do:** Close the sheet. **Profile → My Listings**.
+> *(pause)* "New document in `properties`. That's **create**."
 
-> "These are the listings I've published. What decides which rows appear is
-> `ownerUid` — the same field the Firestore security rules check — so the app
-> can never offer me an action the backend would refuse."
+**Do:** My Listings → **Edit** → change the price → Save. **Switch to the
+console.**
 
-**Do:** **New listing**. Submit with a required field blank.
+> *(pause)* "Same document, new price. **Update**."
 
-> **(pause)** "Validation stops it before anything hits the network."
+**Do:** **Delete** → confirm the dialog. **Switch to the console.**
 
-**Do:** Complete the form, attach a photo, publish.
-
-> **(switch to console)** **(pause)** "New document in `properties`, `ownerUid`
-> set to my UID. **Create.**"
-
-**Do:** My Listings → **Edit** → change the price → Save.
-
-> **(switch to console)** **(pause)** "Same document, new price. **Update** — and
-> the rules run the same field validation on an edit as on a create."
-
-**Do:** **Delete** → confirmation dialog appears.
-
-> "Delete confirms first, because it can't be undone."
-
-**Do:** Confirm. *(pause)*
-
-> "Row gone instantly — optimistic, the UI leads and reverts if the write fails
-> — and the document is gone in the console. **Delete.**"
+> *(pause)* "Row gone instantly, and the document is gone. **Delete**. Which rows
+> appear here is decided by `ownerUid` — the same field the security rules check
+> — so the app can't offer an action the backend would refuse."
 
 **Do:** Profile → **Sign Out**.
 
-> "Signing out so Aime can register from scratch. This clears the Google session
-> too, which matters shortly."
+> "Signing out so Aime can register from scratch."
 
 ---
 
-## Segment 2 — Registration, validation and both authentication methods
-### Speaker: **Aime Ndayambaje** · 2 min 15 s
+## Segment 2 — Aime Ndayambaje
+### Onboarding · registration · validation error · both auth methods
 
-> "I built authentication. Houseslice is student-only, and that's enforced, not
-> just stated."
+**Do:** The intro slides appear. Page through them.
+
+> "A signed-out user sees the intro slides. I'll register a new account."
 
 **Do:** Register → enter `someone@gmail.com` and a password → submit.
 
-> **(pause)** "Rejected — the validator only accepts approved university
-> domains."
-
-**Do:** Clear it. Leave username blank, enter a 3-character password. Submit.
-
-> "Username at least three characters, password at least six, and nothing
-> reaches the network until every field passes."
+> *(pause)* "Rejected. Houseslice only accepts approved university domains —
+> that's enforced, not just stated."
 
 **Do:** Register with a real university address.
 
-> **(switch to console → Authentication → Users)** **(pause)** "The account,
-> created just now. A verification email has already gone out."
+**Do:** **Switch to console → Authentication → Users**, then **Firestore →
+`users`**.
 
-**Do:** Switch to Firestore → `users`.
+> *(pause)* "The account in Firebase Authentication, and a profile document
+> written at `users/` and the new UID. A verification email has already gone out."
 
-> "And a profile document at `users/` and the new UID. Note what *isn't* there:
-> no `emailVerified` field. Verification is read from the Auth token every time,
-> never stored — so writing to your own profile can't fake a verified badge."
+**Do:** Back on the phone — the questionnaire appears. Skip through it. Sign out.
 
-**Do:** Back on the phone — the new account lands on the questionnaire. Skip
-through it.
+**Do:** Tap **Google**. Complete sign-in with a **university** Google account.
 
-> "A new account goes straight to the questionnaire; Nelly will walk that. First
-> our second method — signing out and back in with Google."
-
-**Do:** Sign out → tap **Google**.
-
-> "Because the earlier sign-out cleared the Google session, we get the account
-> picker rather than silently reusing the last account."
-
-**Do:** Complete Google sign-in with a **university** Google account.
-
-> "The important part is invisible: the domain is checked *before* a Firebase
-> session is created. A personal Gmail would authenticate fine with Google and
-> we'd still reject it and drop the session. Two methods, both gated. Nelly."
+> "Our second authentication method. The domain is checked before a Firebase
+> session is created, so a personal Gmail would be rejected even though Google
+> authenticated it. Nelly."
 
 ---
 
-## Segment 3 — Questionnaire, preferences, persistence and rotation
-### Speaker: **Isimbi Nelly** · 2 min
+## Segment 3 — Isimbi Nelly
+### State update across widgets · preference persistence across restart · rotation
 
-> "I built the app's infrastructure — the wiring, theme system, shared widgets
-> and routing. Starting with the questionnaire that feeds David's matching
-> engine."
+**Do:** Profile → Lifestyle questionnaire. Answer three or four questions. Submit.
 
-**Do:** Profile → Lifestyle questionnaire. Answer three or four questions
-briskly — bedtime, cleanliness, guests.
+**Do:** Return to the home feed.
 
-> "Eleven questions covering what people actually fall out over as housemates:
-> sleep schedule, tidiness, guests, smoking, pets, sharing."
+> *(pause)* "Every match percentage on the feed has changed — all recomputed from
+> the answers I just gave. One state change, every card updates."
 
-**Do:** Finish and submit. Return to the home feed.
+**Do:** Profile → Settings → switch the theme to **Dark**. Set the preferred
+district.
 
-> **(pause)** "Every match percentage on the feed has changed — all recomputed
-> against the answers I just gave. One state change, every card across the app
-> updates, because they all read from a single `LifestyleCubit` instance
-> registered as a singleton so two screens can never disagree."
+> "Four preferences, all saved to the device."
 
-**Do:** Profile → Settings → switch to **Dark**. *(pause on the change)*
+**Do:** **Fully close the app** — swipe it from recents, don't just background
+it. Relaunch.
 
-> "Four preferences: theme, notifications, preferred district, onboarding
-> replay. Only `MaterialApp` rebuilds on a theme change — the rest of the tree
-> isn't torn down."
-
-**Do:** Also set the preferred district. Then **fully close the app** (swipe from
-recents — not just background it). Relaunch.
-
-> **(pause while it launches)** "Straight into dark mode, with no flash of the
-> light theme first, because preferences load before the first frame is drawn in
-> `main.dart`. District held, and I'm still signed in."
+> *(pause)* "Straight into dark mode with no flash of the light theme, because
+> preferences load before the first frame is drawn. The district held, and I'm
+> still signed in."
 
 **Do:** Open Settings to show both values retained.
 
-**Do:** **Rotate to landscape.** Hold. Scroll. Navigate to one other screen.
+**Do:** **Rotate to landscape.** Scroll. Visit Notifications, Profile and Explore
+while still rotated.
 
-> "Landscape, no overflow. We test this automatically — every screen asserted at
-> three viewport sizes, which is how we found ten layout bugs that were
-> invisible in portrait."
+> "Landscape, no overflow on any screen. We assert every screen at three viewport
+> sizes in the test suite."
 
 **Do:** Rotate back to portrait.
 
-> "Gift has browsing and search."
+> "Gift has browsing."
 
 ---
 
-## Segment 4 — Explore, search and favourites
-### Speaker: **Gift Don-Emmanuel** · 1 min 30 s
+## Segment 4 — Gift Don-Emmanuel
+### Explore and search · favourite create and delete
 
-> "I built the property module, across all three layers."
+**Do:** Explore tab. Then Search — type a partial query, then a nonsense query.
 
-**Do:** Explore tab.
+> "Explore and search run off the same catalogue state. Live filtering, and an
+> empty state rather than a blank screen."
 
-> "Explore is a grid over the same catalogue — the same `PropertyBloc` state
-> rendered differently, so the two views can't disagree."
+**Do:** Return to Explore. Tap the heart on a listing. *(pause)* Switch to the
+Favourites tab.
 
-**Do:** Search → type a partial query → then a nonsense query.
+> "The heart filled instantly and it's in Favourites — one state change, two
+> parts of the UI."
 
-> "Live filtering, and a proper empty state rather than a blank screen."
+**Do:** **Switch to the console** — show the new favourites document.
 
-**Do:** Clear, return to Explore.
+> *(pause)* "The document ID is the listing ID, so favouriting twice is
+> idempotent, and the body holds only a timestamp."
 
-> "Now watch two things at once — the heart on this card, and the Favourites tab
-> below."
+**Do:** Back on the phone, un-heart it. **Switch to the console.**
 
-**Do:** Tap the heart. *(pause)* Switch to Favourites — it's there.
-
-> "Filled instantly, and it's in Favourites. Optimistic again."
-
-**Do:** **(switch to console)** show the new favourites document.
-
-> "In Firestore the document ID *is* the listing ID, so favouriting twice is
-> idempotent, and the body holds only a timestamp — no duplicated listing data."
-
-**Do:** Back on the phone, un-heart it. *(pause)*
-
-> "Gone from Favourites, and the document is deleted. Create and delete, live.
-> Nkuba has booking."
+> *(pause)* "Gone from Favourites and deleted in Firestore. Nkuba has booking."
 
 ---
 
-## Segment 5 — Booking, payment validation and cancellation
-### Speaker: **Nkuba Junior Igiraneza** · 1 min 45 s
+## Segment 5 — Nkuba Junior Igiraneza
+### Booking create · payment validation error · cancellation update
 
-> "I built the booking module."
+**Do:** Open a listing → **Book** → select a start and end date.
 
-**Do:** Open a listing → **Book**. Select a start and end date.
+> "Dates on a range calendar, then payment — card or mobile money."
 
-> "Dates first, on a custom range calendar. Then payment — card or mobile money."
+**Do:** Add Card → enter an **invalid** card number.
 
-**Do:** Card → Add Card → enter an **invalid** number.
-
-> **(pause)** "Rejected. That's a Luhn checksum, the same algorithm real
-> processors use, so an obviously fake number never gets through."
+> *(pause)* "Rejected by a Luhn checksum, the same algorithm real processors use."
 
 **Do:** Enter a valid test number and expiry. Continue to the price breakdown.
 
-> "Rent, tax, total. To be clear on scope: nothing is charged and no card data
-> leaves the device."
+> "Rent, tax and total. Nothing is charged and no card data leaves the device."
 
-**Do:** Confirm. Success sheet appears.
+**Do:** Confirm. **Switch to the console.**
 
-> **(switch to console)** **(pause)** "The booking document, written just now. It
-> stores the property's name and price alongside the ID — a deliberate snapshot,
-> because a booking is a financial record. If the host later changes their
-> price, this booking still shows what was agreed."
+> *(pause)* "The booking document, written just now."
 
-**Do:** My Bookings → cancel a booking.
+**Do:** My Bookings → cancel a booking. **Switch to the console.**
 
-> **(switch to console)** **(pause)** "`status` flips to `cancelled` — and it's
-> the only field that *can* change. The rules use a diff check, so a client can
-> move a booking through its lifecycle but never rewrite the price or dates of a
-> stay already agreed."
+> *(pause)* "`status` flips to `cancelled`, and it's the only field that can
+> change — the rules block any edit to the price or the dates of a booking that's
+> already been agreed."
 
 **Do:** Show the Cancelled tab.
 
-> "So: two authentication methods, both domain-gated; full create, read, update
-> and delete against Firestore behind owner-scoped security rules; BLoC on a
-> Clean Architecture codebase with no business logic in the UI; five preferences
-> that survive a restart; and 298 passing tests at 74.5% coverage. Thanks for
-> watching."
+> "So: two authentication methods, full create, read, update and delete against
+> Firestore behind owner-scoped security rules, BLoC on a Clean Architecture
+> codebase, preferences that survive a restart, and 298 passing tests at 74.5%
+> coverage. Thanks for watching."
 
 ---
 
-## Coverage check against the rubric
+## Coverage check
 
-Tick each before submitting. Every one is a scored line item.
+Every scored item, and where it happens. If a take misses one, it must be redone.
 
-| Rubric requirement | Segment | Speaker |
-|---|---|---|
-| Cold-start launch | 1 | David |
-| Auth state kept after restart | 1 and 3 | David, Nelly |
-| Register → logout → login | 1 (logout) and 2 | David, Aime |
-| Both authentication flows (email/password + Google) | 2 | Aime |
-| Visit every screen | 1–5 | All |
-| Rotate the device once | 3 | Nelly |
-| **Create** in Firestore, console visible | 1 (listing), 4 (favourite), 5 (booking) | David, Gift, Nkuba |
-| **Read** from Firestore | 1, 3, 4 | David, Nelly, Gift |
-| **Update** in Firestore, console visible | 1 (listing price), 5 (booking status) | David, Nkuba |
-| **Delete** in Firestore, console visible | 1 (listing), 4 (unfavourite) | David, Gift |
-| State update touching two widgets | 3 (quiz → every card's score), 4 (heart → Favourites tab) | Nelly, Gift |
-| SharedPreferences change → restart → persisted | 3 | Nelly |
-| Forced validation error with a polite message | 1, 2, 5 | David, Aime, Nkuba |
-| Every member speaks | 1–5 | All |
-| No slide deck, no team introductions | — | — |
+| Rubric requirement | Segment |
+|---|---|
+| Cold-start launch | 1 |
+| Auth state kept after restart | 1, 3 |
+| Register → logout → login | 1 (logout), 2 |
+| Both authentication flows | 2 |
+| Visit every screen | 1–5 |
+| Rotate the device once | 3 |
+| **Create** in Firestore, console visible | 1 (listing), 2 (profile), 4 (favourite), 5 (booking) |
+| **Read** from Firestore | 1, 3, 4 |
+| **Update** in Firestore, console visible | 1 (listing price), 5 (booking status) |
+| **Delete** in Firestore, console visible | 1 (listing), 4 (unfavourite) |
+| State update touching two widgets | 3 (quiz → every card), 4 (heart → Favourites tab) |
+| SharedPreferences change → restart → persisted | 3 |
+| Validation error with a polite message | 1, 2, 5 |
+| Every member speaks | 1–5 |
+| No slide deck, no introductions | — |
 
 ---
 
-## If you run over or under
+## Add-backs — only if your dry run finishes under 10:00
 
-**Over 11 minutes** — cut narration, never actions. The safe lines to lose are
-the architectural asides: the singleton explanation in Segment 3, the snapshot
-rationale in Segment 5, the `emailVerified` note in Segment 2. Each buys about
-fifteen seconds and none is a scored item.
+Add these in order until you clear 10 minutes. Each is written out so nobody
+improvises on camera. They add explanation, never new navigation, so they cannot
+break the take.
 
-**Under 10 minutes** — you are below the requirement. Hold the *(pause)* beats
-longer, especially on the Firebase Console, and scroll the home feed and the
-"Why?" breakdown more slowly. Do not add new material mid-take.
+**1. David, after the "Why?" sheet (~20 s)**
+> "The scorer is a plain Dart class in the domain layer — it doesn't import
+> Flutter or Firebase, which is why we can unit-test the matching logic directly
+> without a widget tree or an emulator."
+
+**2. David, at the badges on the home feed (~15 s)**
+> "Every card also carries a Student or Realtor badge. On Facebook you can't tell
+> a fellow student from a letting agent; here you always can. It was the signal
+> students asked for most."
+
+**3. Aime, at the `users` document in the console (~20 s)**
+> "Note what isn't in this document — there's no `emailVerified` field.
+> Verification status is read from the Firebase Auth token every time, never
+> stored, so writing to your own profile can't manufacture a verified badge."
+
+**4. Aime, after the blank-field rejection (~15 s)**
+> "Username has to be at least three characters and the password at least six,
+> and nothing reaches the network until every field passes."
+
+**5. Nelly, after the scores recompute (~20 s)**
+> "They all read from a single `LifestyleCubit` instance, registered as a
+> singleton precisely so two screens can never disagree about a score."
+
+**6. Nelly, at the theme change (~15 s)**
+> "Only `MaterialApp` rebuilds when the theme changes — the rest of the widget
+> tree isn't torn down, because the rebuild is scoped to that one preference."
+
+**7. Nkuba, at the booking document (~20 s)**
+> "It stores the property's name and price alongside the ID. That's a deliberate
+> snapshot, not duplication — a booking is a financial record, so if the host
+> later changes their price, this booking still shows what was agreed."
+
+**8. Nelly, at the rotation (~15 s)**
+> "That suite is how we found ten real layout bugs that were completely invisible
+> in portrait."
+
+Eight add-backs total roughly two and a half minutes.
+
+---
 
 ## If something goes wrong
 
-Don't stop unless the app crashes — a brief stumble costs far less than a
-visible cut, and the rubric rewards a single continuous recording. If a network
-call is slow, say what you're waiting for rather than going silent.
-
+Don't stop unless the app crashes — a stumble costs far less than a visible cut.
+If a network call is slow, say what you're waiting for rather than going silent.
 If the app does crash, restart from the beginning of that speaker's segment.
