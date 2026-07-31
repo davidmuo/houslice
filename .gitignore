@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# One-off admin script for exporting the seed catalogue. Deliberately not part
+# of the app: it is a console tool, so its `print` calls would be the only
+# `flutter analyze` issue in the project.
+/tool/

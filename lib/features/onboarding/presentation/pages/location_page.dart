@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/routes/app_routes.dart';
 import '../../../../core/theme/app_colors.dart';
+import '../../../../core/widgets/fill_viewport_scroll.dart';
 import '../../../../core/widgets/primary_button.dart';
 
 /// "Hi, Nice to meet you!" location chooser shown right after registration.
@@ -22,7 +23,9 @@ class LocationPage extends StatelessWidget {
     final textTheme = Theme.of(context).textTheme;
     return Scaffold(
       body: SafeArea(
-        child: Padding(
+        // Scroll-safe: the fixed-height artwork and two buttons are taller
+        // than a landscape viewport, so the column has to be able to scroll.
+        child: FillViewportScroll(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           child: Column(
             children: [
