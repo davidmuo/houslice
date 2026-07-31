@@ -30,7 +30,14 @@
 
 **GITHUB LINK:** https://github.com/davidmuo/houslice
 
-**GROUP CONTRIBUTION TRACKER:** [INSERT SHARED TRACKER LINK]
+**GROUP CONTRIBUTION TRACKER:**
+https://docs.google.com/spreadsheets/d/16b-F2xQTA7ibsE82j9-ib44QQZ1xNCI8RiYPUROfOGE/edit?gid=0#gid=0
+
+**FIGMA DESIGN:**
+https://www.figma.com/design/p19brWS9LFrF2hCMMt7IHc/houseslice?node-id=0-1
+
+**FIGMA PROTOTYPE:**
+https://www.figma.com/proto/p19brWS9LFrF2hCMMt7IHc/houseslice?node-id=0-1
 
 | S/N | Group Member | Role | Attendance | Commits | Contribution |
 |---|---|---|---|---|---|
@@ -140,19 +147,69 @@ student find *a room*; Houseslice aims to help them find *the right room and the
 right housemate*, by modelling lifestyle compatibility explicitly and explaining
 it rather than presenting an opaque score.
 
-**[INSERT: any additional objectives from the research half of the report.]**
+These objectives extend the five set out in the team's earlier User Research
+and Prototype Design report:
+
+1. Understand how university students in Kigali currently search for housing and
+   identify the points of greatest friction in that process.
+2. Identify the trust, safety and compatibility concerns that drive student
+   housing decisions.
+3. Design a verified, student-only housing platform that responds to those
+   concerns through evidence-based product decisions.
+4. Translate user research findings into an interactive prototype demonstrating
+   the platform's core flows.
+5. Position the platform within a sustainable income model that can scale to
+   other African university hubs.
+
+Objective 4 produced the Figma prototype linked above. **This report covers the
+sixth objective: implementing that prototype as a working Flutter application
+backed by Firebase.**
 
 ## 1.2 Contributions
 
-**[INSERT: the problem statement, literature review, personas, empathy maps,
-competitor analysis, journey map and storyboard from the research half. This
-section should establish — with the team's own interview and survey evidence —
-why student housing in Kigali needs this application. The technical sections
-below deliberately do not restate research findings, so that nothing in this
-document is attributed to research that was not actually carried out.]**
+The problem this application addresses was established through primary research
+documented in the team's *User Research and Prototype Design Report*, in which
+ten students were interviewed across the African Leadership University, the
+University of Rwanda and the Adventist University of Central Africa. The cohort
+comprised six international students from Burundi, Uganda, Kenya, Nigeria and
+Ghana, and four Rwandan students, with six female and four male participants
+spanning first-year arrivals through final-year students with sublet experience.
 
-From a technical standpoint, this project contributes a working reference for
-several practices the course emphasises:
+**Problem statement.** University students in Kigali need a reliable,
+student-focused way to find safe and affordable accommodation, compatible
+housemates and flexible short-term housing, because current search methods are
+unverified, fragmented across informal platforms, and provide limited information
+about housing quality, housemate compatibility and neighbourhood safety.
+
+Four findings from that research directly determined what was built, and each
+one is traceable to a specific feature in this implementation:
+
+| Research finding | Implemented as | Section |
+|---|---|---|
+| Trust was the dominant concern; students named scams, misleading listings and unverified landlords as their main source of anxiety | University-domain-gated authentication with email verification, and a Student/Realtor badge on every listing | 5.6, 2.1 |
+| Housemate compatibility — particularly cleanliness, sleep schedule and study habits — predicts satisfaction more consistently than price | An eleven-question lifestyle questionnaire and a compatibility engine that explains its score across nine dimensions | 2.1, 5.2 |
+| A structural gap in short-term housing: students pay for empty rooms during internships and breaks | A dual listing model, where a student publishes a room for a defined window and a browsing student books it on a range calendar | 2.1, 5.5 |
+| Students shared personal phone numbers in public groups because no safer channel existed | Contact details are held on the listing document behind authenticated reads rather than posted publicly | 5.3, 5.4 |
+
+The literature supports the compatibility finding directly: Erb et al. (2014)
+report that mismatched roommates are a leading cause of conflict and reduced
+academic performance, while positive roommate relationships correlate with
+stronger academic outcomes. Nielsen (2019) similarly identifies identity
+verification and reliable review systems as the determinants of trust in online
+marketplaces, which is the reasoning behind gating the platform on university
+email rather than opening it to any account.
+
+The competitor analysis in that report examined the Facebook and WhatsApp ALU
+Housing Group, Airbnb Kigali, House Rwanda and Roomster against ten criteria,
+and found that none combined student verification, housemate matching and
+short-term sublet support. That gap is what this application implements.
+
+## What this report adds
+
+The research report ended at an interactive Figma prototype. This report covers
+what happened next: translating that prototype into a working Flutter
+application backed by Firebase. From a technical standpoint, the project
+contributes a working reference for several practices the course emphasises:
 
 - A **Clean Architecture** Flutter codebase in which the domain layer imports
   nothing from Flutter or Firebase, so business rules are independently
@@ -965,31 +1022,52 @@ Scrum*. Retrieved from https://scrumguides.org
 W3C. (2018). *Web Content Accessibility Guidelines (WCAG) 2.1 — Contrast
 (Minimum)*. Retrieved from https://www.w3.org/TR/WCAG21/#contrast-minimum
 
-**[INSERT: the references cited in the research half of the report — literature
-review, competitor analysis, and any interview or survey methodology sources.
-Merge them into this list in alphabetical order.]**
+Airbnb, Inc. (2024). *How service fees work*. Airbnb Help Center. Retrieved from
+https://www.airbnb.com/help/article/1857
+
+Erb, S. E., Renshaw, K. D., Short, J. L., & Pollard, J. W. (2014). The importance
+of college roommate relationships: A review and systemic conceptualization.
+*Journal of Student Affairs Research and Practice*, 51(1), 43–55.
+
+McCabe, D. A., & Collins, P. N. (2020). Student housing and academic success: The
+role of living environments in higher education. *Journal of College Student
+Development*, 61(4), 450–465.
+
+Nielsen, J. (2019). *Trustworthiness in user experience design*. Nielsen Norman
+Group.
+
+Norman, D. (2013). *The design of everyday things* (Revised and expanded ed.).
+Basic Books.
+
+OECD. (2023). *Education at a glance 2023: OECD indicators*. OECD Publishing.
+
+Roomster Corp. (2024). *Roomster pricing and membership*. Retrieved from
+https://www.roomster.com
+
+UN-Habitat. (2022). *World cities report 2022: Envisaging the future of cities*.
+United Nations Human Settlements Programme.
+
+UNESCO. (2023). *Global education monitoring report 2023: Technology in
+education*. UNESCO Publishing.
+
+World Bank. (2023). *Cities, crowding, and the future of housing*. World Bank.
 
 ---
 
 # APPENDIX A — OUTSTANDING INSERTIONS
 
-Every item below must be supplied before submission.
+Everything else in this document is complete. These four items need something
+only the team can supply.
 
 | # | Item | Where |
 |---|---|---|
 | 1 | Facilitator name | Title page |
-| 2 | ALU logo image | Title page |
-| 3 | Demo video link (YouTube) | Group Activities |
-| 4 | Group contribution tracker link | Group Activities |
-| 5 | Research half: problem statement, literature review, personas, empathy maps, competitor analysis, journey map, storyboard | §1.2 |
-| 6 | Research references, merged alphabetically | §10 |
-| 7 | Screenshot: `lib/` folder structure in the editor | Figure 18 |
+| 2 | ALU logo | Title page |
+| 3 | Demo video link (YouTube, unlisted or public) | Group Activities |
+| 4 | Screenshot: `lib/` folder structure in the editor | Figure 18 |
 
-Figures 1–17 are already embedded. Figures 15–17 regenerate from real
-command output with:
+After adding any of these, regenerate the PDF with:
 
 ```sh
-flutter analyze lib test  > docs/build/analyze.txt
-flutter test --coverage   > docs/build/test_raw.txt
-python tool/capture_terminal.py
+python tool/build_report.py
 ```
