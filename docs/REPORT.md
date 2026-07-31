@@ -128,7 +128,6 @@ favourites, and preferences that persist across restarts.
 | 15 | `flutter analyze` reporting zero issues | `docs/screenshots/12-analyze.png` |
 | 16 | `flutter test` — 303 tests passing | `docs/screenshots/13-tests.png` |
 | 17 | Test coverage by feature area | `docs/screenshots/14-coverage.png` |
-| 18 | Project folder structure in the editor | **[INSERT SCREENSHOT]** |
 
 ---
 
@@ -520,8 +519,6 @@ lib/
 
 Every feature repeats the same `domain / data / presentation` split, so a
 developer who learns one feature's layout knows them all.
-
-**[INSERT SCREENSHOT (Figure 18): the `lib/` folder expanded in the editor.]**
 
 ## 5.2 State Management in Practice
 
@@ -1093,7 +1090,7 @@ World Bank. (2023). *Cities, crowding, and the future of housing*. World Bank.
 
 # APPENDIX A — OUTSTANDING INSERTIONS
 
-Everything else in this document is complete. These four items need something
+Everything else in this document is complete. These three items need something
 only the team can supply.
 
 | # | Item | Where |
@@ -1101,7 +1098,6 @@ only the team can supply.
 | 1 | Facilitator name | Title page |
 | 2 | ALU logo | Title page |
 | 3 | Demo video link (YouTube, unlisted or public) | Group Activities |
-| 4 | Screenshot: `lib/` folder structure in the editor | Figure 18 |
 
 After adding any of these, regenerate the PDF with:
 
