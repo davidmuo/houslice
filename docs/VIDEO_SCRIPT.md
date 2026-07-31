@@ -190,10 +190,11 @@ and Explore while rotated.
 
 > "Booking created."
 
-**David does:** My Bookings → cancels that booking.
+**David does:** My Bookings → **Upcoming** tab → taps **Cancel booking** on it →
+confirms the dialog.
 
-> *(pause)* "And cancelled. A create and an update on the same record — and
-> `status` is the only field that can change."
+> *(pause)* "Cancelling asks first, because it can't be undone. A create and an
+> update on the same record — and `status` is the only field that can change."
 
 **David does:** shows the Cancelled tab.
 

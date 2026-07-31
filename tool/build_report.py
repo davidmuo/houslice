@@ -58,7 +58,7 @@ FIGURES = {
         "host's lifestyle answers embedded on the listing",
     ),
     15: ("12-analyze.png", "`flutter analyze` reporting zero issues"),
-    16: ("13-tests.png", "`flutter test` — 298 tests passing"),
+    16: ("13-tests.png", "`flutter test` — 303 tests passing"),
     17: ("14-coverage.png", "Test coverage by feature area"),
 }
 

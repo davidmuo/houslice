@@ -172,8 +172,8 @@ Rules live in [`firestore.rules`](firestore.rules) and indexes in
 
 ```sh
 flutter analyze lib test   # 0 issues
-flutter test               # 298 tests, all passing
-flutter test --coverage    # 74.5% line coverage
+flutter test               # 303 tests, all passing
+flutter test --coverage    # 74.6% line coverage
 dart format lib test
 ```
 

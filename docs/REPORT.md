@@ -113,7 +113,7 @@ favourites, and preferences that persist across restarts.
 | 13 | My Listings with edit and delete | `docs/screenshots/15-my-listings.png` |
 | 14 | Firestore console showing a document written by the app | `docs/screenshots/16-firestore-console.png` |
 | 15 | `flutter analyze` reporting zero issues | `docs/screenshots/12-analyze.png` |
-| 16 | `flutter test` — 298 tests passing | `docs/screenshots/13-tests.png` |
+| 16 | `flutter test` — 303 tests passing | `docs/screenshots/13-tests.png` |
 | 17 | Test coverage by feature area | `docs/screenshots/14-coverage.png` |
 | 18 | Project folder structure in the editor | **[INSERT SCREENSHOT]** |
 
@@ -213,10 +213,15 @@ toggle so the interface responds instantly (Figure 7).
 
 **Booking.** A custom range calendar, payment-method selection (card or mobile
 money), an Add Card screen with Luhn checksum and expiry validation, a price
-breakdown with tax, and a success sheet.
+breakdown with tax, and a success sheet. A student cannot hold two active
+bookings for the same property — a second attempt is refused with an
+explanation — while a property whose previous stay was completed or cancelled
+can be booked again.
 
 **My Bookings.** Upcoming, Completed and Cancelled tabs with status chips, a
 write-review sheet, a call-agent action and illustrated empty states (Figure 8).
+Tapping a booking opens the listing it is for, and any booking that has not yet
+happened can be cancelled after a confirmation prompt.
 
 **Settings.** Four preferences persisted across restarts: colour theme
 (system, light or dark), notification opt-in, preferred Kigali district, and
@@ -744,8 +749,8 @@ student's chosen theme rather than flashing the default one:
 
 ```sh
 flutter analyze lib test   # 0 issues
-flutter test               # 298 tests, all passing
-flutter test --coverage    # 74.5% line coverage (3,712 / 4,984 lines)
+flutter test               # 303 tests, all passing
+flutter test --coverage    # 74.6% line coverage (3,745 / 5,022 lines)
 ```
 
 The suite covers validators, formatters, entities, models, data sources,
@@ -902,8 +907,8 @@ authentication methods with domain gating and email verification; full CRUD
 against Cloud Firestore behind security rules that scope every document to its
 owner; advanced state management through BLoC and Cubit with no business logic
 in the UI layer; Clean Architecture with a domain layer that depends on nothing;
-five preferences persisted across restarts; and a test suite of 298 tests
-covering unit, widget and responsive-layout concerns at 74.5% line coverage.
+five preferences persisted across restarts; and a test suite of 303 tests
+covering unit, widget and responsive-layout concerns at 74.6% line coverage.
 
 Two lessons stand out. The first is that **testing found defects that inspection
 did not** — ten layout overflow errors, every one of them invisible in portrait
