@@ -110,8 +110,8 @@ favourites, and preferences that persist across restarts.
 | 10 | Settings in light theme | `docs/screenshots/10-settings-light.png` |
 | 11 | Settings in dark theme | `docs/screenshots/11-settings-dark.png` |
 | 12 | Entity–relationship diagram | Section 5.3 |
-| 13 | My Listings with edit and delete | **[INSERT SCREENSHOT]** |
-| 14 | Firestore console showing a document written by the app | **[INSERT SCREENSHOT]** |
+| 13 | My Listings with edit and delete | `docs/screenshots/15-my-listings.png` **(to capture)** |
+| 14 | Firestore console showing a document written by the app | `docs/screenshots/16-firestore-console.png` **(to capture)** |
 | 15 | `flutter analyze` reporting zero issues | `docs/screenshots/12-analyze.png` |
 | 16 | `flutter test` — 298 tests passing | `docs/screenshots/13-tests.png` |
 | 17 | Test coverage by feature area | `docs/screenshots/14-coverage.png` |
@@ -200,7 +200,7 @@ from a fellow student or a letting agent (Figure 3).
 post a whole property. Selecting "Realtor" automatically forces "Entire place",
 because an agency has no lifestyle profile to match against. **My Listings**
 shows everything the signed-in student has published, with edit and delete
-actions on each row.
+actions on each row (Figure 13).
 
 **Explore and search.** Grid browsing, live search with Recent and Result
 sections, and a "Search not found" empty state (Figure 6).
@@ -667,8 +667,9 @@ Every operation updates the interface immediately and reports failure through a
 the change appears at once and is reverted, with an explanatory message, if the
 backend rejects it.
 
-**[INSERT SCREENSHOT (Figure 14): the Firestore console showing a document
-created or modified by the application, ideally beside the phone.]**
+Figure 14 shows the Firestore console immediately after a listing was published
+from the application, with the `ownerUid` field set to the publishing student's
+Firebase Auth UID — the field every rule in Section 5.4 is written against.
 
 ## 5.6 Authentication
 

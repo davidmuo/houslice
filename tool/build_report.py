@@ -50,6 +50,14 @@ FIGURES = {
     9: ("09-profile.png", "Profile"),
     10: ("10-settings-light.png", "Settings in light theme"),
     11: ("11-settings-dark.png", "Settings in dark theme"),
+    # Not captured yet — these two need the app on a phone and a Firebase
+    # login. Drop the files in and rebuild; the placeholders resolve
+    # themselves. See placeholder_html() below.
+    13: ("15-my-listings.png", "My Listings, with edit and delete on each row"),
+    14: (
+        "16-firestore-console.png",
+        "The Firestore console showing a listing document written by the app",
+    ),
     15: ("12-analyze.png", "`flutter analyze` reporting zero issues"),
     16: ("13-tests.png", "`flutter test` — 298 tests passing"),
     17: ("14-coverage.png", "Test coverage by feature area"),
@@ -121,6 +129,15 @@ a { color: #000; text-decoration: underline; }
 figure { margin: 12pt 0 16pt; text-align: center; page-break-inside: avoid; }
 figure img { max-width: 62%; height: auto; border: 1px solid #bbb; }
 figure.wide img { max-width: 100%; border: none; }
+figure.missing .ph {
+  border: 2px dashed #d4b106;
+  background: #fffbe6;
+  padding: 22pt 14pt;
+  font-size: 12pt;
+  font-weight: bold;
+  color: #7a6000;
+}
+figure.missing .ph span { font-weight: normal; font-size: 10.5pt; }
 figcaption {
   font-size: 11pt;
   font-style: italic;
@@ -167,11 +184,27 @@ def inline(text: str) -> str:
     return out
 
 
+def placeholder_html(number: int, name: str, caption: str) -> str:
+    """Stands in for a figure whose image has not been captured yet.
+
+    Rendered visibly rather than silently skipped, so an uncaptured figure
+    cannot reach the marker unnoticed. It disappears on its own once the file
+    exists.
+    """
+    return (
+        '<figure class="figure missing"><div class="ph">'
+        f"Figure {number} not captured yet<br>"
+        f"<span>save it as <code>docs/screenshots/{html.escape(name)}</code> "
+        "and rerun <code>python tool/build_report.py</code></span>"
+        f"</div><figcaption>Figure {number}. {inline(caption)}</figcaption></figure>"
+    )
+
+
 def figure_html(number: int) -> str:
     name, caption = FIGURES[number]
     path = SCREENSHOTS / name
     if not path.exists():
-        return ""
+        return placeholder_html(number, name, caption)
     cls = "figure wide" if number in WIDE_FIGURES else "figure"
     # inline() renders the backticks in captions as <code>.
     return (
