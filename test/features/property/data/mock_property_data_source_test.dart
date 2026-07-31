@@ -1,5 +1,9 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:houslice/core/error/exceptions.dart';
 import 'package:houslice/features/property/data/datasources/mock_property_data_source.dart';
+import 'package:houslice/features/property/data/models/property_model.dart';
+
+import '../../../fixtures/property_fixtures.dart';
 
 /// Tests for the in-memory listings used in demo mode.
 void main() {
@@ -84,6 +88,80 @@ void main() {
           .isFavorite;
 
       expect(after, before);
+    });
+  });
+
+  group('updateListing', () {
+    test('overwrites the stored listing in place', () async {
+      final original = (await dataSource.fetchProperties()).first;
+      final edited = PropertyModel.fromEntity(
+        buildProperty(
+          id: original.id,
+          name: 'Renamed Apartments',
+          pricePerMonth: 999,
+        ),
+      );
+
+      final saved = await dataSource.updateListing(edited);
+
+      expect(saved.name, 'Renamed Apartments');
+      final stored = (await dataSource.fetchProperties()).firstWhere(
+        (p) => p.id == original.id,
+      );
+      expect(stored.name, 'Renamed Apartments');
+      expect(stored.pricePerMonth, 999);
+    });
+
+    test('does not change how many listings exist', () async {
+      final before = (await dataSource.fetchProperties()).length;
+      final original = (await dataSource.fetchProperties()).first;
+
+      await dataSource.updateListing(
+        PropertyModel.fromEntity(
+          buildProperty(id: original.id, name: 'Edited'),
+        ),
+      );
+
+      expect((await dataSource.fetchProperties()).length, before);
+    });
+
+    test('throws when the listing no longer exists', () async {
+      expect(
+        () => dataSource.updateListing(
+          PropertyModel.fromEntity(buildProperty(id: 'not-a-real-listing')),
+        ),
+        throwsA(isA<ServerException>()),
+      );
+    });
+  });
+
+  group('deleteListing', () {
+    test('removes the listing from the catalogue', () async {
+      final before = (await dataSource.fetchProperties()).length;
+
+      await dataSource.deleteListing('ayana');
+
+      final after = await dataSource.fetchProperties();
+      expect(after.length, before - 1);
+      expect(after.where((p) => p.id == 'ayana'), isEmpty);
+    });
+
+    test('also drops it from favourites, so no orphan heart remains', () async {
+      // 'sekimondo' is favourited in the seeded state.
+      await dataSource.deleteListing('sekimondo');
+
+      final favorites = (await dataSource.fetchProperties()).where(
+        (p) => p.isFavorite,
+      );
+      expect(favorites.where((p) => p.id == 'sekimondo'), isEmpty);
+    });
+
+    test('deleting something absent is a no-op rather than an error', () async {
+      final before = (await dataSource.fetchProperties()).length;
+
+      await dataSource.deleteListing('not-a-real-listing');
+
+      expect((await dataSource.fetchProperties()).length, before);
     });
   });
 }

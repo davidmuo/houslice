@@ -17,6 +17,7 @@ import '../../features/onboarding/presentation/pages/location_page.dart';
 import '../../features/onboarding/presentation/pages/onboarding_page.dart';
 import '../../features/onboarding/presentation/pages/splash_page.dart';
 import '../../features/property/domain/entities/property.dart';
+import '../../features/property/presentation/pages/my_listings_page.dart';
 import '../../features/property/presentation/pages/property_details_page.dart';
 import '../../features/property/presentation/pages/compatibility_page.dart';
 import '../../features/property/presentation/pages/search_page.dart';
@@ -52,7 +53,14 @@ abstract final class AppRouter {
       case AppRoutes.quiz:
         return _page(const QuizPage(), settings);
       case AppRoutes.createListing:
-        return _page(const CreateListingPage(), settings);
+        // A Property argument means "edit this one"; no argument means
+        // "publish a new one".
+        return _page(
+          CreateListingPage(existing: settings.arguments as Property?),
+          settings,
+        );
+      case AppRoutes.myListings:
+        return _page(const MyListingsPage(), settings);
       case AppRoutes.forgotPassword:
         return _page(const ForgotPasswordPage(), settings);
       case AppRoutes.resetSuccess:

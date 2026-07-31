@@ -122,6 +122,12 @@ class ProfilePage extends StatelessWidget {
                     Navigator.of(context).pushNamed(AppRoutes.createListing),
               ),
               _MenuTile(
+                icon: Icons.home_work_outlined,
+                label: 'My Listings',
+                onTap: () =>
+                    Navigator.of(context).pushNamed(AppRoutes.myListings),
+              ),
+              _MenuTile(
                 icon: Icons.tune,
                 label: 'Lifestyle questionnaire',
                 onTap: () => Navigator.of(context).pushNamed(AppRoutes.quiz),

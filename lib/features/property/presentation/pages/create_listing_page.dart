@@ -18,21 +18,33 @@ import '../widgets/host_badge.dart';
 /// "List your place" — lets a student sublet a room or a letting agent post a
 /// whole property. A student room carries the host's questionnaire answers so
 /// browsers get a real compatibility score rather than a placeholder.
+///
+/// The same page edits an existing listing when [existing] is supplied: the
+/// form is identical, so duplicating it for edits would mean two screens to
+/// keep in step.
 class CreateListingPage extends StatelessWidget {
-  const CreateListingPage({super.key});
+  final Property? existing;
+
+  const CreateListingPage({super.key, this.existing});
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (_) =>
-          CreateListingCubit(createListing: sl(), photoService: sl()),
-      child: const _CreateListingView(),
+      create: (_) => CreateListingCubit(
+        createListing: sl(),
+        updateListing: sl(),
+        photoService: sl(),
+        existing: existing,
+      ),
+      child: _CreateListingView(existing: existing),
     );
   }
 }
 
 class _CreateListingView extends StatefulWidget {
-  const _CreateListingView();
+  final Property? existing;
+
+  const _CreateListingView({this.existing});
 
   @override
   State<_CreateListingView> createState() => _CreateListingViewState();
@@ -51,8 +63,21 @@ class _CreateListingViewState extends State<_CreateListingView> {
   @override
   void initState() {
     super.initState();
-    final user = context.read<AuthBloc>().state.user;
-    _contactName.text = user?.username ?? '';
+    final listing = widget.existing;
+    if (listing == null) {
+      final user = context.read<AuthBloc>().state.user;
+      _contactName.text = user?.username ?? '';
+      return;
+    }
+
+    // Editing: open on the listing's current values.
+    _name.text = listing.name;
+    _address.text = listing.address;
+    _price.text = listing.pricePerMonth.toString();
+    _description.text = listing.description;
+    _contactName.text = listing.agentName;
+    _contactPhone.text = listing.agentPhone;
+    _photos.addAll(listing.images);
   }
 
   @override
@@ -133,12 +158,18 @@ class _CreateListingViewState extends State<_CreateListingView> {
       listenWhen: (previous, current) => previous.status != current.status,
       listener: (context, state) {
         if (state.status == CreateListingStatus.success) {
-          // Refresh the catalogue so the new listing appears immediately.
+          // Refresh the catalogue so the change appears immediately.
           context.read<PropertyBloc>().add(const PropertiesRequested());
           ScaffoldMessenger.of(context)
             ..hideCurrentSnackBar()
             ..showSnackBar(
-              const SnackBar(content: Text('Your listing is live')),
+              SnackBar(
+                content: Text(
+                  widget.existing == null
+                      ? 'Your listing is live'
+                      : 'Listing updated',
+                ),
+              ),
             );
           Navigator.of(context).pop();
         } else if (state.status == CreateListingStatus.failure) {
@@ -151,7 +182,11 @@ class _CreateListingViewState extends State<_CreateListingView> {
         final cubit = context.read<CreateListingCubit>();
 
         return Scaffold(
-          appBar: AppBar(title: const Text('List your place')),
+          appBar: AppBar(
+            title: Text(
+              widget.existing == null ? 'List your place' : 'Edit listing',
+            ),
+          ),
           body: SafeArea(
             child: Form(
               key: _formKey,
@@ -314,7 +349,9 @@ class _CreateListingViewState extends State<_CreateListingView> {
 
                   const SizedBox(height: 28),
                   PrimaryButton(
-                    label: 'Publish listing',
+                    label: widget.existing == null
+                        ? 'Publish listing'
+                        : 'Save changes',
                     busy: state.busy,
                     onPressed: () => _submit(context),
                   ),

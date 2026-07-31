@@ -25,6 +25,8 @@ Flutter + Firebase implementation of our Figma prototype.
 - **Student vs realtor badges** — every listing shows at a glance whether it
   came from a fellow student or a letting agent.
 - **Publish a listing** — students sublet a room, agents post a whole property.
+- **My Listings** — edit or delete anything you published, scoped to your own
+  `ownerUid` so the UI offers exactly what the security rules permit.
 - **Explore + Search** — grid browsing, live search with Recent / Result
   sections and a "Search not found" empty state.
 - **Listing details** — photo gallery with thumbnails, about section, verified
@@ -165,22 +167,25 @@ Rules live in [`firestore.rules`](firestore.rules) and indexes in
 ## Quality checks
 
 ```sh
-flutter analyze         # 0 issues
-flutter test            # full suite
-flutter test --coverage
+flutter analyze lib test   # 0 issues
+flutter test               # 265 tests, all passing
+flutter test --coverage    # 72.3% line coverage
 dart format lib test
 ```
 
 Widget tests run against the real dependency graph in demo mode, so one screen
-test exercises presentation, domain, and data together. Every screen is
-asserted at 360×640, 430×932, and 932×430 landscape — which is how eight real
-layout overflow bugs were found and fixed.
+test exercises presentation, domain, and data together. Every argument-free
+screen is asserted at 320×568, 430×932, and 932×430 landscape by
+[`test/features/responsive_layout_test.dart`](test/features/responsive_layout_test.dart)
+— which is how ten real layout overflow bugs were found and fixed.
 
 ## Notes
 
 - Android `minSdk` is 23 (required by `firebase_auth`).
-- Listing photos are URLs with offline placeholders, so the UI degrades
-  gracefully without a network connection.
-- Photo upload, payment capture, in-app messaging, and map tiles are not
-  implemented in this milestone — see "Known Limitations and Future Work" in
+- Listing photos can be picked from the device gallery. Because Cloud Storage
+  needs the Blaze plan, they are compressed and embedded on the Firestore
+  document as data URIs (capped at 180 KB each); seeded listings use remote URLs
+  with offline placeholders, so the UI degrades gracefully with no network.
+- Payment capture, in-app messaging, and map tiles are not implemented in this
+  milestone — see "Known Limitations and Future Work" in
   [`docs/REPORT.md`](docs/REPORT.md).

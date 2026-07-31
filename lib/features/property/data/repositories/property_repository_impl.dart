@@ -36,4 +36,12 @@ class PropertyRepositoryImpl implements PropertyRepository {
   @override
   Future<Result<Property>> createListing(Property listing) =>
       _guard(() => dataSource.createListing(PropertyModel.fromEntity(listing)));
+
+  @override
+  Future<Result<Property>> updateListing(Property listing) =>
+      _guard(() => dataSource.updateListing(PropertyModel.fromEntity(listing)));
+
+  @override
+  Future<Result<void>> deleteListing(String propertyId) =>
+      _guard(() => dataSource.deleteListing(propertyId));
 }

@@ -264,11 +264,24 @@ fellow student or a letting agent** — the single most requested signal in
 interviews, where students said they could not tell peers from agents on
 Facebook.
 
-### Publishing a listing
+### Publishing and managing a listing
 Students can sublet a room and agents can post a whole property. Selecting
 "Realtor" automatically forces "Entire place" and disables the housemate
 option, since an agency has no lifestyle profile to match against. A student
 listing a room has their questionnaire answers attached automatically.
+
+**My Listings** (Profile → My Listings) completes the CRUD surface: it shows
+everything the signed-in student has published and offers **Edit** and
+**Delete** on each. Editing reuses the publish form rather than duplicating it,
+opening on the listing's current values; the rating and baseline compatibility
+the listing has already earned are preserved rather than reset. Deleting asks
+for confirmation, removes the row optimistically, and restores it with an error
+message if the write is rejected.
+
+Which listings appear is decided by `ownerUid` — the same field
+`firestore.rules` checks — so the actions the UI offers and the writes the
+backend permits cannot drift apart. A student never sees an Edit button for a
+listing the rules would refuse to let them edit.
 
 ### Booking
 Custom range calendar, payment method selection (card / mobile money), an Add
@@ -288,9 +301,9 @@ preferences (theme, notification opt-in, preferred district, onboarding replay).
 ## 8. Testing
 
 ```sh
-flutter analyze     # 0 issues
-flutter test        # all tests pass
-flutter test --coverage
+flutter analyze lib test   # 0 issues
+flutter test               # 265 tests, all passing
+flutter test --coverage    # 72.3% line coverage (3,477 / 4,806)
 ```
 
 The suite covers validators, formatters, entities, models, data sources,
@@ -298,14 +311,18 @@ repositories, blocs and cubits, and every screen — including the modal sheets.
 
 Widget tests run against the **real dependency graph in demo mode** rather than
 mocked blocs, so a single screen test exercises presentation, domain, and data
-together. Every screen is asserted at three sizes: 360×640 (5″ class), 430×932
-(6.7″ class), and 932×430 (landscape).
+together. `test/features/responsive_layout_test.dart` additionally pumps every
+argument-free screen at three viewports — 320×568 (smallest supported), 430×932
+(the design reference), and 932×430 (landscape rotation) — and fails on any
+`RenderFlex` overflow. Screens that need route arguments get the same treatment
+inside their own feature tests.
 
-That approach paid for itself: the widget tests exposed **eight real layout
+That approach paid for itself: the widget tests exposed **ten real layout
 overflow bugs** that had shipped unnoticed — in the explore search bar, listing
 cards, property facilities, booking tiles, the registration consent line, the
-booking price row, the select-date sheet, and the My Bookings segments. All are
-fixed.
+booking price row, the select-date sheet, the My Bookings segments, and finally
+the location chooser (134 px in landscape) and the create-new-password form
+(34 px). All are fixed; the responsive suite is what keeps them fixed.
 
 **[SCREENSHOT]** — terminal output of `flutter analyze` showing 0 issues
 **[SCREENSHOT]** — terminal output of `flutter test` showing all tests passing
@@ -318,9 +335,15 @@ fixed.
 Being explicit about what is not finished is more useful than implying the
 product is complete.
 
-**Photo upload is a URL field, not a gallery picker.** Real uploads need an
-image picker plus Firebase Storage with its own security rules. Pasting a link
-is honest about the current capability rather than faking an upload.
+**Listing photos are embedded in Firestore, not held in Cloud Storage.**
+Choosing photos from the device gallery *is* implemented — `PhotoService` opens
+the picker, caps images at 900px, and re-encodes them at quality 60. Where they
+land is the compromise: Cloud Storage requires the Blaze billing plan, which
+this project is not on, so `InlinePhotoService` stores each photo as a
+compressed data URI on the listing document itself, refusing anything over
+180 KB to stay clear of Firestore's ~1 MiB document ceiling. A production build
+would swap in `FirebasePhotoService` — already written and interface-compatible
+— and keep only the download URL on the document.
 
 **Payments are not processed.** The Add Card screen validates input and renders
 a preview, but nothing is charged and no card data leaves the device. A real

@@ -11,4 +11,10 @@ abstract class PropertyRepository {
 
   /// Publishes a listing owned by the signed-in user.
   Future<Result<Property>> createListing(Property listing);
+
+  /// Saves edits to a listing the signed-in user owns.
+  Future<Result<Property>> updateListing(Property listing);
+
+  /// Removes a listing the signed-in user owns.
+  Future<Result<void>> deleteListing(String propertyId);
 }
