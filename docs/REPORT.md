@@ -41,11 +41,17 @@ https://www.figma.com/proto/p19brWS9LFrF2hCMMt7IHc/houseslice?node-id=0-1
 
 | S/N | Group Member | Role | Attendance | Commits | Contribution |
 |---|---|---|---|---|---|
-| 1 | Aime Ndayambaje | Authentication lead | 19–31 July 2026 | 39 | Built the entire authentication feature: the `AppUser` entity, `AuthRepository` contract, `AuthBloc` with its events and states, and the `SignIn`, `SignUp`, `SignOut`, `GetCurrentUser` and `ChangePassword` use cases. Implemented `FirebaseAuthDataSource` and `MockAuthDataSource`, and built the Register, Sign In, New Password and Social Buttons screens. Also established the project tooling (`analysis_options.yaml`, `.gitignore`, `.metadata`, `pubspec.yaml`) and contributed authentication test suites. |
-| 2 | Isimbi Nelly | App infrastructure and testing lead | 19–31 July 2026 | 10 | Wired the application together: `main.dart`, `app.dart`, the `get_it` injection container and `firebase_options.dart`. Built the theme system and shared widget library, the router and `ToggleCubit`, and the error-handling core (`Failure`, `Result`, the `UseCase` base class, validators and formatters). Delivered the onboarding, notifications and profile features, and authored the auth, lifestyle, booking, property and shell test suites. |
-| 3 | Nkuba Junior Igiraneza | Booking module lead | 19–31 July 2026 | 10 | Delivered the booking feature end to end: the `Booking` entity and repository contract, `BookingModel` with its Firestore and mock data sources, `BookingRepositoryImpl`, the `GetBookings`, `CreateBooking` and `CancelBooking` use cases, `BookingBloc` and `BookingFormCubit`, the Booking and My Bookings screens, and the booking widgets (success sheet, booking tile, review sheet, date sheet). Also built `NavCubit` and `MainShell`, and configured the iOS Xcode project. |
-| 4 | Gift Don-Emmanuel | Property module lead | 19–31 July 2026 | 6 | Delivered the property feature end to end across all three layers: domain (`Property` entity, repository contract, and the `GetProperties`, `SearchProperties` and `ToggleFavorite` use cases), data (`PropertyModel`, the seed catalogue, Firestore and mock data sources, `PropertyRepositoryImpl`) and presentation (`PropertyBloc`, `SearchCubit`, the Home, Explore, Search, Favorites and Details screens, the property card and share sheet). Also contributed the iOS platform files. |
-| 5 | David Muotoh | Matching, listings, backend configuration and documentation | 19–31 July 2026 | 51 | Built the lifestyle questionnaire feature across all three layers and the `CompatibilityScorer` that powers the match percentage and the "Why?" breakdown. Built the create-listing flow, the `PhotoService` and picker, the settings feature with persisted preferences, and listing edit and delete ("My Listings"). Configured the Firebase project, authored `firestore.rules` and `firestore.indexes.json`, set up the Android platform, and wrote the README, the ERD and this report. |
+| 1 | Aime Ndayambaje | Authentication lead | 24–31 July 2026 | 39 | Built the entire authentication feature: the `AppUser` entity, `AuthRepository` contract, `AuthBloc` with its events and states, and the `SignIn`, `SignUp`, `SignOut`, `GetCurrentUser` and `ChangePassword` use cases. Implemented `FirebaseAuthDataSource` and `MockAuthDataSource`, and built the Register, Sign In, New Password and Social Buttons screens. Also established the project tooling (`analysis_options.yaml`, `.gitignore`, `.metadata`, `pubspec.yaml`) and contributed authentication test suites. |
+| 2 | Isimbi Nelly | App infrastructure and testing lead | 22–31 July 2026 | 10 | Wired the application together: `main.dart`, `app.dart`, the `get_it` injection container and `firebase_options.dart`. Built the theme system and shared widget library, the router and `ToggleCubit`, and the error-handling core (`Failure`, `Result`, the `UseCase` base class, validators and formatters). Delivered the onboarding, notifications and profile features, and authored the auth, lifestyle, booking, property and shell test suites. |
+| 3 | Nkuba Junior Igiraneza | Booking module lead | 21–30 July 2026 | 10 | Delivered the booking feature end to end: the `Booking` entity and repository contract, `BookingModel` with its Firestore and mock data sources, `BookingRepositoryImpl`, the `GetBookings`, `CreateBooking` and `CancelBooking` use cases, `BookingBloc` and `BookingFormCubit`, the Booking and My Bookings screens, and the booking widgets (success sheet, booking tile, review sheet, date sheet). Also built `NavCubit` and `MainShell`, and configured the iOS Xcode project. |
+| 4 | Gift Don-Emmanuel | Property module lead | 23–30 July 2026 | 6 | Delivered the property feature end to end across all three layers: domain (`Property` entity, repository contract, and the `GetProperties`, `SearchProperties` and `ToggleFavorite` use cases), data (`PropertyModel`, the seed catalogue, Firestore and mock data sources, `PropertyRepositoryImpl`) and presentation (`PropertyBloc`, `SearchCubit`, the Home, Explore, Search, Favorites and Details screens, the property card and share sheet). Also contributed the iOS platform files. |
+| 5 | Muotoh-Francis David | Matching, listings, backend configuration and documentation | 19–31 July 2026 | 51 | Built the lifestyle questionnaire feature across all three layers and the `CompatibilityScorer` that powers the match percentage and the "Why?" breakdown. Built the create-listing flow, the `PhotoService` and picker, the settings feature with persisted preferences, and listing edit and delete ("My Listings"). Configured the Firebase project, authored `firestore.rules` and `firestore.indexes.json`, set up the Android platform, and wrote the README, the ERD and this report. |
+
+**A note on team composition.** The team's earlier *User Research and Prototype
+Design Report* was authored by four members. Aime Ndayambaje joined for the
+implementation phase and led the authentication feature; his commit history runs
+from 24 July. The attendance column above reflects each member's actual first
+and last commit dates rather than a uniform project window.
 
 **A note on commit counts.** Commit count and contribution volume are not the
 same measure, and the table reports both rather than smoothing the difference.
@@ -929,9 +935,39 @@ rules only accept listings owned by the caller, the demonstration catalogue
 cannot self-seed from the client. Listings created inside the application work
 normally, but a starter catalogue must be imported by an administrator.
 
-**In-app messaging is not built.** Secure messaging between verified students is
-the highest-value next feature, since students currently exchange phone numbers
-in public groups.
+## Researched features that did not ship
+
+The *User Research and Prototype Design Report* proposed four core capabilities.
+Two shipped in full — university email verification and the lifestyle
+compatibility quiz — and the dual listing model shipped as publishing plus
+calendar booking. The fourth, a trust and communication layer, shipped only
+partly, and the gap is set out here rather than left for a reader to discover by
+comparing the two documents.
+
+**In-app messaging is not built.** This is the most consequential omission,
+because it is the feature that directly answers the research finding that
+students post personal phone numbers in public groups for want of a safer
+channel. The application narrows that exposure — contact details sit on the
+listing document behind an authenticated read rather than in a public post — but
+narrowing exposure is not the same as removing it. Messaging remains the
+highest-value next feature.
+
+**Student-written neighbourhood guides are not built.** The research proposed
+community-authored guides to Kacyiru, Kibagabaga, Remera and other
+student-relevant areas. The application ships the district *filter* those guides
+would have sat behind, but not the guides themselves. This was a scope decision:
+guides are a content problem more than an engineering one, and would need a
+moderation model the project did not have time to design.
+
+**The navigation differs from the prototype's information architecture.** The
+Figma prototype organised the application around five areas — housing search,
+room listing, messaging, neighbourhood guides and profile. The built application
+uses Home, Explore, Favourites, My Booking and Profile. Two of the prototype's
+areas correspond to features that did not ship, and the two that replace them,
+Favourites and My Booking, emerged during implementation as the screens users
+actually need once booking exists. Every screen that *was* implemented follows
+the prototype's visual design; the divergence is in the top-level navigation,
+not in the screens themselves.
 
 **Facebook sign-in is decorative.** Two authentication methods are implemented
 and working; the Facebook button states plainly that it is unavailable rather
@@ -945,11 +981,12 @@ one.
 ## Roadmap
 
 1. In-app messaging between verified students
-2. Real payment capture (card and MTN MoMo)
-3. Photo upload through Cloud Storage
-4. Mutual, two-directional compatibility
-5. Map view with real tiles
-6. Expansion beyond Kigali to other African university cities
+2. Student-written neighbourhood guides, with a moderation model
+3. Real payment capture (card and MTN MoMo)
+4. Photo upload through Cloud Storage
+5. Mutual, two-directional compatibility
+6. Map view with real tiles
+7. Expansion beyond Kigali to other African university cities
 
 ---
 
