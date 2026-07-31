@@ -1,377 +1,256 @@
 # Houseslice — Demo Video Script
 
-**Group 22 · Five speakers · Narration order: David → Aime → Nelly → Gift → Nkuba → David**
+**Group 22 · Narration order: David → Aime → Nelly → Gift → Nkuba → David**
 
-## How this recording works
+David operates the phone and shares the screen throughout. The other four narrate
+over his navigation. **David follows the speaker — if someone is mid-sentence,
+wait.**
 
-**David operates the phone and shares the screen for the entire video.** Nobody
-else touches the device. The other four speak over his navigation, each
-presenting the part of the application they built.
-
-So every step below is written in two parts:
-
-> **David does:** taps, types, navigates
->
-> **[Speaker] says:** the narration over it
-
-This matters for pacing: **David follows the speaker, not the other way round.**
-If Aime is mid-sentence, wait. A tap landing before the sentence that explains it
-is the most common way a demo like this looks rushed.
-
-The whole app is demonstrated first, on the phone. The Firebase Console comes
-once at the end, so there is **one Zoom share switch in the entire recording**
-rather than one per write.
-
-This script contains only what the rubric scores. A brisk team lands around
-8 minutes, a measured one around 10, a slow one around 12.
+Segments 1–5 are the app, on the phone. Segment 6 is the Firebase Console, after
+one share switch.
 
 ---
 
-## Recording setup
-
-You share one source at a time in Zoom, so:
-
-1. **Share the phone** for Segments 1–5.
-2. **Switch the share once**, to the browser, for Segment 6.
-3. Keep talking across the switch so the audio never goes dead. The switch is not
-   a cut; the recording stays continuous.
-
-Open the Firebase Console at **Firestore → Data** in the tab you'll share
-*before* you start, so the switch lands somewhere useful rather than on a login
-screen.
-
-### One thing to be deliberate about
-
-The rubric asks for CRUD "in Firestore while the Firebase Console is visible."
-Showing the console afterwards is weaker than showing it alongside, because the
-grader doesn't see cause and effect in one frame. **Segment 6 closes that gap**
-by tying every document back to a value the audience watched being typed.
-
-That only works if the speaker **announces the value and David types it**. Those
-cues are marked below. Skip them and Segment 6 becomes a database tour rather
-than proof the app wrote to it.
-
----
-
-## Setup checklist
+## Setup
 
 - [ ] Release APK installed (`flutter build apk --release`)
-- [ ] **Signed in on David's phone, questionnaire completed** — so the cold start
-      in Segment 1 shows a persisted session
-- [ ] **One listing already published** — this script calls it **listing A**;
-      David deletes it in Segment 1 so the console can show it gone
-- [ ] **At least one listing already favourited** — call it **Y**; it gets
-      un-favourited in Segment 4 so the console can show that document deleted
-- [ ] **In Settings, turn ON "Replay the intro slides"** — the onboarding screens
-      only render when signed out, so this is what makes them appear in Segment 2
-- [ ] Firebase Console open at **Firestore → Data**, in the tab you will share
-- [ ] Spare university email in a notes app on the phone, ready to paste
-- [ ] University-domain Google account already on the phone
+- [ ] Signed in on David's phone, questionnaire completed
+- [ ] **Listing A** already published — deleted in Segment 1
+- [ ] **Listing Y** already favourited — un-favourited in Segment 4
+- [ ] Settings → **"Replay the intro slides" ON** — the slides only render when
+      signed out, and Segment 2 needs them
+- [ ] Firebase Console open at **Firestore → Data**, in the tab you'll share
+- [ ] Spare university email in a notes app, ready to paste
+- [ ] University-domain Google account on the phone
 - [ ] Do Not Disturb on, **auto-rotate on**, battery above 50%
-- [ ] **One full dry run**, timed, with the real hand-offs
+- [ ] One timed dry run
 
 ---
 
-## Segment 1 — David narrates and drives
-### Cold start · listing create, update, delete · validation error
+## Segment 1 — David
 
-**David does:** launches the app cold from the home screen.
+**Does:** launches the app cold from the home screen.
 
-**David says:**
 > "Houseslice — a student-only housing marketplace for Kigali, running as a
 > release build on a physical phone. Cold launch, and it goes straight to the
 > home feed: the session persisted across the restart."
 
-**David does:** opens a listing, taps **"Why?"**.
+**Does:** opens a listing, taps **"Why?"**.
 
-**David says:**
 > "Every listing shows a match percentage, computed on the device from my
 > lifestyle answers against the host's. This breaks that score across nine
 > dimensions and explains each one."
 
-**David does:** closes the sheet → **Profile → My Listings**.
+**Does:** closes the sheet → **Profile → My Listings**.
 
-**David says:**
 > "These are the listings I've published. Which rows appear is decided by
 > `ownerUid` — the same field the security rules check — so the app can't offer
 > an action the backend would refuse."
 
-**David does:** **+ New listing** → submits with a required field blank.
+**Does:** **+ New listing** → submits with a required field blank.
 
-**David says:** *(pause)*
-> "Validation stops it before anything reaches the network."
+> *(pause)* "Validation stops it before anything reaches the network."
 
-**David does:** fills the form, **saying the title and price aloud as he types
-them**.
+**Does:** fills the form, saying the title and price aloud while typing.
 
-**David says:**
 > "Calling this one *Sunny double room in Remera*, at **190 dollars** a month."
 
-**David does:** attaches a photo, publishes.
+**Does:** attaches a photo, publishes.
 
-**David says:**
-> "Published. **Create** — we'll see the document at the end."
+> "Published. **Create.**"
 
-**David does:** taps **Edit** on the new listing, changes the price to **210**,
-saves.
+**Does:** taps **Edit**, changes the price to **210**, saves.
 
-**David says:**
 > "And editing it to **210**. **Update** — the rules run the same field checks on
-> an edit as on a create, so an edit can't write something that would have been
-> rejected as new."
+> an edit as on a create."
 
-**David does:** taps **Delete** on **listing A** → confirms.
+**Does:** taps **Delete** on **listing A** → confirms.
 
-**David says:** *(pause)*
-> "Row gone instantly — optimistic, the UI leads and reverts if the write fails.
-> **Delete.** Remember this one; the console will show the collection without it."
+> *(pause)* "Row gone instantly — optimistic, the UI leads and reverts if the
+> write fails. **Delete.**"
 
-> ⚠️ **Leave this state:** the new listing exists at **210**; listing A is gone.
+> ⚠️ New listing exists at **210**; listing A is gone.
 
-**David does:** Profile → **Sign Out**.
+**Does:** Profile → **Sign Out**.
 
-**David says:**
 > "Signing out so Aime can take you through registration."
 
 ---
 
-## Segment 2 — Aime narrates, David drives
-### Onboarding · registration · validation error · both auth methods
+## Segment 2 — Aime narrates
 
 **David does:** the intro slides appear; he pages through them.
 
-**Aime says:**
 > "A signed-out user sees the intro slides. I built the authentication feature,
 > and Houseslice is student-only — enforced, not just stated. Let's try a
 > personal address first."
 
-**David does:** Register → types `someone@gmail.com` and a password → submits.
+**David does:** Register → `someone@gmail.com` + password → submit.
 
-**Aime says:** *(pause)*
-> "Rejected. The validator only accepts approved university domains."
+> *(pause)* "Rejected. The validator only accepts approved university domains."
 
-**David does:** clears it, registers with a real university address.
+**David does:** registers with a real university address.
 
-**Aime says** — *read the address aloud as David types it:*
-> "Registering as *(read the address)*. That account and its profile document
-> will both be in the console at the end."
+> **Read the address aloud as David types it:** "Registering as *(address)*."
 
 **David does:** the questionnaire appears; he skips through it, then signs out.
 
-**Aime says:**
 > "A new account goes straight to the questionnaire — Nelly will walk that.
 > First, our second authentication method."
 
-**David does:** taps **Google**, completes sign-in with a **university** Google
-account.
+**David does:** taps **Google**, signs in with a **university** Google account.
 
-**Aime says:**
 > "The domain is checked before a Firebase session is created, so a personal
-> Gmail would be rejected even though Google authenticated it perfectly happily.
-> Two methods, both gated. Nelly."
+> Gmail would be rejected even though Google authenticated it. Two methods, both
+> gated. Nelly."
 
 ---
 
-## Segment 3 — Nelly narrates, David drives
-### State update across widgets · preference persistence · rotation
+## Segment 3 — Nelly narrates
 
 **David does:** Profile → Lifestyle questionnaire; answers three or four
-questions and submits.
+questions, submits.
 
-**Nelly says:**
 > "I built the app's infrastructure — the wiring, theme system, shared widgets
 > and routing. This is the questionnaire that feeds David's matching engine:
 > eleven questions on what people actually fall out over as housemates."
 
 **David does:** returns to the home feed.
 
-**Nelly says:** *(pause)*
-> "And every match percentage has changed — all recomputed from the answers just
-> given. One state change, every card across the app updates."
+> *(pause)* "Every match percentage has changed — all recomputed from the answers
+> just given. One state change, every card updates."
 
-**David does:** Profile → Settings → switches the theme to **Dark**, sets the
-preferred district.
+**David does:** Profile → Settings → theme to **Dark**, sets the preferred
+district.
 
-**Nelly says:**
 > "Four preferences, all saved to the device."
 
-**David does:** **fully closes the app** — swipes it from recents — then
-relaunches.
+**David does:** **fully closes the app** — swipes from recents — relaunches.
 
-**Nelly says:** *(pause while it launches)*
-> "Straight into dark mode, with no flash of the light theme first, because
-> preferences load before the first frame is drawn in `main.dart`. The district
-> held, and we're still signed in."
+> *(pause)* "Straight into dark mode, no flash of the light theme, because
+> preferences load before the first frame is drawn. The district held, and we're
+> still signed in."
 
 **David does:** opens Settings to show both values retained.
 
-**David does:** **rotates the phone to landscape**, scrolls, visits
-Notifications, Profile and Explore while rotated.
+**David does:** **rotates to landscape**, scrolls, visits Notifications, Profile
+and Explore while rotated.
 
-**Nelly says:**
 > "Landscape, no overflow on any screen. We assert every screen at three viewport
-> sizes in the test suite — that's how we found ten layout bugs that were
-> invisible in portrait."
+> sizes in the test suite."
 
 **David does:** rotates back to portrait.
 
-**Nelly says:**
 > "Gift has browsing and search."
 
 ---
 
-## Segment 4 — Gift narrates, David drives
-### Explore and search · favourite create and delete
+## Segment 4 — Gift narrates
 
-**David does:** Explore tab → Search → types a partial query, then a nonsense
-query.
+**David does:** Explore tab → Search → a partial query, then a nonsense query.
 
-**Gift says:**
 > "I built the property module across all three layers. Explore and search run
-> off the same catalogue state, so the two views can't disagree. Live filtering,
-> and a proper empty state rather than a blank screen."
+> off the same catalogue state. Live filtering, and an empty state rather than a
+> blank screen."
 
-**David does:** returns to Explore, **taps the heart on a listing**.
+**David does:** returns to Explore, taps the heart on a listing.
 
-**Gift says** — *name the listing aloud:*
-> "Favouriting *(listing name)*."
+> **Name the listing aloud:** "Favouriting *(listing name)*."
 
 **David does:** switches to the Favourites tab. *(pause)*
 
-**Gift says:**
 > "Filled instantly and it's in Favourites — one state change, two parts of the
-> UI. That created a document we'll see shortly."
+> UI."
 
 **David does:** un-favourites **listing Y**.
 
-**Gift says** — *name Y aloud:*
-> *(pause)* "And removing *(name of Y)*, which deletes its document. A favourite
-> created and a favourite deleted. Nkuba has booking."
+> **Name Y aloud:** *(pause)* "And removing *(Y)*, which deletes its document.
+> Nkuba has booking."
 
-> ⚠️ **Leave this state:** the newly hearted listing is favourited; **Y** is not.
+> ⚠️ Newly hearted listing is favourited; **Y** is not.
 
 ---
 
-## Segment 5 — Nkuba narrates, David drives
-### Booking create · payment validation error · cancellation update
+## Segment 5 — Nkuba narrates
 
 **David does:** opens a listing → **Book** → selects a start and end date.
 
-**Nkuba says:**
-> "I built the booking module. Dates first, on a custom range calendar, then
-> payment — card or mobile money."
+> "I built the booking module. Dates on a range calendar, then payment — card or
+> mobile money."
 
-**David does:** Add Card → types an **invalid** card number.
+**David does:** Add Card → an **invalid** card number.
 
-**Nkuba says:** *(pause)*
-> "Rejected by a Luhn checksum, the same algorithm real processors use, so an
-> obviously fake number never gets through."
+> *(pause)* "Rejected by a Luhn checksum, the same algorithm real processors use."
 
-**David does:** enters a valid test number and expiry, continues to the price
-breakdown.
+**David does:** valid test number and expiry → price breakdown.
 
-**Nkuba says:**
-> "Rent, tax and total. To be clear on scope: nothing is charged and no card data
-> leaves the device."
+> "Rent, tax and total. Nothing is charged and no card data leaves the device."
 
-**David does:** confirms. The success sheet appears.
+**David does:** confirms. Success sheet appears.
 
-**Nkuba says:**
 > "Booking created."
 
-**David does:** My Bookings → **cancels that booking**.
+**David does:** My Bookings → cancels that booking.
 
-**Nkuba says:** *(pause)*
-> "And cancelled. A create and an update on the same record — and `status` is the
-> only field that *can* change. The rules block any edit to the price or the
-> dates of a booking already agreed."
+> *(pause)* "And cancelled. A create and an update on the same record — and
+> `status` is the only field that can change."
 
 **David does:** shows the Cancelled tab.
 
-**Nkuba says:**
-> "That's the app end to end. David's going to bring up Firebase now and show
-> that every one of those actions landed in the backend."
+> "That's the app end to end. David will bring up Firebase now."
 
-> ⚠️ **Leave this state:** the booking exists with `status: cancelled`.
+> ⚠️ Booking exists with `status: cancelled`.
 
 ---
 
-## Segment 6 — David narrates and drives
-### Firebase Console verification
+## Segment 6 — David
 
-> **Switch the Zoom share to the browser now.** Keep talking while you do it.
+> **Switch the Zoom share to the browser. Keep talking while you do it.**
 
-**David says:**
 > "Let me bring up the Firebase Console — the same project the phone has been
-> talking to for the last eight minutes."
+> talking to."
 
-### 6.1 The listing that was created and updated
+**Does:** Firestore → Data → **`properties`** → newest document.
 
-**David does:** Firestore → Data → **`properties`** → opens the newest document.
+> "The listing published in the first segment. `name` is *Sunny double room in
+> Remera*, the title you watched me type. `pricePerMonth` is **210** — the edited
+> value, not the 190 it was published at. **Create** and **update**, both landed."
 
-**David says:**
-> "Here's the listing published in the first segment. `name` is *Sunny double
-> room in Remera* — the title you watched me type. `pricePerMonth` is **210**,
-> the edited value, not the 190 it was published at. So **create** and
-> **update**, both landed."
+**Does:** points at `ownerUid`.
 
-**David does:** points at `ownerUid`.
-
-**David says:**
 > "`ownerUid` is my Firebase Auth UID — the field every security rule checks and
-> the field My Listings filters on, which is why the interface can never offer an
-> action the backend would refuse."
+> the field My Listings filters on."
 
-**David does:** points at `images[0]`.
+**Does:** points at `images[0]`.
 
-**David says:**
-> "And the photo is stored inline as a `data:image` URI rather than a Cloud
-> Storage URL, because Storage needs the Blaze plan. We say so plainly in the
-> report rather than implying we use Storage."
+> "The photo is stored inline as a `data:image` URI rather than a Cloud Storage
+> URL, because Storage needs the Blaze plan."
 
-### 6.2 The listing that was deleted
+**Does:** scrolls the `properties` document list.
 
-**David does:** scrolls the `properties` document list.
+> "And the listing I deleted isn't here. **Delete.**"
 
-**David says:**
-> "And the listing I deleted isn't here. You watched it disappear from My
-> Listings; it's gone from the collection too. **Delete.**"
+**Does:** **Authentication → Users**.
 
-### 6.3 The account registered live
-
-**David does:** **Authentication → Users**.
-
-**David says:**
 > "The account Aime registered, created during this recording — you can see the
 > timestamp."
 
-**David does:** Firestore → **`users`** → that UID.
+**Does:** Firestore → **`users`** → that UID.
 
-**David says:**
-> "And its profile document. Note what *isn't* in it: no `emailVerified` field.
-> Verification is read from the Auth token every time, never stored, so writing
-> to your own profile can't manufacture a verified badge."
+> "And its profile document. Note what isn't in it: no `emailVerified` field.
+> Verification is read from the Auth token every time, never stored."
 
-### 6.4 Favourites
+**Does:** `users` → his UID → **`favorites`**.
 
-**David does:** `users` → his UID → **`favorites`**.
+> "The listing Gift favourited is here — the document ID *is* the listing ID, so
+> favouriting twice is idempotent. The one he removed is absent."
 
-**David says:**
-> "The listing Gift favourited is here — and the document ID *is* the listing ID,
-> so favouriting twice is idempotent and the body holds nothing but a timestamp.
-> The one he removed is absent. Create and delete."
+**Does:** `users` → his UID → **`bookings`** → newest document.
 
-### 6.5 The booking
+> "And the booking, `status` set to `cancelled`. It stores the property's name
+> and price alongside the ID — a snapshot, because a booking is a financial
+> record."
 
-**David does:** `users` → his UID → **`bookings`** → the newest document.
-
-**David says:**
-> "And the booking, with `status` set to `cancelled`. It also stores the
-> property's name and price alongside the ID — a deliberate snapshot, because a
-> booking is a financial record. If the host later changes their price, this
-> booking still shows what was agreed."
-
-**David says:**
 > "So every action on the phone is here in the backend: listings created, updated
 > and deleted, an account registered, favourites added and removed, a booking
 > created and cancelled — all behind rules that scope every write to its owner.
@@ -381,83 +260,19 @@ breakdown.
 
 ## Coverage check
 
-| Rubric requirement | Where |
+| Requirement | Where |
 |---|---|
 | Cold-start launch | 1 |
 | Auth state kept after restart | 1, 3 |
-| Register → logout → login | 1 (logout), 2 |
+| Register → logout → login | 1, 2 |
 | Both authentication flows | 2 |
 | Visit every screen | 1–5 |
-| Rotate the device once | 3 |
-| **Create** in Firestore, console shown | 1 + 6.1, 2 + 6.3, 4 + 6.4, 5 + 6.5 |
-| **Read** from Firestore | 1, 3, 4 |
-| **Update** in Firestore, console shown | 1 + 6.1 (190→210), 5 + 6.5 (booking status) |
-| **Delete** in Firestore, console shown | 1 + 6.2 (listing), 4 + 6.4 (favourite) |
-| State update touching two widgets | 3 (quiz → every card), 4 (heart → Favourites tab) |
-| SharedPreferences change → restart → persisted | 3 |
-| Validation error with a polite message | 1, 2, 5 |
-| Every member speaks | 1–5 (all five narrate their own feature) |
-| No slide deck, no introductions | — |
-
----
-
-## Spoken values → console proof
-
-Segment 6 only works as evidence if each document matches something the audience
-heard. The speaker announces the value; David types it.
-
-| Announced in the app | Proves it in the console |
-|---|---|
-| "*Sunny double room in Remera*" | `name` matches |
-| "190 a month… editing to **210**" | `pricePerMonth` is 210, not 190 |
-| "Favouriting *(listing name)*" | document ID matches that listing |
-| "Removing *(listing Y)*" | no document for Y |
-| Aime reads the registration email aloud | same address in Authentication → Users |
-
----
-
-## If a take goes wrong
-
-Don't stop unless the app crashes — a stumble costs far less than a visible cut,
-and the rubric rewards a single continuous recording. If a write is slow, say
-what you're waiting for rather than going quiet.
-
-If the app crashes, restart from the beginning of that speaker's segment.
-
-If a document turns out to be missing in Segment 6 because an app step was
-skipped, **say so and move on**. Do not stage one. An honest "we didn't get to
-that" costs a fraction of what a grader finding a fabricated document would.
-
----
-
-## Add-backs if you finish under 10 minutes
-
-Written out so nobody improvises on camera. Add in order.
-
-**1. David, after the "Why?" sheet (~20 s)**
-> "The scorer is a plain Dart class in the domain layer — no Flutter or Firebase
-> imports, which is why we can unit-test the matching logic directly."
-
-**2. David, at the home feed (~15 s)**
-> "Every card also carries a Student or Realtor badge. On Facebook you can't tell
-> a fellow student from a letting agent; here you always can."
-
-**3. Aime, after the blank-field rejection (~15 s)**
-> "Username at least three characters, password at least six, and nothing reaches
-> the network until every field passes."
-
-**4. Nelly, after the scores recompute (~20 s)**
-> "They all read from a single `LifestyleCubit` instance, registered as a
-> singleton so two screens can never disagree about a score."
-
-**5. Nelly, at the theme change (~15 s)**
-> "Only `MaterialApp` rebuilds — the rest of the tree isn't torn down, because
-> the rebuild is scoped to that one preference."
-
-**6. Nkuba, at the price breakdown (~15 s)**
-> "The tax line is computed in the domain layer, not in the widget, so the same
-> calculation is unit-tested independently of the screen."
-
-**7. David, in Segment 6.1 (~20 s)**
-> "The rules also pin `ownerUid` as immutable, so a listing can't be handed to
-> someone else, or claimed by someone else after the fact."
+| Rotate once | 3 |
+| **Create** + console | 1, 2, 4, 5 → 6 |
+| **Read** | 1, 3, 4 |
+| **Update** + console | 1 (190→210), 5 (booking status) → 6 |
+| **Delete** + console | 1 (listing), 4 (favourite) → 6 |
+| State update, two widgets | 3 (quiz → every card), 4 (heart → Favourites) |
+| SharedPrefs → restart → persisted | 3 |
+| Validation error | 1, 2, 5 |
+| Every member speaks | 1–5 |
