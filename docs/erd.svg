@@ -1,0 +1,130 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1120 830" width="1120" height="830" font-family="Times New Roman, Times, serif">
+  <style>
+    .box { fill: #ffffff; stroke: #222; stroke-width: 1.6; }
+    .hdr { fill: #e8eaf0; stroke: #222; stroke-width: 1.6; }
+    .title { font-size: 17px; font-weight: bold; letter-spacing: .5px; }
+    .field { font-size: 13.5px; }
+    .key { font-size: 13.5px; font-weight: bold; }
+    .note { font-size: 12px; font-style: italic; fill: #444; }
+    .rel { stroke: #222; stroke-width: 1.4; fill: none; }
+    .reldash { stroke: #555; stroke-width: 1.4; fill: none; stroke-dasharray: 6 4; }
+    .rellbl { font-size: 12.5px; font-style: italic; fill: #222; }
+    .card { font-size: 13px; font-weight: bold; fill: #222; }
+  </style>
+
+  <!-- ── USER ───────────────────────────────────────────── -->
+  <rect class="box" x="40" y="250" width="270" height="196" rx="4"/>
+  <rect class="hdr" x="40" y="250" width="270" height="30" rx="4"/>
+  <text class="title" x="175" y="271" text-anchor="middle">USER</text>
+  <line x1="40" y1="280" x2="310" y2="280" stroke="#222" stroke-width="1.6"/>
+  <text class="key"   x="54" y="302">uid  (PK)</text>
+  <text class="note"  x="150" y="302">= Firebase Auth uid</text>
+  <text class="field" x="54" y="324">email</text>
+  <text class="field" x="54" y="346">username</text>
+  <text class="field" x="54" y="368">photoUrl</text>
+  <text class="field" x="54" y="390">dateOfBirth</text>
+  <text class="field" x="54" y="412">createdAt</text>
+  <text class="note"  x="54" y="434">users/{uid}</text>
+
+  <!-- ── PROPERTY ───────────────────────────────────────── -->
+  <rect class="box" x="810" y="180" width="270" height="328" rx="4"/>
+  <rect class="hdr" x="810" y="180" width="270" height="30" rx="4"/>
+  <text class="title" x="945" y="201" text-anchor="middle">PROPERTY</text>
+  <line x1="810" y1="210" x2="1080" y2="210" stroke="#222" stroke-width="1.6"/>
+  <text class="key"   x="824" y="232">propertyId  (PK)</text>
+  <text class="key"   x="824" y="254">ownerUid  (FK)</text>
+  <text class="field" x="824" y="276">name</text>
+  <text class="field" x="824" y="298">address</text>
+  <text class="field" x="824" y="320">description</text>
+  <text class="field" x="824" y="342">pricePerMonth</text>
+  <text class="field" x="824" y="364">rating</text>
+  <text class="field" x="824" y="386">compatibility</text>
+  <text class="field" x="824" y="408">images[]</text>
+  <text class="field" x="824" y="430">bedrooms, bathrooms</text>
+  <text class="field" x="824" y="452">hostType, listingKind</text>
+  <text class="field" x="824" y="474">hostLifestyle</text>
+  <text class="note"  x="824" y="496">properties/{propertyId}</text>
+
+  <!-- ── FAVORITE ───────────────────────────────────────── -->
+  <rect class="box" x="440" y="70" width="270" height="118" rx="4"/>
+  <rect class="hdr" x="440" y="70" width="270" height="30" rx="4"/>
+  <text class="title" x="575" y="91" text-anchor="middle">FAVORITE</text>
+  <line x1="440" y1="100" x2="710" y2="100" stroke="#222" stroke-width="1.6"/>
+  <text class="key"   x="454" y="122">propertyId  (PK, FK)</text>
+  <text class="note"  x="454" y="142">document id = the listing id</text>
+  <text class="field" x="454" y="164">savedAt</text>
+  <text class="note"  x="454" y="182">users/{uid}/favorites/{propertyId}</text>
+
+  <!-- ── BOOKING ────────────────────────────────────────── -->
+  <rect class="box" x="440" y="256" width="270" height="262" rx="4"/>
+  <rect class="hdr" x="440" y="256" width="270" height="30" rx="4"/>
+  <text class="title" x="575" y="277" text-anchor="middle">BOOKING</text>
+  <line x1="440" y1="286" x2="710" y2="286" stroke="#222" stroke-width="1.6"/>
+  <text class="key"   x="454" y="308">bookingId  (PK)</text>
+  <text class="key"   x="454" y="330">propertyId  (FK)</text>
+  <text class="field" x="454" y="352">propertyName</text>
+  <text class="field" x="454" y="374">propertyAddress</text>
+  <text class="field" x="454" y="396">propertyImage</text>
+  <text class="note"  x="454" y="414">↑ snapshot of the listing</text>
+  <text class="field" x="454" y="436">startDate, endDate</text>
+  <text class="field" x="454" y="458">monthlyPrice, tax</text>
+  <text class="field" x="454" y="480">status</text>
+  <text class="note"  x="454" y="506">users/{uid}/bookings/{bookingId}</text>
+
+  <!-- ── LIFESTYLE ──────────────────────────────────────── -->
+  <rect class="box" x="440" y="600" width="270" height="196" rx="4"/>
+  <rect class="hdr" x="440" y="600" width="270" height="30" rx="4"/>
+  <text class="title" x="575" y="621" text-anchor="middle">LIFESTYLE</text>
+  <line x1="440" y1="630" x2="710" y2="630" stroke="#222" stroke-width="1.6"/>
+  <text class="field" x="454" y="652">bedtime, cleanliness</text>
+  <text class="field" x="454" y="674">social, study, guests</text>
+  <text class="field" x="454" y="696">smoking, budget, pets</text>
+  <text class="field" x="454" y="718">gender, genderPreference</text>
+  <text class="field" x="454" y="740">sharing</text>
+  <text class="field" x="454" y="762">bio</text>
+  <text class="note"  x="454" y="784">embedded — never its own collection</text>
+
+  <!-- ── Relationships ──────────────────────────────────── -->
+
+  <!-- USER 1 ──── N FAVORITE  ("saves") -->
+  <polyline class="rel" points="310,300 375,300 375,129 440,129"/>
+  <text class="card"   x="318" y="293">1</text>
+  <text class="card"   x="420" y="122">N</text>
+  <text class="rellbl" x="330" y="215" transform="rotate(-90 330 215)">saves</text>
+
+  <!-- PROPERTY 1 ──── N FAVORITE  ("is saved as") -->
+  <polyline class="rel" points="810,232 760,232 760,129 710,129"/>
+  <text class="card"   x="790" y="225">1</text>
+  <text class="card"   x="718" y="122">N</text>
+  <text class="rellbl" x="772" y="190" transform="rotate(-90 772 190)">is saved as</text>
+
+  <!-- USER 1 ──── N BOOKING  ("makes") -->
+  <polyline class="rel" points="310,390 440,390"/>
+  <text class="card"   x="318" y="383">1</text>
+  <text class="card"   x="424" y="383">N</text>
+  <text class="rellbl" x="375" y="408" text-anchor="middle">makes</text>
+
+  <!-- PROPERTY 1 ──── N BOOKING  ("is booked as") -->
+  <polyline class="rel" points="810,330 710,330"/>
+  <text class="card"   x="794" y="323">1</text>
+  <text class="card"   x="716" y="323">N</text>
+  <text class="rellbl" x="760" y="350" text-anchor="middle">is booked as</text>
+
+  <!-- USER 1 ──── 0..1 LIFESTYLE  ("answers", device-local) -->
+  <polyline class="reldash" points="175,446 175,690 440,690"/>
+  <text class="card"   x="182" y="466">1</text>
+  <text class="card"   x="420" y="683">0..1</text>
+  <text class="rellbl" x="200" y="683">answers  (stored on device)</text>
+
+  <!-- PROPERTY 1 ──── 0..1 LIFESTYLE  ("embeds host's") -->
+  <polyline class="reldash" points="945,508 945,730 710,730"/>
+  <text class="card"   x="952" y="528">1</text>
+  <text class="card"   x="718" y="723">0..1</text>
+  <text class="rellbl" x="770" y="723">embeds host's</text>
+
+  <!-- Legend -->
+  <line class="rel" x1="60" y1="742" x2="120" y2="742"/>
+  <text class="field" x="130" y="747">stored relationship</text>
+  <line class="reldash" x1="60" y1="772" x2="120" y2="772"/>
+  <text class="field" x="130" y="777">embedded / device-local</text>
+</svg>

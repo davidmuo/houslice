@@ -47,4 +47,8 @@ app.*.map.json
 # One-off admin script for exporting the seed catalogue. Deliberately not part
 # of the app: it is a console tool, so its `print` calls would be the only
 # `flutter analyze` issue in the project.
-/tool/
+/tool/export_seed.dart
+
+# Intermediate HTML the report builder prints from. The PDF it produces is
+# committed; this is not.
+/docs/build/

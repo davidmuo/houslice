@@ -12,14 +12,15 @@
 
 ---
 
-> **Formatting note for the team.** Paste this document into Word, apply
-> **Times New Roman 12 pt** for body text and **14 pt** for headings, insert the
-> ALU logo on the title page, and export as
-> `Group22_Final_Project_Submission.pdf`.
+> **Note for the team — not part of the submission.** This file is the source of
+> truth for the report. Regenerate the PDF after any edit with
+> `python tool/build_report.py`, which applies Times New Roman 12 pt body and
+> 14 pt headings, embeds the screenshots and writes
+> `docs/Group22_Final_Project_Submission.pdf`.
 >
 > Markers written as **[INSERT …]** need something only the team can supply — a
-> link, a screenshot, or content from the research half of the report. All of
-> them are listed in Appendix A so none is missed.
+> link, a screenshot, or content from the research half of the report. They are
+> highlighted in the PDF and listed in Appendix A so none is missed.
 
 ---
 
@@ -179,6 +180,8 @@ Google Sign-In. Both are gated to allowed university domains
 (`alustudent.com`, `alueducation.com`, `ur.ac.rw`, `auca.ac.rw`), so a personal
 Gmail account cannot get in even through the Google flow. The feature includes
 email verification, a password-reset flow and a change-password screen.
+Registration validates every field before any network call is made, and shows a
+specific message rather than a generic failure (Figure 1).
 
 **Lifestyle questionnaire.** Eleven questions plus a free-text introduction,
 covering bedtime, cleanliness, social life, study habits, guests, smoking,
